@@ -1,11 +1,11 @@
-install: preinstall
-		npm ci --prefix frontend
-
-preinstall:
-		npm ci
-
-build: install
-		npm run build
+install:
+	npm ci
 
 start:
-		npx start-server -s ./frontend/dist
+	npm start
+
+build:
+	npm run build
+
+lint:
+	npx eslint --ext js,jsx --no-eslintrc --config .eslintrc.yml .
