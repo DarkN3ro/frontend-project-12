@@ -7,8 +7,7 @@
     "build": "vite build",
     "start": "npx start-server -s ./dist",
     "lint": "eslint .",
-    "preview": "vite preview",
-    "test": "node --test test/**/*.test.js"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@fastify/autoload": "^6.0.0",
