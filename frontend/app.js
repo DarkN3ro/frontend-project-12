@@ -25,6 +25,9 @@ module.exports = async function (fastify, opts) {
     dir: path.join(__dirname, 'routes'),
     options: Object.assign({}, opts)
   })
+  fastify.setNotFoundHandler(async (request, reply) => {
+    reply.status(404).send({ error: 'Not Found' })
+  })
 }
 
 module.exports.options = options
