@@ -4,6 +4,9 @@ install:
 start:
 	npm start
 
+start-frontend:
+	npx start-server -s ./dist
+
 build:
 	rm -rf frontend/dist
 	npm run build
