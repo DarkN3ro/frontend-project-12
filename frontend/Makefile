@@ -5,6 +5,7 @@ start:
 	npm start
 
 build:
+	rm -rf frontend/dist
 	npm run build
 
 lint:
