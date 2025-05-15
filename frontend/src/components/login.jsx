@@ -2,14 +2,6 @@ import React from 'react';
 import { Formik } from 'formik';
 
 const Login = () => {
-  const formik = useFormik({
-    initialValues: {
-      email: "",
-    },
-    onSubmit: (values) => {
-      console.log(JSON.stringify(values, null, 2));
-    },
-  });
   return (
     <Formik
       initialValues={{
