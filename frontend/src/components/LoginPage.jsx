@@ -1,5 +1,6 @@
 import React from 'react';
 import { Formik } from 'formik';
+import avatar from '../assets/avatar.jpg';
 
 const LoginPage = () => {
   return (
@@ -20,7 +21,7 @@ const LoginPage = () => {
               <div className="card shadow-sm">
                 <div className="card-body row p-5">
                   <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
-                    <img src="./assets/avatar.jpg" className="rounded-circle" alt="Enter"></img>
+                    <img src={avatar} className="rounded-circle" alt="Enter" />
                   </div>
                   <form onSubmit={handleSubmit} className="col-12 col-md-6 mt-3 mt-md-0">
                   <h1 className="text-center mb-4">Enter</h1>
