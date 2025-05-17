@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Chat from './ChatPage';
 import Login from './LoginPage';
 import NotFound from './NotFound';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App = () => {
   return (
