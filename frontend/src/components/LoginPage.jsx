@@ -1,7 +1,7 @@
 import React from 'react';
 import { Formik } from 'formik';
 
-const Login = () => {
+const LoginPage = () => {
   return (
     <Formik
       initialValues={{
@@ -14,6 +14,11 @@ const Login = () => {
       }}
     >
       {({ handleChange, handleBlur, handleSubmit, values, isSubmitting }) => (
+        <div className="container-fluid h-100">
+          <div className="row justify-content-center align-content-center h-100">
+            <div className="col-12 col-md-8 col-xxl-6">
+              <div className="card shadow-sm">
+                <div className="card-body row p-5">
         <div className="card-body row p-5">
           <form onSubmit={handleSubmit} div className="col-12 col-md-6 mt-3 mt-md-0">
             <h1 className="text-center mb-4">Enter</h1>
@@ -46,10 +51,15 @@ const Login = () => {
                 Submit
               </button>
             </form>
+            </div>
+            </div>
+            </div>
+            </div>
+        </div>
         </div>
       )}
     </Formik>
   );
 };
 
-export default Login;
+export default LoginPage;
