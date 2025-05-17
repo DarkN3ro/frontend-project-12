@@ -18,8 +18,11 @@ const LoginPage = () => {
           <div className="row justify-content-center align-items-center h-100">
             <div className="col-12 col-md-8 col-xxl-6">
               <div className="card shadow-sm">
-        <div className="card-body row p-5">
-          <form onSubmit={handleSubmit} className="col-12 col-md-6 mt-3 mt-md-0">
+                <div className="card-body row p-5">
+                  <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
+                    <img src="/assets/avatar.jpg" className="rounded-circle" alt="Enter"></img>
+                  </div>
+                <form onSubmit={handleSubmit} className="col-12 col-md-6 mt-3 mt-md-0">
             <h1 className="text-center mb-4">Enter</h1>
             <div className="form-floating mb-3">
             <label htmlFor="email">E-mail</label>
@@ -49,11 +52,11 @@ const LoginPage = () => {
               <button type="submit" disabled={isSubmitting} className="w-100 mb-3 btn btn-outline-primary">
                 Submit
               </button>
-            </form>
+                </form>
+                </div>
+              </div>
             </div>
-            </div>
-            </div>
-        </div>
+          </div>
         </div>
       )}
     </Formik>
