@@ -6,7 +6,7 @@ const LoginPage = () => {
   return (
     <Formik
       initialValues={{
-        email: "",
+        username: "",
         password: ""
       }}
       onSubmit={(values, { setSubmitting }) => {
@@ -24,25 +24,23 @@ const LoginPage = () => {
                     <img src={avatar} className="rounded-circle" alt="Enter" />
                   </div>
                   <form onSubmit={handleSubmit} className="col-12 col-md-6 mt-3 mt-md-0">
-                  <h1 className="text-center mb-4">Enter</h1>
+                  <h1 className="text-center mb-4">Войти</h1>
                   <div className="form-floating mb-3">
-            <label htmlFor="email">E-mail</label>
               <input
-                type="email"
-                name="email"
-                placeholder="E-mail"
+                type="username"
+                name="username"
+                placeholder="Ваш ник"
                 onChange={handleChange}
                 onBlur={handleBlur}
                 className="form-control"
-                value={values.email}
+                value={values.username}
               />
             </div>
             <div className="form-floating mb-4">
-              <label htmlFor="password">Password</label>
               <input
                 type="password"
                 name="password"
-                placeholder="Password"
+                placeholder="Пароль"
                 onChange={handleChange}
                 onBlur={handleBlur}
                 className="form-control"
@@ -51,7 +49,7 @@ const LoginPage = () => {
               </div>
 
               <button type="submit" disabled={isSubmitting} className="w-100 mb-3 btn btn-outline-primary">
-                Submit
+              Войти
               </button>
                 </form>
                 </div>
