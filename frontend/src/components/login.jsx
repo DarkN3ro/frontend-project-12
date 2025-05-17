@@ -14,9 +14,10 @@ const Login = () => {
       }}
     >
       {({ handleChange, handleBlur, handleSubmit, values, isSubmitting }) => (
-        <div>
-          <h1>Hexlet Chat</h1>
-          <form onSubmit={handleSubmit}>
+        <div className="card-body row p-5">
+          <form onSubmit={handleSubmit} div className="col-12 col-md-6 mt-3 mt-md-0">
+            <h1 className="text-center mb-4">Enter</h1>
+            <div className="form-floating mb-3">
             <label htmlFor="email">E-mail</label>
               <input
                 type="email"
@@ -24,8 +25,11 @@ const Login = () => {
                 placeholder="E-mail"
                 onChange={handleChange}
                 onBlur={handleBlur}
+                className="form-control"
                 value={values.email}
               />
+            </div>
+            <div className="form-floating mb-4">
               <label htmlFor="password">Password</label>
               <input
                 type="password"
@@ -33,10 +37,12 @@ const Login = () => {
                 placeholder="Password"
                 onChange={handleChange}
                 onBlur={handleBlur}
+                className="form-control"
                 value={values.password}
               />
+              </div>
 
-              <button type="submit" disabled={isSubmitting}>
+              <button type="submit" disabled={isSubmitting} className="w-100 mb-3 btn btn-outline-primary">
                 Submit
               </button>
             </form>
