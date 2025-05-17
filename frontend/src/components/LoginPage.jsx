@@ -20,11 +20,11 @@ const LoginPage = () => {
               <div className="card shadow-sm">
                 <div className="card-body row p-5">
                   <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
-                    <img src="/assets.avatar.jpg" className="rounded-circle" alt="Enter"></img>
+                    <img src="../assets.avatar.jpg" className="rounded-circle" alt="Enter"></img>
                   </div>
-                <form onSubmit={handleSubmit} className="col-12 col-md-6 mt-3 mt-md-0">
-            <h1 className="text-center mb-4">Enter</h1>
-            <div className="form-floating mb-3">
+                  <form onSubmit={handleSubmit} className="col-12 col-md-6 mt-3 mt-md-0">
+                  <h1 className="text-center mb-4">Enter</h1>
+                  <div className="form-floating mb-3">
             <label htmlFor="email">E-mail</label>
               <input
                 type="email"
