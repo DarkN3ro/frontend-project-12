@@ -35,6 +35,7 @@ const LoginPage = () => {
                 className="form-control"
                 value={values.username}
               />
+              <label htmlFor="username">Ваш ник</label>
             </div>
             <div className="form-floating mb-4">
               <input
@@ -46,6 +47,7 @@ const LoginPage = () => {
                 className="form-control"
                 value={values.password}
               />
+              <label htmlFor="password">Пароль</label>
               </div>
 
               <button type="submit" disabled={isSubmitting} className="w-100 mb-3 btn btn-outline-primary">
