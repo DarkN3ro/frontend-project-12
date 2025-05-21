@@ -1,18 +1,37 @@
 import React from 'react';
 import { Formik } from 'formik';
+import { useNavigate } from 'react-router-dom';
 import avatar from '../assets/avatar.jpg';
 
 const LoginPage = () => {
+  const navigate = useNavigate();
+  const [authError, setAuthError] = useState(null);
+
+  const handleLogin = async (values, { setSubmitting }) => {
+    setAuthError(null);
+    try {
+      // Пример локальной проверки логина
+      if (values.username === 'admin' && values.password === 'admin') {
+        const fakeToken = 'fake-jwt-token';
+        localStorage.setItem('token', fakeToken);
+        navigate('/');
+      } else {
+        throw new Error('Неверные имя пользователя или пароль');
+      }
+    } catch (err) {
+      setAuthError(err.message);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   return (
     <Formik
       initialValues={{
         username: "",
         password: ""
       }}
-      onSubmit={(values, { setSubmitting }) => {
-        console.log(JSON.stringify(values, null, 2));
-        setSubmitting(false);
-      }}
+      onSubmit={handleLogin}
     >
       {({ handleChange, handleBlur, handleSubmit, values, isSubmitting }) => (
         <div className="container-fluid h-100">
@@ -50,6 +69,12 @@ const LoginPage = () => {
               <label htmlFor="password">Пароль</label>
               </div>
 
+              {authError && (
+                <div className="text-danger mb-3 text-center">
+                  {authError}
+                </div>
+              )}
+              
               <button type="submit" disabled={isSubmitting} className="w-100 mb-3 btn btn-outline-primary">
               Войти
               </button>
