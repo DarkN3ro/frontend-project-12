@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Formik } from 'formik';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { setToken } from '../store/authSlice';
+import { setToken } from '../store/authSlice.js';
 import avatar from '../assets/avatar.jpg';
 import routes from '../routes.js';
 
