@@ -1,43 +1,17 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import { Formik } from 'formik';
-import { useLocation, useNavigate } from 'react-router-dom';
-import useAuth from '../hooks/index.jsx';
 import avatar from '../assets/avatar.jpg';
-import routes from '../routes.js';
 
 const LoginPage = () => {
-  const auth = useAuth();
-  const [authFailed, setAuthFailed] = useState(false);
-  const inputRef = useRef();
-  const location = useLocation();
-  const navigate = useNavigate();
-  useEffect(() => {
-    inputRef.current.focus();
-  }, []);
-  
   return (
     <Formik
       initialValues={{
         username: "",
         password: ""
       }}
-      onSubmit={async (values, { setSubmitting }) => {
-        setAuthFailed(false);
-        try {
-          const res = await axios.post(routes.loginPath(), values);
-          localStorage.setItem('userId', JSON.stringify(res.data));
-          auth.logIn();
-          const { from } = location.state || { from: { pathname: '/' } };
-          navigate(from);
-        } catch (err) {
-          setSubmitting(false);
-          if (err.isAxiosError && err.response?.status === 401) {
-            setAuthFailed(true);
-            inputRef.current.select();
-            return;
-          }
-          throw err;
-        }
+      onSubmit={(values, { setSubmitting }) => {
+        console.log(JSON.stringify(values, null, 2));
+        setSubmitting(false);
       }}
     >
       {({ handleChange, handleBlur, handleSubmit, values, isSubmitting }) => (
@@ -58,7 +32,7 @@ const LoginPage = () => {
                 placeholder="Ваш ник"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                className={`form-control ${authFailed ? 'is-invalid' : ''}`}
+                className="form-control"
                 value={values.username}
               />
               <label htmlFor="username">Ваш ник</label>
@@ -70,11 +44,10 @@ const LoginPage = () => {
                 placeholder="Пароль"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                className={`form-control ${authFailed ? 'is-invalid' : ''}`}
+                className="form-control"
                 value={values.password}
               />
               <label htmlFor="password">Пароль</label>
-              {authFailed && <div className="invalid-feedback">Неверные имя пользователя или пароль</div>}
               </div>
 
               <button type="submit" disabled={isSubmitting} className="w-100 mb-3 btn btn-outline-primary">
