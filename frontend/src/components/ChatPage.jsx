@@ -1,10 +1,14 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { clearToken } from '../store/authSlice';
 
 const ChatPage = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const handleLogout = () => {
-    localStorage.removeItem('token');
+    dispatch(clearToken());
     navigate('/login');
   };
 

@@ -1,23 +1,32 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Formik } from 'formik';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { setToken } from '../store/authSlice';
 import avatar from '../assets/avatar.jpg';
+import routes from '../routes.js';
 
 const LoginPage = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [authError, setAuthError] = useState(null);
 
   const handleLogin = async (values, { setSubmitting }) => {
     setAuthError(null);
     try {
-      // Пример локальной проверки логина
-      if (values.username === 'admin' && values.password === 'admin') {
-        const fakeToken = 'fake-jwt-token';
-        localStorage.setItem('token', fakeToken);
-        navigate('/');
-      } else {
+      const response = await fetch(routes.loginPath(), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(values),
+      });
+
+      if (!response.ok) {
         throw new Error('Неверные имя пользователя или пароль');
       }
+
+      const data = await response.json();
+      dispatch(setToken(data.token));
+      navigate('/');
     } catch (err) {
       setAuthError(err.message);
     } finally {
@@ -74,7 +83,7 @@ const LoginPage = () => {
                   {authError}
                 </div>
               )}
-              
+
               <button type="submit" disabled={isSubmitting} className="w-100 mb-3 btn btn-outline-primary">
               Войти
               </button>
