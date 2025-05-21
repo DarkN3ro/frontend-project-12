@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { Formik } from 'formik';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -14,26 +15,19 @@ const LoginPage = () => {
   const handleLogin = async (values, { setSubmitting }) => {
     setAuthError(null);
     try {
-      const response = await fetch(routes.loginPath(), {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(values),
-      });
+      const response = await axios.post(routes.loginPath(), values);
+      const { token } = response.data;
 
-      if (!response.ok) {
-        throw new Error('Неверные имя пользователя или пароль');
-      }
-
-      const data = await response.json();
-      dispatch(setToken(data.token));
+      const userId = { token };
+      localStorage.setItem('userId', JSON.stringify(userId));
+      dispatch(setToken(token));
       navigate('/');
     } catch (err) {
-      setAuthError(err.message);
+      setAuthError('Неверные имя пользователя или пароль');
     } finally {
       setSubmitting(false);
     }
   };
-
   return (
     <Formik
       initialValues={{
