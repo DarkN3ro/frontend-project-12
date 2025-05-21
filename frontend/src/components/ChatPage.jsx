@@ -1,7 +1,7 @@
-import React from 'react';
-
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import routes from '../routes.js';
+import useAuth from '../hooks';
 
 const getAuthHeader = () => {
   const userId = JSON.parse(localStorage.getItem('userId'));
@@ -15,6 +15,8 @@ const getAuthHeader = () => {
 
 const ChatPage = () => {
   const [content, setContent] = useState('');
+  const auth = useAuth();
+
   useEffect(() => {
     const fetchContent = async () => {
       const { data } = await axios.get(routes.usersPath(), { headers: getAuthHeader() });
@@ -24,7 +26,13 @@ const ChatPage = () => {
     fetchContent();
   }, []);
 
-  return content && <p>{content}</p>;
+    return (
+    <div className="p-5">
+      <h1>Чат</h1>
+      <p>{JSON.stringify(content)}</p>
+      <button className="btn btn-outline-danger" onClick={auth.logOut}>Выйти</button>
+    </div>
+  );
 };
 
 export default ChatPage;

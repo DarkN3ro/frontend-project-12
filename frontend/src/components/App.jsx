@@ -8,7 +8,16 @@ import AuthContext from '../contexts';
 import useAuth from '../hooks';
 
 const AuthProvider = ({ children }) => {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(() => {
+    const saved = localStorage.getItem('userId');
+    if (!saved) return false;
+    try {
+      const user = JSON.parse(saved);
+      return !!user.token;
+    } catch (e) {
+      return false;
+    }
+  });
 
   const logIn = () => setLoggedIn(true);
   const logOut = () => {
@@ -27,10 +36,8 @@ const ChatRoute = ({ children }) => {
   const auth = useAuth();
   const location = useLocation();
 
-  return (
-    auth.loggedIn ? children : <Navigate to="/login" state={{ from: location }} />
-  )
-}
+  return auth.loggedIn ? children : <Navigate to="/login" state={{ from: location }} replace />;
+};
 
 const App = () => {
   return (
