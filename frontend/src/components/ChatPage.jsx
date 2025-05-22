@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { clearToken } from '../store/authSlice';
+import MainChannels from './MainChannels.jsx';
 import routes from '../routes.js';
 
 const ChatPage = () => {
@@ -41,12 +42,7 @@ const ChatPage = () => {
 
   return (
     <div className="container mt-5">
-      <h1>Chat is...</h1>
-      {content && (
-        <div className="alert alert-success" role="alert">
-          Pending... 
-        </div>
-      )}
+      <MainChannels/>
       <button onClick={handleLogout} className="btn btn-danger mt-3">
         Выйти
       </button>
