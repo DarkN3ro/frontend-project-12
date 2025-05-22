@@ -45,7 +45,7 @@ const ChatPage = () => {
       <nav className="shadow-sm navbar navbar-lg navbar-light bg-white">
         <div className="container">
           <a className="navbar-brand" href="/"> Hexlet Chat </a>
-          <button onClick={handleLogout} type="button" className="btn btn-primary"> LogOut</button>
+          <button onClick={handleLogout} className="btn btn-primary"> LogOut</button>
         </div>
       </nav>
       <MainChannels/>
