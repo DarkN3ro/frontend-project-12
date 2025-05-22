@@ -36,11 +36,10 @@ const Channels = () => {
                   <p className="m-0">
                     <b># general</b>
                   </p>
-                  <span className="text-muted">1 сообщение</span>
+                  <span className="text-muted">0 messages</span>
                 </div>
                 <div id="messages-box" className="chat-messages overflow-auto px-5 ">
                   <div className="text-break mb-2">
-                    <b>admin</b>
                   </div>
                 </div>
                 <div className="mt-auto px-5 py-3">

@@ -42,11 +42,12 @@ const ChatPage = () => {
 
   return (
     <div className="d-flex flex-column h-100">
-    <div className="container mt-5">
-      <button onClick={handleLogout} className="btn btn-danger mt-3">
-        Выйти
-      </button>
-    </div>
+      <nav className="shadow-sm navbar navbar-lg navbar-light bg-white">
+        <div className="container">
+          <a className="navbar-brand" href="/"> Hexlet Chat </a>
+          <button type="button" className="btn btn-primary"> LogOut</button>
+        </div>
+      </nav>
       <MainChannels/>
     </div>
   )
