@@ -41,11 +41,13 @@ const ChatPage = () => {
   };
 
   return (
+    <div className="d-flex flex-column h-100">
     <div className="container mt-5">
-      <MainChannels/>
       <button onClick={handleLogout} className="btn btn-danger mt-3">
         Выйти
       </button>
+    </div>
+      <MainChannels/>
     </div>
   )
 };
