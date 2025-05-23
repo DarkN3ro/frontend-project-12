@@ -15,7 +15,12 @@ const GeneralChat = () => {
       console.log('Connected to WebSocket server:', socket.id);
     });
 
+    socket.on('connect_error', (error) => {
+      console.error('Connection Error:', error);
+    });
+
     socket.on('newMessage', (message) => {
+      console.log('New message received:', message);
       setMessages((prev) => [...prev, message]);
     });
 
