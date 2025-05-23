@@ -1,10 +1,25 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { io } from 'socket.io-client';
+import axios from 'axios';
           
+const socket = io();
+
 const GeneralChat = () => {
   const [messages, setMessages] = useState([]);
   const [messageInput, setMessageInput] = useState('');
   const username = useSelector((state) => state.auth.username);
+  const messagesBoxRef = useRef(null);
+
+  useEffect(() => {
+    socket.on('newMessage', (message) => {
+      setMessages((prev) => [...prev, message]);
+    });
+
+    return () => {
+      socket.off('newMessage');
+    };
+  }, []);
 
   const handleInputChange = (e) => {
     setMessageInput(e.target.value);
@@ -20,7 +35,7 @@ const GeneralChat = () => {
       author: username,
     };
 
-    setMessages([...messages, newMessage]);
+    socket.emit('sendMessage', newMessage);
     setMessageInput('');
   };
 
@@ -33,7 +48,7 @@ const GeneralChat = () => {
         </p>
         <span className="text-muted">{messages.length} messages</span>
       </div>
-      <div id="messages-box" className="chat-messages overflow-auto px-5 ">
+      <div id="messages-box" ref={messagesBoxRef} className="chat-messages overflow-auto px-5 ">
       {messages.map((msg) => (
             <div key={msg.id} className="text-break mb-2">
               <b>{msg.author}</b>: {msg.text}
