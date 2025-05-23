@@ -6,11 +6,6 @@ const GeneralChat = () => {
   const [messageInput, setMessageInput] = useState('');
   const username = useSelector((state) => state.auth.username);
 
-  const socket = io('http://localhost:5001')
-  socket.on("connect", () => {
-    displayMessage(`You connected with id: ${socket.id}`)
-  })
-
   const handleInputChange = (e) => {
     setMessageInput(e.target.value);
   };
