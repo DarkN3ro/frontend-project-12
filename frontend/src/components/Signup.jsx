@@ -1,9 +1,9 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import * as yup from 'yup';
 import i18next from 'i18next';
 import avatar from '../assets/avatar-signup.jpg';
-import ru from '../locales/ru.js';
+import ru from '../locales/ru';
 
 const Signup = () => {
   const usernameRef = useRef(null);
@@ -14,7 +14,7 @@ const Signup = () => {
     i18next.init({
       lng: 'ru',
       resources: {
-        ru,
+        ru: ru,
       },
     }).then(() => {
       const schema = yup.object().shape({
@@ -62,7 +62,7 @@ const Signup = () => {
               <Formik
                 initialValues={{ username: '', password: '', confirmPassword: '' }}
                 validationSchema={validationSchema}
-                validateOnBlur={true}
+                validateOnBlur
                 validateOnChange={false}
                 onSubmit={(values, { setSubmitting }) => {
                   console.log('Submitting:', values);
@@ -83,9 +83,9 @@ const Signup = () => {
                         id="username"
                         className={`form-control ${touched.username && errors.username ? 'is-invalid' : ''}`}
                       />
-                      <label className="form-label" htmlFor="username">{i18next.t('form.usernameLabel')}</label>
-                      {touched.username && errors.username && typeof errors.username === 'string' && (
-                        <div className="invalid-tooltip d-block">{i18next.t(errors.username)}</div>
+                      <label htmlFor="username">{i18next.t('form.usernameLabel')}</label>
+                      {touched.username && errors.username && (
+                        <div className="invalid-tooltip d-block">{errors.username}</div>
                       )}
                     </div>
 
@@ -99,9 +99,9 @@ const Signup = () => {
                         id="password"
                         className={`form-control ${touched.password && errors.password ? 'is-invalid' : ''}`}
                       />
-                      <label className="form-label" htmlFor="password">{i18next.t('form.passwordLabel')}</label>
-                      {touched.password && errors.password && typeof errors.password === 'string' && (
-                        <div className="invalid-tooltip d-block">{i18next.t(errors.password)}</div>
+                      <label htmlFor="password">{i18next.t('form.passwordLabel')}</label>
+                      {touched.password && errors.password && (
+                        <div className="invalid-tooltip d-block">{errors.password}</div>
                       )}
                     </div>
 
@@ -115,9 +115,9 @@ const Signup = () => {
                         id="confirmPassword"
                         className={`form-control ${touched.confirmPassword && errors.confirmPassword ? 'is-invalid' : ''}`}
                       />
-                      <label className="form-label" htmlFor="confirmPassword">{i18next.t('form.confirmPasswordLabel')}</label>
-                      {touched.confirmPassword && errors.confirmPassword && typeof errors.confirmPassword === 'string' && (
-                        <div className="invalid-tooltip d-block">{i18next.t(errors.confirmPassword)}</div>
+                      <label htmlFor="confirmPassword">{i18next.t('form.confirmPasswordLabel')}</label>
+                      {touched.confirmPassword && errors.confirmPassword && (
+                        <div className="invalid-tooltip d-block">{errors.confirmPassword}</div>
                       )}
                     </div>
 
