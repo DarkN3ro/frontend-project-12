@@ -19,6 +19,7 @@ const App = () => {
       dispatch(setUsername(savedAuth.username));
     }
   }, [dispatch]);
+  
   return (
     <BrowserRouter>
       <Routes>
