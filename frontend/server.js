@@ -5,9 +5,21 @@ const cors = require('cors');
 
 const app = express();
 
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://frontend-project-12-tqne.onrender.com'
+];
+
 app.use(cors({
-  origin: 'http://localhost:5173',
-  methods: ['GET', 'POST']
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: ['GET', 'POST'],
+  credentials: true,
 }));
 
 app.use(express.json()); // <-- Важно, чтобы парсить JSON из POST-запросов
@@ -35,9 +47,10 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: 'http://localhost:5173',
+    origin: allowedOrigins,
     methods: ['GET', 'POST'],
-  },
+    credentials: true,
+  }
 });
 
 io.on('connection', (socket) => {
@@ -53,7 +66,7 @@ io.on('connection', (socket) => {
   });
 });
 
-const PORT = 5001;
-server.listen(PORT, () => {
-  console.log(`Socket.IO server running at http://localhost:${PORT}/`);
+const port = process.env.PORT || 5001;
+server.listen(port, () => {
+  console.log(`Socket.IO server running at port ${port}`);
 });

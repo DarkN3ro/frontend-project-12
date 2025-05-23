@@ -2,7 +2,10 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { io } from 'socket.io-client';
           
-const socket = io();
+const socket = io('https://frontend-project-12-tqne.onrender.com', {
+  path: '/socket.io',
+  transports: ['websocket'],
+});
 
 const GeneralChat = () => {
   const [messages, setMessages] = useState([]);
