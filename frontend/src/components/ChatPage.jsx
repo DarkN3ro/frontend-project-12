@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { clearToken } from '../store/authSlice';
+import { clearToken, clearUsername } from '../store/authSlice';
 import MainChannels from '../pages/MainChannels.jsx';
 import routes from '../routes.js';
 
@@ -37,6 +37,7 @@ const ChatPage = () => {
   const handleLogout = () => {
     localStorage.removeItem('userId');
     dispatch(clearToken());
+    dispatch(clearUsername());
     navigate('/login');
   };
 

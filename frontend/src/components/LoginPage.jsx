@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Formik } from 'formik';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { setToken} from '../store/authSlice.js';
+import { setToken, setUsername } from '../store/authSlice.js';
 import avatar from '../assets/avatar.jpg';
 import routes from '../routes.js';
 
@@ -17,18 +17,18 @@ const LoginPage = () => {
 
     try {
       const response = await axios.post(routes.loginPath(), values);
-      const { token } = response.data;
-
-      const userId = { token };
-      localStorage.setItem('userId', JSON.stringify(userId));
-      dispatch(setToken(token));
-      navigate('/');
-    } catch (err) {
-      setAuthError('Неверные имя пользователя или пароль');
-    } finally {
-      setSubmitting(false);
-    }
-  };
+      const { token, username } = response.data;
+      const userId = { token, username };
+        localStorage.setItem('userId', JSON.stringify(userId));
+        dispatch(setToken(token));
+        dispatch(setUsername(username));
+        navigate('/');
+      } catch (err) {
+        setAuthError('Неверные имя пользователя или пароль');
+      } finally {
+        setSubmitting(false);
+      }
+    };
 
   return (
     <Formik

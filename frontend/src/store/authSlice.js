@@ -18,8 +18,11 @@ const authSlice = createSlice({
     clearToken(state) {
       state.token = null;
     },
+    clearUsername(state) {
+      state.username = null;
+    },
   },
 });
 
-export const { setToken, setUsername, clearToken } = authSlice.actions;
+export const { setToken, setUsername, clearToken, clearUsername } = authSlice.actions;
 export default authSlice.reducer;
