@@ -19,7 +19,7 @@ const LoginPage = () => {
       const response = await axios.post(routes.loginPath(), values);
       const { token } = response.data;
 
-      const userId = { token, username: values.username };
+      const userId = { token };
       localStorage.setItem('userId', JSON.stringify(userId));
       dispatch(setToken(token));
       navigate('/');
