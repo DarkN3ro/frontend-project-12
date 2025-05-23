@@ -51,7 +51,7 @@ const LoginPage = () => {
                   <h1 className="text-center mb-4">Войти</h1>
                   <div className="form-floating mb-3">
               <input
-                type="username"
+                type="text"
                 name="username"
                 placeholder="Ваш ник"
                 onChange={handleChange}
@@ -63,7 +63,7 @@ const LoginPage = () => {
             </div>
             <div className="form-floating mb-4">
               <input
-                type="password"
+                type="text"
                 name="password"
                 placeholder="Пароль"
                 onChange={handleChange}
