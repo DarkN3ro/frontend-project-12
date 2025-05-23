@@ -75,7 +75,7 @@ const Signup = () => {
                       />
                       <label className="form-label" htmlFor="username">{i18next.t('form.usernameLabel')}</label>
                       {touched.username && errors.username && (
-                        <div className="invalid-tooltip d-block">{errors.username}</div>
+                        <div className="invalid-tooltip d-block">{i18next.t(errors.username)}</div>
                       )}
                     </div>
 
@@ -91,7 +91,7 @@ const Signup = () => {
                       />
                       <label className="form-label" htmlFor="password">{i18next.t('form.passwordLabel')}</label>
                       {touched.password && errors.password && (
-                        <div className="invalid-tooltip d-block">{errors.password}</div>
+                        <div className="invalid-tooltip d-block">{i18next.t(errors.password)}</div>
                       )}
                     </div>
 
@@ -107,7 +107,7 @@ const Signup = () => {
                       />
                       <label className="form-label" htmlFor="confirmPassword">{i18next.t('form.confirmPasswordLabel')}</label>
                       {touched.confirmPassword && errors.confirmPassword && (
-                        <div className="invalid-tooltip d-block">{errors.confirmPassword}</div>
+                        <div className="invalid-tooltip d-block">{i18next.t(errors.confirmPassword)}</div>
                       )}
                     </div>
 
