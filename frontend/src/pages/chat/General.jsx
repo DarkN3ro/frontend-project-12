@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
           
 const GeneralChat = () => {
   const [messages, setMessages] = useState([]);
