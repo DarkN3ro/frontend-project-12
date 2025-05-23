@@ -10,10 +10,9 @@ const GeneralChat = () => {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    const socketIo = io('https://frontend-project-12-tqne.onrender.com', {
-      path: '/socket.io',
-      transports: ['websocket'],
-    });
+    const socketIo = io(import.meta.env.VITE_SOCKET_URL || 'http://localhost:5001', {
+    transports: ['websocket'],
+  });
     setSocket(socketIo);
 
     socketIo.on('connect', () => {
