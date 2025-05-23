@@ -3,12 +3,15 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as yup from 'yup';
 import i18next from 'i18next';
 import avatar from '../assets/avatar-signup.jpg';
+import ru from '../locales/ru.js'
 
 const Signup = () => {
 
     i18next.init({
       lng: 'ru',
-      resources: {},
+      resources: {
+        ru,
+      }
     });
 
   return (
@@ -38,6 +41,8 @@ const Signup = () => {
                   .required(i18next.t('validate.errorRequired')),
               })}
               onSubmit={(values, { setSubmitting }) => {
+                console.log('Submitting:', values);
+                setSubmitting(false);
               }}
               >
                 {({ isSubmitting }) => (
@@ -51,7 +56,6 @@ const Signup = () => {
                     required="" 
                     id="username" 
                     className="form-control" 
-                    value="" 
                   />
                   <label className="form-label" htmlFor="username">{i18next.t('form.usernameLabel')}</label>
                 </div>
@@ -65,7 +69,6 @@ const Signup = () => {
                     autocomplete="new-password" 
                     id="password" 
                     className="form-control" 
-                    value="" 
                   />
                   <ErrorMessage name="password" component="div" className="invalid-tooltip" />
                   <label className="form-label" htmlFor="password">{i18next.t('form.passwordLabel')}</label>
@@ -79,7 +82,6 @@ const Signup = () => {
                     autocomplete="new-password" 
                     id="confirmPassword" 
                     className="form-control" 
-                    value="" 
                   />
                   <ErrorMessage name="confirmPassword" component="div" className="invalid-tooltip" />
                   <label className="form-label" htmlFor="confirmPassword">{i18next.t('form.confirmPasswordLabel')}</label>
