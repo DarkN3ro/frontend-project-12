@@ -18,8 +18,8 @@ const LoginPage = () => {
       const response = await axios.post(routes.loginPath(), values);
       const { token } = response.data;
 
-      const userData = { token, username: values.username };
-      localStorage.setItem('userId', JSON.stringify(userData));
+      const userId = { token, username: values.username };
+      localStorage.setItem('userId', JSON.stringify(userId));
       dispatch(setToken(token));
       dispatch(setUsername(values.username));
       navigate('/');
@@ -51,7 +51,7 @@ const LoginPage = () => {
                   <h1 className="text-center mb-4">Войти</h1>
                   <div className="form-floating mb-3">
               <input
-                type="text"
+                type="username"
                 name="username"
                 placeholder="Ваш ник"
                 onChange={handleChange}
@@ -63,7 +63,7 @@ const LoginPage = () => {
             </div>
             <div className="form-floating mb-4">
               <input
-                type="text"
+                type="password"
                 name="password"
                 placeholder="Пароль"
                 onChange={handleChange}
