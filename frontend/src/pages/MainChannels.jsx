@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import General from '../pages/General';
-import Random from '../pages/Random';
+import General from './chat/General';
+import Random from './chat/Random';
 
 const Channels = () => {
   const [activeChannel, setActiveChanel] = useState('general'); // Начальное состояние - 'general'
