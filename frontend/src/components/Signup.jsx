@@ -53,7 +53,7 @@ const Signup = () => {
                 setSubmitting(false);
               }}
               >
-                {({ isSubmitting }) => (
+                {({ isSubmitting, errors, touched }) => (
               <Form className="w-50">
                 <h1 className="text-center mb-4">{i18next.t('form.registration')}</h1>
                 <div className="form-floating mb-3">
