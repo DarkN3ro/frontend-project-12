@@ -11,12 +11,17 @@ const GeneralChat = () => {
   const messagesBoxRef = useRef(null);
 
   useEffect(() => {
+    socket.on('connect', () => {
+      console.log('Connected to WebSocket server:', socket.id);
+    });
+
     socket.on('newMessage', (message) => {
       setMessages((prev) => [...prev, message]);
     });
 
     return () => {
       socket.off('newMessage');
+      socket.off('connect');
     };
   }, []);
 
@@ -55,7 +60,7 @@ const GeneralChat = () => {
           ))}
       </div>
       <div className="mt-auto px-5 py-3">
-        <form onSubmit={handleFormSubmit} novalidate="" className="py-1 border rounded-2">
+        <form onSubmit={handleFormSubmit} className="py-1 border rounded-2">
           <div className="input-group has-validation">
             <input 
               name="body" 
