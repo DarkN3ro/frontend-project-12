@@ -18,9 +18,10 @@ const LoginPage = () => {
       const response = await axios.post(routes.loginPath(), values);
       const { token } = response.data;
 
-      const userId = { token };
-      localStorage.setItem('userId', JSON.stringify(userId));
+      const userData = { token, username: values.username };
+      localStorage.setItem('userId', JSON.stringify(userData));
       dispatch(setToken(token));
+      dispatch(setUsername(values.username));
       navigate('/');
     } catch (err) {
       setAuthError('Неверные имя пользователя или пароль');

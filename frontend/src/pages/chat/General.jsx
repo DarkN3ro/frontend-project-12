@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 const GeneralChat = () => {
   const [messages, setMessages] = useState([]);
   const [messageInput, setMessageInput] = useState('');
+  const username = useSelector((state) => state.auth.username);
 
   const handleInputChange = (e) => {
     setMessageInput(e.target.value);
@@ -15,6 +16,7 @@ const GeneralChat = () => {
     const newMessage = {
       id: Date.now(),
       text: messageInput,
+      author: username,
     };
 
     setMessages([...messages, newMessage]);
@@ -33,7 +35,7 @@ const GeneralChat = () => {
       <div id="messages-box" className="chat-messages overflow-auto px-5 ">
       {messages.map((msg) => (
             <div key={msg.id} className="text-break mb-2">
-              <b>Number1</b>: {msg.text}
+              <b>{msg.author}</b>: {msg.text}
             </div>
           ))}
       </div>
