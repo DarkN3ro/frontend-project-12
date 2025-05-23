@@ -7,38 +7,48 @@ import ru from '../locales/ru.js';
 
 const Signup = () => {
   const usernameRef = useRef(null);
+  const [ready, setReady] = useState(false);
+  const [validationSchema, setValidationSchema] = useState(null);
 
   useEffect(() => {
     i18next.init({
       lng: 'ru',
       resources: {
         ru,
-      }
+      },
+    }).then(() => {
+      const schema = yup.object().shape({
+        username: yup
+          .string()
+          .trim()
+          .min(3, i18next.t('validate.errorNameMin'))
+          .max(20, i18next.t('validate.errorNameMax'))
+          .required(i18next.t('validate.errorRequired')),
+        password: yup
+          .string()
+          .trim()
+          .min(6, i18next.t('validate.errorPasswordMin'))
+          .max(20, i18next.t('validate.errorPasswordMax'))
+          .required(i18next.t('validate.errorRequired')),
+        confirmPassword: yup
+          .string()
+          .oneOf([yup.ref('password'), null], i18next.t('validate.errorConfirmPassword'))
+          .required(i18next.t('validate.errorRequired')),
+      });
+      setValidationSchema(schema);
+      setReady(true);
     });
-
-    if (usernameRef.current) {
-      usernameRef.current.focus();
-    }
   }, []);
 
-  const validationSchema = yup.object().shape({
-    username: yup
-      .string()
-      .trim()
-      .min(3, i18next.t('validate.errorNameMin'))
-      .max(20, i18next.t('validate.errorNameMax'))
-      .required(i18next.t('validate.errorRequired')),
-    password: yup
-      .string()
-      .trim()
-      .min(6, i18next.t('validate.errorPasswordMin'))
-      .max(20, i18next.t('validate.errorPasswordMax'))
-      .required(i18next.t('validate.errorRequired')),
-    confirmPassword: yup
-      .string()
-      .oneOf([yup.ref('password'), null], i18next.t('validate.errorConfirmPassword'))
-      .required(i18next.t('validate.errorRequired')),
-  });
+  useEffect(() => {
+    if (ready && usernameRef.current) {
+      usernameRef.current.focus();
+    }
+  }, [ready]);
+
+  if (!ready) {
+    return null;
+  }
 
   return (
     <div className="container-fluid h-100">
@@ -74,7 +84,7 @@ const Signup = () => {
                         className={`form-control ${touched.username && errors.username ? 'is-invalid' : ''}`}
                       />
                       <label className="form-label" htmlFor="username">{i18next.t('form.usernameLabel')}</label>
-                      {touched.username && errors.username && (
+                      {touched.username && errors.username && typeof errors.username === 'string' && (
                         <div className="invalid-tooltip d-block">{i18next.t(errors.username)}</div>
                       )}
                     </div>
@@ -90,7 +100,7 @@ const Signup = () => {
                         className={`form-control ${touched.password && errors.password ? 'is-invalid' : ''}`}
                       />
                       <label className="form-label" htmlFor="password">{i18next.t('form.passwordLabel')}</label>
-                      {touched.password && errors.password && (
+                      {touched.password && errors.password && typeof errors.password === 'string' && (
                         <div className="invalid-tooltip d-block">{i18next.t(errors.password)}</div>
                       )}
                     </div>
@@ -106,7 +116,7 @@ const Signup = () => {
                         className={`form-control ${touched.confirmPassword && errors.confirmPassword ? 'is-invalid' : ''}`}
                       />
                       <label className="form-label" htmlFor="confirmPassword">{i18next.t('form.confirmPasswordLabel')}</label>
-                      {touched.confirmPassword && errors.confirmPassword && (
+                      {touched.confirmPassword && errors.confirmPassword && typeof errors.confirmPassword === 'string' && (
                         <div className="invalid-tooltip d-block">{i18next.t(errors.confirmPassword)}</div>
                       )}
                     </div>
