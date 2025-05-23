@@ -13,6 +13,10 @@ const Channels = () => {
     setActiveChanel('random');
   };
 
+  const classActive = (channel) => {
+    return `w-100 rounded-0 text-start btn ${activeChannel === channel ? 'btn-secondary' : ''}`;
+  };
+
   return (
     <div className="container h-100 my-4 overflow-hidden rounded shadow">
       <div className="row h-100 bg-white flex-md-row">
@@ -29,13 +33,13 @@ const Channels = () => {
           </div>
           <ul id="channels-box" className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block">
             <li className="nav-item w-100">
-              <button type="button" onClick={ handleGeneralClick } className={`w-100 rounded-0 text-start btn ${activeChannel === 'general' ? 'btn-secondary' : ''}`}>
+              <button type="button" onClick={ handleGeneralClick } className={ classActive('general')}>
                 <span className="me-1">#</span>
                 general
               </button>
             </li>
             <li className="nav-item w-100">
-              <button type="button" onClick={ handleRandomClick } className={`w-100 rounded-0 text-start btn ${activeChannel === 'random' ? 'btn-secondary' : ''}`}>
+              <button type="button" onClick={ handleRandomClick } className={ classActive('random')}>
                 <span className="me-1">#</span>
                 random
               </button>
