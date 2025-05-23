@@ -11,7 +11,6 @@ const GeneralChat = () => {
 
   useEffect(() => {
     const socketIo = io('https://frontend-project-12-tqne.onrender.com', {
-      path: '/socket.io',
       transports: ['websocket'],
     });
     setSocket(socketIo);
