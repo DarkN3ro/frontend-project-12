@@ -4,6 +4,7 @@ import Chat from './ChatPage';
 import Login from './LoginPage';
 import PrivateRoute from './PrivateChatRoute';
 import NotFound from './NotFound';
+import Signup from './Signup';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App = () => {
@@ -19,6 +20,7 @@ const App = () => {
           } 
         />
         <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
