@@ -14,6 +14,8 @@ const LoginPage = () => {
 
   const handleLogin = async (values, { setSubmitting }) => {
     setAuthError(null);
+    setSubmitting(true);
+
     try {
       const response = await axios.post(routes.loginPath(), values);
       const { token } = response.data;

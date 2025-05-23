@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import * as yup from 'yup';
 import i18next from 'i18next';
+import { useNavigate } from 'react-router-dom';
 import avatar from '../assets/avatar-signup.jpg';
 import ru from '../locales/ru';
 
@@ -9,6 +10,8 @@ const Signup = () => {
   const usernameRef = useRef(null);
   const [ready, setReady] = useState(false);
   const [validationSchema, setValidationSchema] = useState(null);
+  const [userExistsError, setUserExistsError] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     i18next.init({
@@ -65,8 +68,18 @@ const Signup = () => {
                 validateOnBlur
                 validateOnChange={false}
                 onSubmit={(values, { setSubmitting }) => {
-                  console.log('Submitting:', values);
-                  setSubmitting(false);
+                  const storedUsers = JSON.parse(localStorage.getItem('users')) || [];
+                  if (userExists) {
+                    setUserExistsError(true);
+                    setSubmitting(false);
+                    return;
+                  }
+
+                  const newUser = { username: values.username, password: values.password };
+                  const updatedUsers = [...storedUsers, newUser];
+                    localStorage.setItem('users', JSON.stringify(updatedUsers));
+                    setSubmitting(false);
+                    navigate('/');
                 }}
               >
                 {({ isSubmitting, errors, touched }) => (
@@ -120,6 +133,12 @@ const Signup = () => {
                         <div className="invalid-tooltip">{errors.confirmPassword}</div>
                       )}
                     </div>
+
+                    {userExistsError && (
+                      <div className="text-danger mb-3 text-center">
+                        {i18next.t('validate.errorUserExists')}
+                      </div>
+                    )}
 
                     <button type="submit" className="w-100 btn btn-outline-primary" disabled={isSubmitting}>
                       {i18next.t('buttons.submit')}

@@ -13,6 +13,7 @@ const ru = {
         errorPasswordMax: 'Не более 20 символов',
         errorConfirmPassword: 'Пароли должны совпадать',
         errorRequired: 'Обязательное поле',
+        errorUserExists: 'Такой пользователь уже существует',
       },
       buttons: {
         submit: 'Зарегистрироваться',
