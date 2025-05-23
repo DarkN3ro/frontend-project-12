@@ -1,35 +1,36 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { io } from 'socket.io-client';
-          
-const socket = io('https://frontend-project-12-tqne.onrender.com', {
-  path: '/socket.io',
-  transports: ['websocket'],
-});
 
 const GeneralChat = () => {
   const [messages, setMessages] = useState([]);
   const [messageInput, setMessageInput] = useState('');
   const username = useSelector((state) => state.auth.username);
   const messagesBoxRef = useRef(null);
+  const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    socket.on('connect', () => {
-      console.log('Connected to WebSocket server:', socket.id);
+    const socketIo = io('https://frontend-project-12-tqne.onrender.com', {
+      path: '/socket.io',
+      transports: ['websocket'],
+    });
+    setSocket(socketIo);
+
+    socketIo.on('connect', () => {
+      console.log('Connected to WebSocket server:', socketIo.id);
     });
 
-    socket.on('connect_error', (error) => {
-      console.error('Connection Error:', error);
-    });
-
-    socket.on('newMessage', (message) => {
+    socketIo.on('newMessage', (message) => {
       console.log('New message received:', message);
       setMessages((prev) => [...prev, message]);
     });
 
+    socketIo.on('connect_error', (err) => {
+      console.error('Socket connection error:', err);
+    });
+
     return () => {
-      socket.off('newMessage');
-      socket.off('connect');
+      socketIo.disconnect();
     };
   }, []);
 
@@ -47,6 +48,7 @@ const GeneralChat = () => {
       author: username,
     };
 
+    console.log('Sending message:', newMessage);
     socket.emit('sendMessage', newMessage);
     setMessageInput('');
   };
