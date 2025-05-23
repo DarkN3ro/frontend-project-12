@@ -64,3 +64,5 @@ const port = process.env.PORT || 5001;
 server.listen(port, () => {
   console.log(`Socket.IO server running at port ${port}`);
 });
+
+console.log('process.env.PORT =', process.env.PORT);
