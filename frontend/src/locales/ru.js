@@ -7,12 +7,12 @@ export default {
           confirmPasswordLabel: 'Подтвердите пароль',
         },
         validate: {
-          errorNameMin: 'минимум 3 cимвола',
-          errorNameMax: 'максимум 10 символов',
-          errorPasswordMin: 'минимум 6 символов',
-          errorPasswordMax: 'максимум 12 символов',
+          errorNameMin: 'От 3 до 20 символов',
+          errorNameMax: 'От 3 до 20 символов',
+          errorPasswordMin: 'Не менее 6 символов',
+          errorPasswordMax: 'Не более 20 символов',
           errorConfirmPassword: 'Пароли должны совпадать',
-          errorRequired: 'это обязательное поле',
+          errorRequired: 'Обязательное поле',
         },
         buttons: {
           submit: 'Зарегистрироваться',
