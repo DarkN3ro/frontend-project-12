@@ -10,7 +10,7 @@ const GeneralChat = () => {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    const socketIo = io();
+    const socketIo = io(import.meta.env.VITE_SOCKET_URL || '');
     setSocket(socketIo);
 
     socketIo.on('connect', () => {
