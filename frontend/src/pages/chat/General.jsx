@@ -1,20 +1,35 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
-import socket from '../../../socket';
+import { io } from 'socket.io-client';
 
 const GeneralChat = () => {
   const [messages, setMessages] = useState([]);
   const [messageInput, setMessageInput] = useState('');
   const username = useSelector((state) => state.auth.username);
   const messagesBoxRef = useRef(null);
+  const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    socket.on('newMessage', (message) => {
+    const socketIo = io(import.meta.env.VITE_SOCKET_URL || 'http://localhost:5001', {
+    transports: ['websocket'],
+  });
+    setSocket(socketIo);
+
+    socketIo.on('connect', () => {
+      console.log('Connected to WebSocket server:', socketIo.id);
+    });
+
+    socketIo.on('newMessage', (message) => {
+      console.log('New message received:', message);
       setMessages((prev) => [...prev, message]);
     });
 
+    socketIo.on('connect_error', (err) => {
+      console.error('Socket connection error:', err);
+    });
+
     return () => {
-      socket.off('newMessage');
+      socketIo.disconnect();
     };
   }, []);
 
@@ -24,15 +39,15 @@ const GeneralChat = () => {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    if (!messageInput.trim()) return;
+    if (messageInput.trim() === '') return;
 
     const newMessage = {
-      channel: 'general',
       id: Date.now(),
       text: messageInput,
       author: username,
     };
 
+    console.log('Sending message:', newMessage);
     socket.emit('sendMessage', newMessage);
     setMessageInput('');
   };
