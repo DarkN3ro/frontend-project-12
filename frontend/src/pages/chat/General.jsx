@@ -10,10 +10,9 @@ const GeneralChat = () => {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    const socketUrl = import.meta.env.VITE_SOCKET_URL || 'http://localhost:5001';
-    const socketIo = io(socketUrl, {
-      transports: ['websocket'],
-    });
+    const socketIo = io(import.meta.env.VITE_SOCKET_URL || 'http://localhost:5001', {
+    transports: ['websocket'],
+  });
     setSocket(socketIo);
 
     socketIo.on('connect', () => {

@@ -2,7 +2,6 @@ const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
 const cors = require('cors');
-const path = require('path');
 
 const app = express();
 
@@ -11,16 +10,15 @@ const allowedOrigins = [
   'https://frontend-project-12-tqne.onrender.com'
 ];
 
-// CORS только для API-запросов
 app.use(cors({
   origin: allowedOrigins,
   methods: ['GET', 'POST'],
+  credentials: true,
 }));
 
-app.use(express.json()); // Для парсинга JSON в body
+app.use(express.json()); // <-- Важно, чтобы парсить JSON из POST-запросов
 
-// Простейшая авторизация
-app.post('/api/v1/login', (req, res) => {
+app.post('/v1/login', (req, res) => {
   const { username, password } = req.body;
 
   if (username === 'admin' && password === 'admin') {
@@ -35,13 +33,8 @@ app.post('/api/v1/login', (req, res) => {
   });
 });
 
-const __dirnameFull = path.resolve();
-const clientPath = path.join(__dirnameFull, 'dist');
-
-app.use(express.static(clientPath));
-
-app.get('*', (req, res) => {
-  res.sendFile(path.join(clientPath, 'index.html'));
+app.get('/', (req, res) => {
+  res.send('Socket.IO backend is running.');
 });
 
 const server = http.createServer(app);
@@ -50,6 +43,7 @@ const io = new Server(server, {
   cors: {
     origin: allowedOrigins,
     methods: ['GET', 'POST'],
+    credentials: true,
   }
 });
 
@@ -66,7 +60,7 @@ io.on('connection', (socket) => {
   });
 });
 
-const PORT = process.env.PORT || 5001;
-server.listen(PORT, () => {
-  console.log(`Socket.IO server running at port ${PORT}`);
+const port = process.env.PORT || 5001;
+server.listen(port, () => {
+  console.log(`Socket.IO server running at port ${port}`);
 });
