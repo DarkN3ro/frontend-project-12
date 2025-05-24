@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { io } from 'socket.io-client';
 
-const GeneralChat = ({ messages, addMessage }) => {
+const Chat = ({ channel, messages, addMessage }) => {
   const [messageInput, setMessageInput] = useState('');
   const username = useSelector((state) => state.auth.username);
   const messagesBoxRef = useRef(null);
@@ -15,13 +15,13 @@ const GeneralChat = ({ messages, addMessage }) => {
     setSocket(socketIo);
 
     socketIo.on('connect', () => {
-      console.log('Connected to WebSocket server:', socketIo.id);
-      socketIo.emit('joinChannel', 'general');
+      socketIo.emit('joinChannel', channel);
     });
 
     socketIo.on('newMessage', (message) => {
-      console.log('New message received:', message);
-      addMessage(message);
+      if (message.channel === channel) {
+        addMessage(message);
+      }
     });
 
     socketIo.on('connect_error', (err) => {
@@ -31,7 +31,7 @@ const GeneralChat = ({ messages, addMessage }) => {
     return () => {
       socketIo.disconnect();
     };
-  }, []);
+  }, [channel]);
 
   const handleInputChange = (e) => {
     setMessageInput(e.target.value);
@@ -45,7 +45,7 @@ const GeneralChat = ({ messages, addMessage }) => {
       id: Date.now(),
       text: messageInput,
       author: username,
-      channel: 'general',
+      channel,
     };
 
     socket.emit('sendMessage', newMessage);
@@ -56,7 +56,7 @@ const GeneralChat = ({ messages, addMessage }) => {
     <div className="col p-0 h-100">
       <div className="d-flex flex-column h-100">
         <div className="bg-light mb-4 p-3 shadow-sm small">
-          <p className="m-0"><b># random</b></p>
+          <p className="m-0"><b># {channel}</b></p>
           <span className="text-muted">{messages.length} messages</span>
         </div>
         <div id="messages-box" ref={messagesBoxRef} className="chat-messages overflow-auto px-5">
@@ -91,4 +91,4 @@ const GeneralChat = ({ messages, addMessage }) => {
   );
 };
 
-export default GeneralChat;
+export default Chat;

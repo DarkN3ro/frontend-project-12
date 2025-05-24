@@ -20,19 +20,15 @@ const ChatPage = () => {
     return {};
   };
 
-  const [content, setContent] = useState('');
-  useEffect(() => {
+  const [channelContent, setContent] = useState([]);
+    useEffect(() => {
     const fetchContent = async () => {
-      try {
-        const { data } = await axios.get(routes.usersPath(), { headers: getAuthHeader() });
-        setContent(data);
-      } catch (error) {
-        console.error('Ошибка при получении данных:', error);
-      }
-    };
-
-    fetchContent();
-  }, []);
+      const dataRes = await axios.get(routes.dataPath(), {headers: getAuthHeader()});
+      setContent(dataRes.data)
+      };
+  
+        fetchContent();
+    }, []);
 
   const handleLogout = () => {
     localStorage.removeItem('userId');

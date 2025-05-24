@@ -24,7 +24,7 @@ const LoginPage = () => {
         dispatch(setUsername(username));
         navigate('/');
       } catch (err) {
-        setAuthError('Неверные имя пользователя или пароль');
+        setAuthError('Неверные имя пользователя или пароль!');
       } finally {
         setSubmitting(false);
       }
@@ -53,11 +53,13 @@ const LoginPage = () => {
               <input
                 type="username"
                 name="username"
+                autoComplete="username"
                 placeholder="Ваш ник"
                 onChange={handleChange}
                 onBlur={handleBlur}
                 className="form-control"
                 value={values.username}
+                required
               />
               <label htmlFor="username">Ваш ник</label>
             </div>
@@ -65,11 +67,13 @@ const LoginPage = () => {
               <input
                 type="password"
                 name="password"
+                autoComplete="password"
                 placeholder="Пароль"
                 onChange={handleChange}
                 onBlur={handleBlur}
                 className="form-control"
                 value={values.password}
+                required
               />
               <label htmlFor="password">Пароль</label>
               </div>
