@@ -68,6 +68,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('sendMessage', (message) => {
+    console.log('Semd message', message);
     const { channel } = message;
     if (!channelMessages[channel]) {
       channelMessages[channel] = [];
