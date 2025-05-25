@@ -47,11 +47,32 @@ const io = new Server(server, {
   }
 });
 
+const channelMessages = {
+  general: [],
+  random: [],
+};
+
 io.on('connection', (socket) => {
   console.log('User connected:', socket.id);
 
+  socket.on('getMessages', (channel) => {
+    const messages = channelMessages[channel] || [];
+    socket.emit('channelMessages', { channel, messages });
+  });
+
+  socket.on('createChannel', (channelName) => {
+    if (!channelMessages[channelName]) {
+      channelMessages[channelName] = [];
+      io.emit('newChannel', channelName);
+    }
+  });
+
   socket.on('sendMessage', (message) => {
-    console.log('Message received for broadcasting:', message);
+    const { channel } = message;
+    if (!channelMessages[channel]) {
+      channelMessages[channel] = [];
+    }
+    channelMessages[channel].push(message);
     io.emit('newMessage', message);
   });
 

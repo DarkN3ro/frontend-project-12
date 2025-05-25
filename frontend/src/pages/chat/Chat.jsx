@@ -1,37 +1,27 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
-import { io } from 'socket.io-client';
+import socket from '../../socket';
 
 const Chat = ({ channel, messages, addMessage }) => {
   const [messageInput, setMessageInput] = useState('');
   const username = useSelector((state) => state.auth.username);
   const messagesBoxRef = useRef(null);
-  const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    const socketIo = io(import.meta.env.VITE_SOCKET_URL || 'http://localhost:5001', {
-      transports: ['websocket'],
-    });
-    setSocket(socketIo);
-
-    socketIo.on('connect', () => {
-      socketIo.emit('joinChannel', channel);
-    });
-
-    socketIo.on('newMessage', (message) => {
+    const handleNewMessage = (message) => {
       if (message.channel === channel) {
-        addMessage(message);
+         addMessage(message);
       }
-    });
-
-    socketIo.on('connect_error', (err) => {
-      console.error('Socket connection error:', err);
-    });
+    };
+  
+    socket.on('newMessage', handleNewMessage);
+ 
+    socket.emit('getMessages', channel);
 
     return () => {
-      socketIo.disconnect();
+      socket.off('newMessage', handleNewMessage);
     };
-  }, [channel]);
+  }, [channel, addMessage]);
 
   const handleInputChange = (e) => {
     setMessageInput(e.target.value);

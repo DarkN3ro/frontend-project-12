@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import General from './chat/General';
-import Random from './chat/Random';
 import Chat from './chat/Chat'; 
-import { addMessageToChannel } from '../store/messageSlice';
+import { addMessageToChannel, setMessagesForChannel  } from '../store/messageSlice';
 import { addChannel } from '../store/channelSlice';
 import AddChannelModal from './Modal';
+import socket from '../socket';
 
 const Channels = () => {
   const dispatch = useDispatch();
@@ -16,6 +15,21 @@ const Channels = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [newChannelName, setNewChannelName] = useState('');
   const [inputError, setInputError] = useState('');
+
+  useEffect(() => {
+    socket.on('newChannel', (channelName) => {
+      dispatch(addChannel(channelName));
+    });
+
+    socket.on('channelMessages', ({ channel, messages }) => {
+      dispatch(setMessagesForChannel({ channel, messages }));
+    });
+
+    return () => {
+      socket.off('newChannel');
+      socket.off('channelMessages');
+    };
+  }, [dispatch]);
 
   const handleChannelClick = (channel) => {
     setActiveChannel(channel);
@@ -56,11 +70,20 @@ const Channels = () => {
 
     dispatch(addChannel(sanitizedName));
     setActiveChannel(sanitizedName);
+    socket.emit('createChannel', sanitizedName);
     setModalOpen(false);
   };
 
   const classActive = (channel) => (
     `w-100 rounded-0 text-start btn ${activeChannel === channel ? 'btn-secondary' : ''}`
+  );
+
+  const classActiveSecond = (channel) => (
+    `w-100 rounded-0 text-start text-truncate btn ${activeChannel === channel ? 'btn-secondary' : ''}`
+  );
+
+  const classActiveGroup = (channel) => (
+    `flex-grow-0 dropdown-toggle dropdown-toggle-split btn ${activeChannel === channel ? 'btn-secondary' : ''}`
   );
 
   return (
@@ -84,8 +107,9 @@ const Channels = () => {
             </button>
           </div>
           <ul id="channels-box" className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block">
-            {channels.map((channel) => (
+            {channels.map((channel, index) => (
               <li className="nav-item w-100" key={channel}>
+              {index < 2 ? (
                 <button
                   type="button"
                   onClick={() => handleChannelClick(channel)}
@@ -93,30 +117,34 @@ const Channels = () => {
                 >
                   <span className="me-1">#</span>{channel}
                 </button>
+              ) : (
+                <div role="group" className="d-flex dropdown btn-group">
+                <button
+                  type="button"
+                  onClick={() => handleChannelClick(channel)}
+                  className={classActiveSecond(channel)}
+                >
+                  <span className="me-1">#</span>{channel}
+                </button>
+                <button 
+                  type="button"
+                  aria-expanded="false"
+                  className={classActiveGroup(channel)}
+                >
+                  <span className="visually-hidden">Управление каналом</span>
+                </button>
+                </div>
+              )}
               </li>
             ))}
           </ul>
         </div>
 
-        {activeChannel === 'general' && (
-            <General
-              messages={messagesByChannel.general || []}
-              addMessage={(msg) => handleAddMessage('general', msg)}
-            />
-          )}
-          {activeChannel === 'random' && (
-            <Random
-              messages={messagesByChannel.random || []}
-              addMessage={(msg) => handleAddMessage('random', msg)}
-            />
-          )}
-          {activeChannel !== 'general' && activeChannel !== 'random' && (
-            <Chat
-              channel={activeChannel}
-              messages={messagesByChannel[activeChannel] || []}
-              addMessage={(msg) => handleAddMessage(activeChannel, msg)}
-            />
-          )}
+        <Chat
+          channel={activeChannel}
+          messages={messagesByChannel[activeChannel] || []}
+          addMessage={(msg) => handleAddMessage(activeChannel, msg)}
+        />
         </div>
       </div>
       <AddChannelModal
