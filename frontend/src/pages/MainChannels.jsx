@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import Chat from './chat/Chat'; 
 import { addMessageToChannel, setMessagesForChannel  } from '../store/messageSlice';
 import { addChannel } from '../store/channelSlice';
-import AddChannelModal from './Modal';
+import AddChannelModal from './CreateChannel';
 import socket from '../socket';
 
 const Channels = () => {
@@ -13,8 +13,6 @@ const Channels = () => {
   const messagesByChannel = useSelector((state) => state.messages.messagesByChannel);
 
   const [modalOpen, setModalOpen] = useState(false);
-  const [newChannelName, setNewChannelName] = useState('');
-  const [inputError, setInputError] = useState('');
 
   useEffect(() => {
     socket.on('newChannel', (channelName) => {
@@ -40,8 +38,6 @@ const Channels = () => {
   };
 
   const openModal = () => {
-    setNewChannelName('');
-    setInputError('');
     setModalOpen(true);
   };
 
@@ -49,29 +45,21 @@ const Channels = () => {
     setModalOpen(false);
   };
 
-  const onChangeChannelName = (e) => {
-    setNewChannelName(e.target.value);
-    setInputError('');
-  };
+  const handleSubmitChannel = ({ name }) => {
+    const sanitized = name.trim().toLowerCase();
 
-  const onSubmit = (e) => {
-    e.preventDefault();
-
-    const sanitizedName = newChannelName.trim().toLowerCase();
-
-    if (!sanitizedName) {
-      setInputError('Имя канала не может быть пустым');
-      return;
-    }
-    if (channels.includes(sanitizedName) || sanitizedName === 'general' || sanitizedName === 'random') {
-      setInputError('Такой канал уже существует или имя недопустимо');
+    if (
+      !sanitized ||
+      channels.includes(sanitized) ||
+      ['general', 'random'].includes(sanitized)
+    ) {
       return;
     }
 
-    dispatch(addChannel(sanitizedName));
-    setActiveChannel(sanitizedName);
-    socket.emit('createChannel', sanitizedName);
-    setModalOpen(false);
+    dispatch(addChannel(sanitized));
+    setActiveChannel(sanitized);
+    socket.emit('createChannel', sanitized);
+    closeModal();
   };
 
   const classActive = (channel) => (
@@ -133,8 +121,9 @@ const Channels = () => {
                 >
                   <span className="visually-hidden">Управление каналом</span>
                 </button>
-                <div>
-                  
+                <div x-placement="bottom-end" className="dropdown-menu" data-popper-reference-hidden="false" data-popper-escaped="false" data-popper-placement="bottom-end" style={{ position: 'absolute', inset: '0px 0px auto auto', transform: 'translate3d(0.666667px, 39.3333px, 0px)' }}>
+                  <a data-rr-ui-dropdown-item="" className="dropdown-item" role="button" tabindex="0" href="#">Удалить</a>
+                  <a data-rr-ui-dropdown-item="" className="dropdown-item" role="button" tabindex="0" href="#">Переименовать</a>
                 </div>
                 </div>
               )}
@@ -153,10 +142,8 @@ const Channels = () => {
       <AddChannelModal
         show={modalOpen}
         onClose={closeModal}
-        onSubmit={onSubmit}
-        channelName={newChannelName}
-        onChange={onChangeChannelName}
-        error={inputError}
+        onSubmit={handleSubmitChannel}
+        existingChannels={channels}
       />
     </>
     );

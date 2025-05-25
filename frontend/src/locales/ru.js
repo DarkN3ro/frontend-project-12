@@ -18,6 +18,15 @@ const ru = {
       buttons: {
         submit: 'Зарегистрироваться',
       },
+      channels: {
+        addChannel: 'Добавить канал',
+        cancelOfChannel: 'Отменить',
+        sendOfChannel: 'Отправить',
+        renameChannel: 'Переименовать канал',
+        removeChannel: 'Удалить канал',
+        removeConfirm: 'Уверены?',
+        errorChannelExists: 'Канал с таким именем уже существует',
+      }
     },
   };
   

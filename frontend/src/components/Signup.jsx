@@ -1,10 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import * as yup from 'yup';
-import i18next from 'i18next';
+import i18next from '../i18n';
 import { useNavigate } from 'react-router-dom';
 import avatar from '../assets/avatar-signup.jpg';
-import ru from '../locales/ru';
 
 const Signup = () => {
   const usernameRef = useRef(null);
@@ -14,12 +13,6 @@ const Signup = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    i18next.init({
-      lng: 'ru',
-      resources: {
-        ru: ru,
-      },
-    }).then(() => {
       const schema = yup.object().shape({
         username: yup
           .string()
@@ -40,7 +33,6 @@ const Signup = () => {
       });
       setValidationSchema(schema);
       setReady(true);
-    });
   }, []);
 
   useEffect(() => {
