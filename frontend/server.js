@@ -5,10 +5,15 @@ const cors = require('cors');
 
 const app = express();
 
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://frontend-project-12-tqne.onrender.com',
+];
 
 app.use(cors({
-  origin: '*',
+  origin: allowedOrigins,
   methods: ['GET', 'POST'],
+  credentials: true,
 }));
 
 app.use(express.json()); // <-- Важно, чтобы парсить JSON из POST-запросов
@@ -28,10 +33,6 @@ app.post('/v1/login', (req, res) => {
   });
 });
 
-const path = require('path');
-
-app.use(express.static(path.join(__dirname, 'dist')));
-
 app.get('/', (req, res) => {
   res.send('Socket.IO backend is running.');
 });
@@ -40,8 +41,9 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: '*',
+    origin: allowedOrigins,
     methods: ['GET', 'POST'],
+    credentials: true,
   }
 });
 
