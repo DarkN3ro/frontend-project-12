@@ -133,6 +133,9 @@ const Channels = () => {
                 >
                   <span className="visually-hidden">Управление каналом</span>
                 </button>
+                <div>
+                  
+                </div>
                 </div>
               )}
               </li>
