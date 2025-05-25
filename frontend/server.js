@@ -7,8 +7,7 @@ const app = express();
 
 const allowedOrigins = [
   'http://localhost:5173',
-  'https://frontend-project-12-tqne.onrender.com',
-  'wss://frontend-project-12-tqne.onrender.com'
+  'https://frontend-project-12-tqne.onrender.com'
 ];
 
 app.use(cors({
