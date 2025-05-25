@@ -33,6 +33,10 @@ app.post('/v1/login', (req, res) => {
   });
 });
 
+const path = require('path');
+
+app.use(express.static(path.join(__dirname, 'dist')));
+
 app.get('/', (req, res) => {
   res.send('Socket.IO backend is running.');
 });
@@ -82,7 +86,7 @@ io.on('connection', (socket) => {
   });
 });
 
-const port = 5001;
+const port = process.env.PORT || 5001;
 server.listen(port, () => {
   console.log(`Socket.IO server running at port ${port}`);
 });
