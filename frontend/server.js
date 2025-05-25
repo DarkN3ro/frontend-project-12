@@ -5,15 +5,10 @@ const cors = require('cors');
 
 const app = express();
 
-const allowedOrigins = [
-  'http://localhost:5173',
-  'https://frontend-project-12-tqne.onrender.com'
-];
 
 app.use(cors({
-  origin: allowedOrigins,
+  origin: '*',
   methods: ['GET', 'POST'],
-  credentials: true,
 }));
 
 app.use(express.json()); // <-- Важно, чтобы парсить JSON из POST-запросов
@@ -45,9 +40,8 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: allowedOrigins,
+    origin: '*',
     methods: ['GET', 'POST'],
-    credentials: true,
   }
 });
 
