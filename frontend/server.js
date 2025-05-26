@@ -5,11 +5,11 @@ const cors = require('cors');
 
 const app = express();
 
-const allowedOrigins = [
-  'https://frontend-project-12-tqne.onrender.com',
-];
-
-app.use(cors());
+app.use(cors({
+  origin: 'https://frontend-project-12-tqne.onrender.com',
+  methods: ['GET', 'POST'],
+  credentials: true,
+}));
 
 app.use(express.json()); // <-- Важно, чтобы парсить JSON из POST-запросов
 
@@ -36,7 +36,7 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: allowedOrigins,
+    origin: 'https://frontend-project-12-tqne.onrender.com',
     methods: ['GET', 'POST'],
     credentials: true,
   }
@@ -78,7 +78,7 @@ io.on('connection', (socket) => {
   });
 });
 
-const port = process.env.PORT || 5001;
+const port = process.env.PORT || 443;
 server.listen(port, () => {
   console.log(`Socket.IO server running at port ${port}`);
 });
