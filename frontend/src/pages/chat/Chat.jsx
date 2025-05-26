@@ -9,15 +9,13 @@ const Chat = ({ channel, messages, addMessage }) => {
 
   useEffect(() => {
     const handleNewMessage = (message) => {
-      console.log('new message detect', message)
+      console.log('new message detected', message)
       if (message.channel === channel) {
          addMessage(message);
       }
     };
 
     socket.on('newMessage', handleNewMessage);
-
-    socket.emit('getMessages', channel);
 
     return () => {
       socket.off('newMessage', handleNewMessage);
@@ -39,6 +37,7 @@ const Chat = ({ channel, messages, addMessage }) => {
       channel,
     };
 
+    console.log('send message:', newMessage);
     socket.emit('sendMessage', newMessage);
     setMessageInput('');
   };

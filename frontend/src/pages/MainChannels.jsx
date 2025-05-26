@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Chat from './chat/Chat'; 
 import { addMessageToChannel, setMessagesForChannel  } from '../store/messageSlice';
@@ -33,9 +33,10 @@ const Channels = () => {
     setActiveChannel(channel);
   };
 
-  const handleAddMessage = (channel, message) => {
+  const handleAddMessage = useCallback((channel, message) => {
     dispatch(addMessageToChannel({ channel, message }));
-  };
+  }, [dispatch]);
+  
 
   const openModal = () => {
     setModalOpen(true);
@@ -121,9 +122,9 @@ const Channels = () => {
                 >
                   <span className="visually-hidden">Управление каналом</span>
                 </button>
-                <div x-placement="bottom-end" className="dropdown-menu" data-popper-reference-hidden="false" data-popper-escaped="false" data-popper-placement="bottom-end" style={{ position: 'absolute', inset: '0px 0px auto auto', transform: 'translate3d(0.666667px, 39.3333px, 0px)' }}>
-                  <a data-rr-ui-dropdown-item="" className="dropdown-item" role="button" tabindex="0" href="#">Удалить</a>
-                  <a data-rr-ui-dropdown-item="" className="dropdown-item" role="button" tabindex="0" href="#">Переименовать</a>
+                <div className="dropdown-menu" style={{ position: 'absolute', inset: '0px 0px auto auto', transform: 'translate3d(0.666667px, 39.3333px, 0px)' }}>
+                  <a data-rr-ui-dropdown-item="" className="dropdown-item" role="button" tabIndex="0" href="#">Удалить</a>
+                  <a data-rr-ui-dropdown-item="" className="dropdown-item" role="button" tabIndex="0" href="#">Переименовать</a>
                 </div>
                 </div>
               )}
