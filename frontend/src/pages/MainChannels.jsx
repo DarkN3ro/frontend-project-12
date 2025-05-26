@@ -23,23 +23,18 @@ const Channels = () => {
       dispatch(setMessagesForChannel({ channel, messages }));
     });
 
-    socket.on('newMessage', (message) => {
-      dispatch(addMessageToChannel({ channel: message.channel, message }));
-    });
-
     return () => {
       socket.off('newChannel');
       socket.off('channelMessages');
-      socket.off('newMessage');
     };
   }, [dispatch]);
 
-  useEffect(() => {
-    socket.emit('getMessages', activeChannel);
-  }, [activeChannel]);
-
   const handleChannelClick = (channel) => {
     setActiveChannel(channel);
+  };
+
+  const handleAddMessage = (channel, message) => {
+    dispatch(addMessageToChannel({ channel, message }));
   };
 
   const openModal = () => {
@@ -139,6 +134,8 @@ const Channels = () => {
 
         <Chat
           channel={activeChannel}
+          messages={messagesByChannel[activeChannel] || []}
+          addMessage={(msg) => handleAddMessage(activeChannel, msg)}
         />
         </div>
       </div>
