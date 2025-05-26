@@ -22,10 +22,13 @@ const ru = {
         addChannel: 'Добавить канал',
         cancelOfChannel: 'Отменить',
         sendOfChannel: 'Отправить',
-        renameChannel: 'Переименовать канал',
-        removeChannel: 'Удалить канал',
+        renameThisChannel: 'Переименовать канал',
+        removeThisChannel: 'Удалить канал',
         removeConfirm: 'Уверены?',
         errorChannelExists: 'Канал с таким именем уже существует',
+        channelNavigate: 'Управление каналом',
+        removeChannel: 'Удалить',
+        renameChannel: 'Переименовать',
       }
     },
   };

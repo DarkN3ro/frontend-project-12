@@ -1,20 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Chat from './chat/Chat'; 
 import { addMessageToChannel, setMessagesForChannel  } from '../store/messageSlice';
-import { addChannel } from '../store/channelSlice';
+import { addChannel, removeChannel, renameChannel} from '../store/channelSlice';
 import AddChannelModal from './CreateChannel';
+import RemoveChannelModal from './RemoveChannel';
+import RenameChannelModal from './RenameChannels';
+import i18next from '../i18n';
 import socket from '../socket';
 
 const Channels = () => {
   const dispatch = useDispatch();
+  const dropdownRef = useRef(null);
   const channels = useSelector((state) => state.channels.channels);
   const [activeChannel, setActiveChannel] = useState('general');
   const messagesByChannel = useSelector((state) => state.messages.messagesByChannel);
 
   const [modalOpen, setModalOpen] = useState(false);
+  const [removeModalOpen, setRemoveModalOpen] = useState(false);
+  const [renameModalOpen, setRenameModalOpen] = useState(false);
   
   const [openDropdown, setOpenDropdown] = useState(null); 
+
+  const [currentChannel, setCurrentChannel] = useState(null);
 
   useEffect(() => {
     socket.on('newChannel', (channelName) => {
@@ -25,11 +33,38 @@ const Channels = () => {
       dispatch(setMessagesForChannel({ channel, messages }));
     });
 
+    socket.on('channelRemoved', (channelName) => {
+      dispatch(removeChannel(channelName));
+      if (activeChannel === channelName) {
+        setActiveChannel('general');
+      }
+    });
+  
+    socket.on('channelRenamed', ({ oldName, newName }) => {
+      dispatch(renameChannel({ oldName, newName }));
+      if (activeChannel === oldName) {
+        setActiveChannel(newName);
+      }
+    });
+
+    const handleClickOutside = (event) => {
+    
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setOpenDropdown(null);
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside, true);
+
     return () => {
       socket.off('newChannel');
       socket.off('channelMessages');
+      socket.off('channelRemoved');
+      socket.off('channelRenamed');
+
+      document.removeEventListener('click', handleClickOutside, true);
     };
-  }, [dispatch]);
+  }, [dispatch, activeChannel]);
 
   const handleChannelClick = (channel) => {
     setActiveChannel(channel);
@@ -39,12 +74,34 @@ const Channels = () => {
     dispatch(addMessageToChannel({ channel, message }));
   };
 
-  const openModal = () => {
+  const handleCreateChannel = () => {
     setModalOpen(true);
+  };
+
+  const handleDeleteChannel= (channel) => {
+    setCurrentChannel(channel);
+    setRemoveModalOpen(true);
+    setOpenDropdown(null);
+  };
+  
+  const handleRenameChannel = (channel) => {
+    setCurrentChannel(channel);
+    setRenameModalOpen(true);
+    setOpenDropdown(null);
   };
 
   const closeModal = () => {
     setModalOpen(false);
+  };  
+  
+  const closeRemoveModal = () => {
+    setRemoveModalOpen(false);
+    setCurrentChannel(null);
+  };
+  
+  const closeRenameModal = () => {
+    setRenameModalOpen(false);
+    setCurrentChannel(null);
   };
 
   const handleSubmitChannel = ({ name }) => {
@@ -66,6 +123,7 @@ const Channels = () => {
 
   const toggleDropdown = (channel) => {
     setOpenDropdown((prev) => (prev === channel ? null : channel));
+    
   };
 
   const classActive = (channel) => (
@@ -91,7 +149,7 @@ const Channels = () => {
               type="button" 
               className="p-0 text-primary btn btn-group-vertical"
               title="Добавить канал"
-              onClick={openModal}
+              onClick={handleCreateChannel}
               >
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="20" height="20" fill="currentColor" className="bi bi-plus-square">
                 <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
@@ -112,7 +170,7 @@ const Channels = () => {
                   <span className="me-1">#</span>{channel}
                 </button>
               ) : (
-                <div role="group" className={`d-flex dropdown btn-group ${openDropdown === channel ? 'show' : ''}`}>
+                <div role="group" ref={openDropdown === channel ? dropdownRef : null} className={`d-flex dropdown btn-group ${openDropdown === channel ? 'show' : ''}`}>
                 <button
                   type="button"
                   onClick={() => handleChannelClick(channel)}
@@ -126,11 +184,29 @@ const Channels = () => {
                   className={`${classActiveGroup(channel)} ${openDropdown === channel ? 'show' : ''}`}
                   onClick={() => toggleDropdown(channel)}
                 >
-                  <span className="visually-hidden">Управление каналом</span>
+                  <span className="visually-hidden">{i18next.t('channels.channelNavigate')}</span>
                 </button>
                 <div className={`dropdown-menu ${openDropdown === channel ? 'show' : ''}`} style={{ position: 'absolute', inset: '0px 0px auto auto', transform: 'translate3d(0.666667px, 39.3333px, 0px)' }}>
-                  <a data-rr-ui-dropdown-item="" className="dropdown-item" role="button" tabIndex="0" href="#">Удалить</a>
-                  <a data-rr-ui-dropdown-item="" className="dropdown-item" role="button" tabIndex="0" href="#">Переименовать</a>
+                  <a 
+                      data-rr-ui-dropdown-item="" 
+                      className="dropdown-item" 
+                      role="button" 
+                      tabIndex="0" 
+                      href="#" 
+                      onClick={() => handleDeleteChannel(channel)}
+                    >
+                      {i18next.t('channels.removeChannel')}
+                    </a>
+                    <a 
+                      data-rr-ui-dropdown-item="" 
+                      className="dropdown-item" 
+                      role="button" 
+                      tabIndex="0" 
+                      href="#" 
+                      onClick={() => handleRenameChannel(channel)}
+                    >
+                      {i18next.t('channels.renameChannel')}
+                    </a>
                 </div>
                 </div>
               )}
@@ -152,6 +228,31 @@ const Channels = () => {
         onSubmit={handleSubmitChannel}
         existingChannels={channels}
       />
+
+      {removeModalOpen && (
+        <RemoveChannelModal
+          show={true}
+          onClose={closeRemoveModal}
+          channel={currentChannel}
+          onRemove={(channel) => {
+            socket.emit('removeChannel', channel);
+            closeRemoveModal();
+          }}
+        />
+      )}
+
+      {renameModalOpen && (
+        <RenameChannelModal
+          show={true}
+          onClose={closeRenameModal}
+          channel={currentChannel}
+          existingChannels={channels}
+          onSubmit={(values) => {
+            socket.emit('renameChannel', { oldName: currentChannel, newName: values.name.trim().toLowerCase() });
+            closeRenameModal();
+          }}
+        />
+      )}
     </>
     );
   };

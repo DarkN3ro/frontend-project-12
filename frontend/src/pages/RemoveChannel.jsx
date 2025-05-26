@@ -1,7 +1,7 @@
 import React from 'react';
 import i18next from '../i18n';
 
-const RemoveChannelModal = (show, onClose, channel, onRemove ) => {
+const RemoveChannelModal = ({show, onClose, channel, onRemove}) => {
   if (!show) return null;
 
   const handleBackdropClick = (e) => {
@@ -19,7 +19,7 @@ const RemoveChannelModal = (show, onClose, channel, onRemove ) => {
       <div className="modal-dialog modal-dialog-centered" role="document" onClick={e => e.stopPropagation()}>
         <div className="modal-content">
           <div className="modal-header">
-            <h5 className="modal-title">{i18next.t('channels.removeChannel')}</h5>
+            <h5 className="modal-title">{i18next.t('channels.removeThisChannel')}</h5>
             <button type="button" className="btn btn-close" aria-label="Close" onClick={onClose}></button>
           </div>
           <div className="modal-body">

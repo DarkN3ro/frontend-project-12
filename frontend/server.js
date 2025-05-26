@@ -55,16 +55,34 @@ const channelMessages = {
 io.on('connection', (socket) => {
   console.log('User connected:', socket.id);
 
+  // Принимает сообщения по каналам
   socket.on('getMessages', (channel) => {
     const messages = channelMessages[channel] || [];
     socket.emit('channelMessages', { channel, messages });
   });
 
+  // Создание нового канала
   socket.on('createChannel', (channelName) => {
     if (!channelMessages[channelName]) {
       channelMessages[channelName] = [];
       io.emit('newChannel', channelName);
     }
+  });
+  
+  // Удаление канала и всех сообщений на нем
+  socket.on('removeChannel', (channel) => {
+    delete channelMessages[channel];
+    io.emit('channelRemoved', channel);
+  });
+  
+  // Переименование канала
+  socket.on('renameChannel', ({ oldName, newName }) => {
+    if (!channelMessages[oldName] || channelMessages[newName]) return;
+  
+    channelMessages[newName] = channelMessages[oldName];
+    delete channelMessages[oldName];
+  
+    io.emit('channelRenamed', { oldName, newName });
   });
 
   socket.on('sendMessage', (message) => {

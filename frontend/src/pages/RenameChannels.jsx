@@ -3,7 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import i18next from '../i18n';
 
-const RenameChannelModal = () => {
+const RenameChannelModal = ({show, onClose, existingChannels, onSubmit}) => {
     const [validationSchema, setValidationSchema] = useState(null);
   
     useEffect(() => {
@@ -12,11 +12,16 @@ const RenameChannelModal = () => {
       .trim()
       .min(3, i18next.t('validate.errorNameMin'))
       .max(20, i18next.t('validate.errorNameMax'))
-      .required(i18next.t('validate.errorRequired')),
+      .required(i18next.t('validate.errorRequired'))
+      .test(
+        'unique',
+        i18next.t('channels.errorChannelExists'),
+        value => !existingChannels.map((name) => name.toLowerCase()).includes(value?.toLowerCase().trim())
+      ),
     });
   
       setValidationSchema(schema);
-    }, []);
+    }, [existingChannels]);
   
     if (!show || !validationSchema) return null;
   
@@ -31,7 +36,7 @@ const RenameChannelModal = () => {
           <div className="modal-dialog modal-dialog-centered" role="document" onClick={(e) => e.stopPropagation()}>
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title">{i18next.t('channels.renameChannel')}</h5>
+                <h5 className="modal-title">{i18next.t('channels.renameThisChannel')}</h5>
                 <button type="button" className="btn btn-close" aria-label="Close" onClick={onClose}></button>
               </div>
               <div className="modal-body">

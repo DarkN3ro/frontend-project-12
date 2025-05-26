@@ -22,7 +22,11 @@ const messageSlice = createSlice({
       }
       state.messagesByChannel[channel].push(message);
     },
+    removeMessagesByChannel(state, { payload }) {
+      delete state.messagesByChannel[payload];
+    },
   },
+
 });
 
 export const { addMessageToChannel, setMessagesForChannel } = messageSlice.actions;
