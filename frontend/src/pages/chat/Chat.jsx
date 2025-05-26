@@ -17,6 +17,8 @@ const Chat = ({ channel, messages, addMessage }) => {
 
     socket.on('newMessage', handleNewMessage);
 
+    socket.emit('getMessages', channel);
+
     return () => {
       socket.off('newMessage', handleNewMessage);
     };
@@ -37,7 +39,6 @@ const Chat = ({ channel, messages, addMessage }) => {
       channel,
     };
 
-    console.log('send message:', newMessage);
     socket.emit('sendMessage', newMessage);
     setMessageInput('');
   };

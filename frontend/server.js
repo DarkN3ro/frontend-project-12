@@ -5,8 +5,13 @@ const cors = require('cors');
 
 const app = express();
 
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://frontend-project-12-tqne.onrender.com',
+];
+
 app.use(cors({
-  origin: 'https://frontend-project-12-tqne.onrender.com',
+  origin: allowedOrigins,
   methods: ['GET', 'POST'],
   credentials: true,
 }));
@@ -36,7 +41,7 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: 'https://frontend-project-12-tqne.onrender.com',
+    origin: allowedOrigins,
     methods: ['GET', 'POST'],
     credentials: true,
   }
@@ -69,7 +74,6 @@ io.on('connection', (socket) => {
       channelMessages[channel] = [];
     }
     channelMessages[channel].push(message);
-    console.log('Server get nessage:', message);
     io.emit('newMessage', message);
   });
 
@@ -78,7 +82,7 @@ io.on('connection', (socket) => {
   });
 });
 
-const port = process.env.PORT || 443;
+const port = process.env.PORT || 5001;
 server.listen(port, () => {
   console.log(`Socket.IO server running at port ${port}`);
 });
