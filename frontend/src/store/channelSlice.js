@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  channels: ['general', 'random'],  // базовые каналы
+  channels: [general, random],  // базовые каналы
 };
 
 const channelsSlice = createSlice({
