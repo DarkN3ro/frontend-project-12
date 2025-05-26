@@ -34,12 +34,12 @@ const Channels = () => {
     };
   }, [dispatch]);
 
+  useEffect(() => {
+    socket.emit('getMessages', activeChannel);
+  }, [activeChannel]);
+
   const handleChannelClick = (channel) => {
     setActiveChannel(channel);
-  };
-
-  const handleAddMessage = (channel, message) => {
-    dispatch(addMessageToChannel({ channel, message }));
   };
 
   const openModal = () => {
