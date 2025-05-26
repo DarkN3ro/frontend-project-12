@@ -23,9 +23,14 @@ const Channels = () => {
       dispatch(setMessagesForChannel({ channel, messages }));
     });
 
+    socket.on('newMessage', (message) => {
+      dispatch(addMessageToChannel({ channel: message.channel, message }));
+    });
+
     return () => {
       socket.off('newChannel');
       socket.off('channelMessages');
+      socket.off('newMessage');
     };
   }, [dispatch]);
 
@@ -135,7 +140,6 @@ const Channels = () => {
         <Chat
           channel={activeChannel}
           messages={messagesByChannel[activeChannel] || []}
-          addMessage={(msg) => handleAddMessage(activeChannel, msg)}
         />
         </div>
       </div>

@@ -2,25 +2,16 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import socket from '../../socket';
 
-const Chat = ({ channel, messages, addMessage }) => {
+const Chat = ({ channel, messages }) => {
   const [messageInput, setMessageInput] = useState('');
   const username = useSelector((state) => state.auth.username);
   const messagesBoxRef = useRef(null);
 
   useEffect(() => {
-    const handleNewMessage = (message) => {
-      console.log('new message detected', message)
-      if (message.channel === channel) {
-         addMessage(message);
-      }
-    };
-
-    socket.on('newMessage', handleNewMessage);
-
-    return () => {
-      socket.off('newMessage', handleNewMessage);
-    };
-  }, [channel, addMessage]);
+    if (messagesBoxRef.current) {
+      messagesBoxRef.current.scrollTop = messagesBoxRef.current.scrollHeight;
+    }
+  }, [messages]);
 
   const handleInputChange = (e) => {
     setMessageInput(e.target.value);
