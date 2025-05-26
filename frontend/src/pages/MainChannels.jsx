@@ -13,6 +13,7 @@ const Channels = () => {
   const messagesByChannel = useSelector((state) => state.messages.messagesByChannel);
 
   const [modalOpen, setModalOpen] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState(null); 
 
   useEffect(() => {
     socket.on('newChannel', (channelName) => {
@@ -62,6 +63,10 @@ const Channels = () => {
     closeModal();
   };
 
+  const toggleDropdown = (channel) => {
+    setOpenDropdown((prev) => (prev === channel ? null : channel));
+  };
+  
   const classActive = (channel) => (
     `w-100 rounded-0 text-start btn ${activeChannel === channel ? 'btn-secondary' : ''}`
   );
@@ -106,7 +111,7 @@ const Channels = () => {
                   <span className="me-1">#</span>{channel}
                 </button>
               ) : (
-                <div role="group" className="d-flex dropdown btn-group">
+                <div role="group" className={`d-flex dropdown btn-group ${openDropdown === channel ? 'show' : ''}`}>
                 <button
                   type="button"
                   onClick={() => handleChannelClick(channel)}
@@ -117,11 +122,12 @@ const Channels = () => {
                 <button 
                   type="button"
                   aria-expanded="false"
-                  className={classActiveGroup(channel)}
+                  className={`${classActiveGroup(channel)} ${openDropdown === channel ? 'show' : ''}`}
+                  onClick={() => toggleDropdown(channel)}
                 >
                   <span className="visually-hidden">Управление каналом</span>
                 </button>
-                <div className="dropdown-menu" style={{ position: 'absolute', inset: '0px 0px auto auto', transform: 'translate3d(0.666667px, 39.3333px, 0px)' }}>
+                <div className={`dropdown-menu ${openDropdown === channel ? 'show' : ''}`} style={{ position: 'absolute', inset: '0px 0px auto auto', transform: 'translate3d(0.666667px, 39.3333px, 0px)' }}>
                   <a data-rr-ui-dropdown-item="" className="dropdown-item" role="button" tabIndex="0" href="#">Удалить</a>
                   <a data-rr-ui-dropdown-item="" className="dropdown-item" role="button" tabIndex="0" href="#">Переименовать</a>
                 </div>
