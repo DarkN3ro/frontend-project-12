@@ -2,9 +2,11 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import socket from '../../socket';
 
-const Chat = ({ channel, messages }) => {
+const Chat = ({ channel }) => {
   const [messageInput, setMessageInput] = useState('');
   const username = useSelector((state) => state.auth.username);
+  const messagesByChannel = useSelector((state) => state.messages.messagesByChannel);
+  const messages = messagesByChannel[channel] || [];
   const messagesBoxRef = useRef(null);
 
   useEffect(() => {

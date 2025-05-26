@@ -139,7 +139,6 @@ const Channels = () => {
 
         <Chat
           channel={activeChannel}
-          messages={messagesByChannel[activeChannel] || []}
         />
         </div>
       </div>
