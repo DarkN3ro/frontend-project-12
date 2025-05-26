@@ -15,10 +15,6 @@ const Channels = () => {
   const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
-    socket.emit('getMessages', activeChannel);
-  }, [activeChannel]);
-  
-  useEffect(() => {
     socket.on('newChannel', (channelName) => {
       dispatch(addChannel(channelName));
     });
@@ -27,11 +23,24 @@ const Channels = () => {
       dispatch(setMessagesForChannel({ channel, messages }));
     });
 
+    socket.on('newMessage', (message) => {
+      if (message?.channel) {
+        socket.emit('getMessages', message.channel);
+      }
+    });
+
     return () => {
       socket.off('newChannel');
       socket.off('channelMessages');
+      socket.off('newMessage');
     };
   }, [dispatch]);
+
+  useEffect(() => {
+    if (activeChannel) {
+      socket.emit('getMessages', activeChannel);
+    }
+  }, [activeChannel]);
 
   const handleChannelClick = (channel) => {
     setActiveChannel(channel);
