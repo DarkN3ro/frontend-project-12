@@ -13,15 +13,13 @@ const Channels = () => {
   const dispatch = useDispatch();
   const dropdownRef = useRef(null);
   const channels = useSelector((state) => state.channels.channels);
-  const [activeChannel, setActiveChannel] = useState('general');
   const messagesByChannel = useSelector((state) => state.messages.messagesByChannel);
 
+  const [activeChannel, setActiveChannel] = useState('general');
   const [modalOpen, setModalOpen] = useState(false);
   const [removeModalOpen, setRemoveModalOpen] = useState(false);
   const [renameModalOpen, setRenameModalOpen] = useState(false);
-  
   const [openDropdown, setOpenDropdown] = useState(null); 
-
   const [currentChannel, setCurrentChannel] = useState(null);
 
   useEffect(() => {
