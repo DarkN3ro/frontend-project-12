@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Chat from './chat/Chat'; 
 import { addMessageToChannel, setMessagesForChannel  } from '../store/messageSlice';
@@ -23,33 +23,19 @@ const Channels = () => {
       dispatch(setMessagesForChannel({ channel, messages }));
     });
 
-    socket.on('newMessage', (message) => {
-      if (message?.channel) {
-        socket.emit('getMessages', message.channel);
-      }
-    });
-
     return () => {
       socket.off('newChannel');
       socket.off('channelMessages');
-      socket.off('newMessage');
     };
   }, [dispatch]);
-
-  useEffect(() => {
-    if (activeChannel) {
-      socket.emit('getMessages', activeChannel);
-    }
-  }, [activeChannel]);
 
   const handleChannelClick = (channel) => {
     setActiveChannel(channel);
   };
 
-  const handleAddMessage = useCallback((channel, message) => {
+  const handleAddMessage = (channel, message) => {
     dispatch(addMessageToChannel({ channel, message }));
-  }, [dispatch]);
-  
+  };
 
   const openModal = () => {
     setModalOpen(true);
