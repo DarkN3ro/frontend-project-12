@@ -13,6 +13,7 @@ const Channels = () => {
   const messagesByChannel = useSelector((state) => state.messages.messagesByChannel);
 
   const [modalOpen, setModalOpen] = useState(false);
+  
   const [openDropdown, setOpenDropdown] = useState(null); 
 
   useEffect(() => {
@@ -66,7 +67,7 @@ const Channels = () => {
   const toggleDropdown = (channel) => {
     setOpenDropdown((prev) => (prev === channel ? null : channel));
   };
-  
+
   const classActive = (channel) => (
     `w-100 rounded-0 text-start btn ${activeChannel === channel ? 'btn-secondary' : ''}`
   );

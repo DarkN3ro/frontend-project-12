@@ -12,6 +12,7 @@
   "dependencies": {
     "@fastify/autoload": "^6.0.0",
     "@fastify/sensible": "^6.0.0",
+    "@reduxjs/toolkit": "^2.8.2",
     "axios": "^1.9.0",
     "bootstrap": "^5.3.6",
     "fastify": "^5.3.3",
@@ -23,8 +24,10 @@
     "react-bootstrap": "^2.10.10",
     "react-dom": "^19.1.0",
     "react-i18next": "^15.5.1",
+    "react-redux": "^9.2.0",
     "react-router": "^7.6.0",
     "react-router-dom": "^7.6.0",
+    "redux": "^5.0.1",
     "socket.io": "^4.8.1",
     "socket.io-client": "^4.8.1",
     "yup": "^1.6.1"
