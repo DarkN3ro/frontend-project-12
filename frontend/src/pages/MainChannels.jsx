@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Chat from './chat/Chat'; 
 import { addMessageToChannel, setMessagesForChannel } from '../store/messageSlice';
-import { addChannel, removeChannel, renameChannel} from '../store/channelSlice';
+import { addChannel, removeChannel, renameChannel} from '../store/channelsSlice';
 import AddChannelModal from './CreateChannel';
 import RemoveChannelModal from './RemoveChannel';
 import RenameChannelModal from './RenameChannels';

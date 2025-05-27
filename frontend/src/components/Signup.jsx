@@ -1,12 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import * as yup from 'yup';
-import axios from 'axios';
-import routes from '../routes.js';
 import { useDispatch } from 'react-redux';
 import i18next from '../i18n';
 import { useNavigate } from 'react-router-dom';
 import { setToken, setUsername } from '../store/authSlice';
+import { useSignupMutation } from '../services/authApi.js';
 import avatar from '../assets/avatar-signup.jpg';
 
 const Signup = () => {
@@ -16,6 +15,7 @@ const Signup = () => {
   const [validationSchema, setValidationSchema] = useState(null);
   const [userExistsError, setUserExistsError] = useState(false);
   const navigate = useNavigate();
+  const [signup] = useSignupMutation();
 
   useEffect(() => {
       const schema = yup.object().shape({
@@ -71,20 +71,19 @@ const Signup = () => {
                 onSubmit={async (values, { setSubmitting }) => {
                   setUserExistsError(false);
                   try {
-                    const response = await axios.post(routes.signupPath(), {
+                    const response = await signup({
                       username: values.username,
                       password: values.password,
-                    });
+                    }).unwrap();
                 
-                    const token = response.data.token;
+                    const token = response.token;
                     const userId = { username: values.username, token };
                     localStorage.setItem('userId', JSON.stringify(userId));
                     dispatch(setUsername(values.username));
                     dispatch(setToken(token));
-                
                     navigate('/');
                   } catch (error) {
-                    if (error.response?.status === 409) {
+                    if (error.status === 409) {
                       setUserExistsError(true);
                     } else {
                       console.error('Registration error:', error);

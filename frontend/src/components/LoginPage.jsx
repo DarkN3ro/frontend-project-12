@@ -1,35 +1,35 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { Formik } from 'formik';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setToken, setUsername } from '../store/authSlice.js';
 import i18next from '../i18n';
+import { useLoginMutation } from '../services/authApi';
 import avatar from '../assets/avatar.jpg';
-import routes from '../routes.js';
 
 const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [authError, setAuthError] = useState(null);
+  const [login] = useLoginMutation();
 
   const handleLogin = async (values, { setSubmitting }) => {
     setAuthError(null);
 
     try {
-      const response = await axios.post(routes.loginPath(), values);
-      const { token, username } = response.data;
+      const response = await login(values).unwrap();
+      const { token, username } = response;
       const userId = { token, username };
-        localStorage.setItem('userId', JSON.stringify(userId));
-        dispatch(setToken(token));
-        dispatch(setUsername(username));
-        navigate('/');
-      } catch (err) {
-        setAuthError('Неверные имя пользователя или пароль!');
-      } finally {
-        setSubmitting(false);
-      }
-    };
+      localStorage.setItem('userId', JSON.stringify(userId));
+      dispatch(setToken(token));
+      dispatch(setUsername(username));
+      navigate('/');
+    } catch (err) {
+      setAuthError('Неверные имя пользователя или пароль!');
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <Formik
@@ -92,7 +92,7 @@ const LoginPage = () => {
               </div>
               <div className="card-footer p-4">
                 <div className="text-center">
-                  <span>{i18next.t('login.createAccountForUser')}</span>
+                  <span>{i18next.t('login.createAccountForUser')} </span>
                   <a href="/signup">{i18next.t('login.toRegistrationNewUser')}</a>
                 </div>
               </div>
