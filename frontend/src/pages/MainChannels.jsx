@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Chat from './chat/Chat'; 
-import { addMessageToChannel, setMessagesForChannel  } from '../store/messageSlice';
+import { addMessageToChannel, setMessagesForChannel } from '../store/messageSlice';
 import { addChannel, removeChannel, renameChannel} from '../store/channelSlice';
 import AddChannelModal from './CreateChannel';
 import RemoveChannelModal from './RemoveChannel';
@@ -113,6 +113,7 @@ const Channels = () => {
       return;
     }
 
+    console.log('Creating channel:', sanitized);
     dispatch(addChannel(sanitized));
     setActiveChannel(sanitized);
     socket.emit('createChannel', sanitized);
@@ -246,6 +247,7 @@ const Channels = () => {
           channel={currentChannel}
           existingChannels={channels}
           onSubmit={(values) => {
+            console.log('Renaming channel from:', currentChannel, 'to:', values.name.trim().toLowerCase());
             socket.emit('renameChannel', { oldName: currentChannel, newName: values.name.trim().toLowerCase() });
             closeRenameModal();
           }}

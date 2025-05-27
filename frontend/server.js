@@ -63,6 +63,7 @@ io.on('connection', (socket) => {
 
   // Создание нового канала
   socket.on('createChannel', (channelName) => {
+    console.log('Channel created(server):', channelName);
     if (!channelMessages[channelName]) {
       channelMessages[channelName] = [];
       io.emit('newChannel', channelName);
@@ -71,12 +72,14 @@ io.on('connection', (socket) => {
   
   // Удаление канала и всех сообщений на нем
   socket.on('removeChannel', (channel) => {
+    console.log('Channel removed(server):', channel);
     delete channelMessages[channel];
     io.emit('channelRemoved', channel);
   });
   
   // Переименование канала
   socket.on('renameChannel', ({ oldName, newName }) => {
+    console.log(`Channel renamed from ${oldName} to ${newName} (server)`);
     if (!channelMessages[oldName] || channelMessages[newName]) return;
   
     channelMessages[newName] = channelMessages[oldName];
@@ -86,7 +89,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('sendMessage', (message) => {
-    console.log('Semd message', message);
+    console.log('Message sent(server):', message);
     const { channel } = message;
     if (!channelMessages[channel]) {
       channelMessages[channel] = [];

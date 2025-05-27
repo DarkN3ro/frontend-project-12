@@ -11,6 +11,7 @@ const RemoveChannelModal = ({show, onClose, channel, onRemove}) => {
   };
 
   const handleRemove = () => {
+    console.log('Removing channel:', channel);
     onRemove(channel);
   };
 
