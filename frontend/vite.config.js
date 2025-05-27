@@ -17,5 +17,8 @@ export default defineConfig({
         rewriteWsOrigin: true,
       },
     }
+  },
+  define: {
+    'process.env.VITE_SOCKET_URL': JSON.stringify(process.env.VITE_SOCKET_URL),
   }
 });
