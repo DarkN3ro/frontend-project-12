@@ -1,12 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import * as yup from 'yup';
+import axios from 'axios';
+import routes from '../routes.js';
+import { useDispatch } from 'react-redux';
 import i18next from '../i18n';
 import { useNavigate } from 'react-router-dom';
+import { setToken, setUsername } from '../store/authSlice';
 import avatar from '../assets/avatar-signup.jpg';
 
 const Signup = () => {
   const usernameRef = useRef(null);
+  const dispatch = useDispatch()
   const [ready, setReady] = useState(false);
   const [validationSchema, setValidationSchema] = useState(null);
   const [userExistsError, setUserExistsError] = useState(false);
@@ -55,23 +60,38 @@ const Signup = () => {
                 <img src={avatar} className="rounded-circle" alt="Регистрация" />
               </div>
               <Formik
-                initialValues={{ username: '', password: '', confirmPassword: '' }}
+                initialValues={
+                  { username: '', 
+                    password: '', 
+                    confirmPassword: '',
+                  }}
                 validationSchema={validationSchema}
                 validateOnBlur
                 validateOnChange={false}
-                onSubmit={(values, { setSubmitting }) => {
-                  const storedUsers = JSON.parse(localStorage.getItem('users')) || [];
-                  if (userExists) {
-                    setUserExistsError(true);
-                    setSubmitting(false);
-                    return;
-                  }
-
-                  const newUser = { username: values.username, password: values.password };
-                  const updatedUsers = [...storedUsers, newUser];
-                    localStorage.setItem('users', JSON.stringify(updatedUsers));
-                    setSubmitting(false);
+                onSubmit={async (values, { setSubmitting }) => {
+                  setUserExistsError(false);
+                  try {
+                    const response = await axios.post(routes.signupPath(), {
+                      username: values.username,
+                      password: values.password,
+                    });
+                
+                    const token = response.data.token;
+                    const userId = { username: values.username, token };
+                    localStorage.setItem('userId', JSON.stringify(userId));
+                    dispatch(setUsername(values.username));
+                    dispatch(setToken(token));
+                
                     navigate('/');
+                  } catch (error) {
+                    if (error.response?.status === 409) {
+                      setUserExistsError(true);
+                    } else {
+                      console.error('Registration error:', error);
+                    }
+                  } finally {
+                    setSubmitting(false);
+                  }
                 }}
               >
                 {({ isSubmitting, errors, touched }) => (
@@ -86,6 +106,7 @@ const Signup = () => {
                         autoComplete="username"
                         required
                         id="username"
+                        title={i18next.t('form.fillThisField')}
                         className={`form-control ${touched.username && errors.username ? 'is-invalid' : ''}`}
                       />
                       <label htmlFor="username">{i18next.t('form.usernameLabel')}</label>
@@ -102,6 +123,7 @@ const Signup = () => {
                         autoComplete="new-password"
                         required
                         id="password"
+                        title={i18next.t('form.fillThisField')}
                         className={`form-control ${touched.password && errors.password ? 'is-invalid' : ''}`}
                       />
                       <label htmlFor="password">{i18next.t('form.passwordLabel')}</label>
@@ -118,6 +140,7 @@ const Signup = () => {
                         autoComplete="new-password"
                         required
                         id="confirmPassword"
+                        title={i18next.t('form.fillThisField')}
                         className={`form-control ${touched.confirmPassword && errors.confirmPassword ? 'is-invalid' : ''}`}
                       />
                       <label htmlFor="confirmPassword">{i18next.t('form.confirmPasswordLabel')}</label>
