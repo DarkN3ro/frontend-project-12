@@ -4,6 +4,7 @@ import { Formik } from 'formik';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setToken, setUsername } from '../store/authSlice.js';
+import i18next from '../i18n';
 import avatar from '../assets/avatar.jpg';
 import routes from '../routes.js';
 
@@ -48,7 +49,7 @@ const LoginPage = () => {
                     <img src={avatar} className="rounded-circle" alt="Enter" />
                   </div>
                   <form onSubmit={handleSubmit} className="col-12 col-md-6 mt-3 mt-md-0">
-                  <h1 className="text-center mb-4">Войти</h1>
+                  <h1 className="text-center mb-4">{i18next.t('login.toEnterChat')}</h1>
                   <div className="form-floating mb-3">
               <input
                 type="username"
@@ -61,7 +62,7 @@ const LoginPage = () => {
                 value={values.username}
                 required
               />
-              <label htmlFor="username">Ваш ник</label>
+              <label htmlFor="username">{i18next.t('login.userNameForChat')}</label>
             </div>
             <div className="form-floating mb-4">
               <input
@@ -75,7 +76,7 @@ const LoginPage = () => {
                 value={values.password}
                 required
               />
-              <label htmlFor="password">Пароль</label>
+              <label htmlFor="password">{i18next.t('login.passwordUserForChat')}</label>
               </div>
 
               {authError && (
@@ -85,14 +86,14 @@ const LoginPage = () => {
               )}
 
               <button type="submit" disabled={isSubmitting} className="w-100 mb-3 btn btn-outline-primary">
-              Войти
+              {i18next.t('login.toEnterChat')}
               </button>
                 </form>
               </div>
               <div className="card-footer p-4">
                 <div className="text-center">
-                  <span>Нет аккаунта?</span>
-                  <a href="/signup">Регистрация</a>
+                  <span>{i18next.t('login.createAccountForUser')}</span>
+                  <a href="/signup">{i18next.t('login.toRegistrationNewUser')}</a>
                 </div>
               </div>
               </div>

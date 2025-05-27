@@ -1,10 +1,18 @@
 const ru = {
     translation: {
+      login: {
+        toEnterChat: 'Войти',
+        userNameForChat: 'Ваш ник',
+        passwordUserForChat: 'Пароль',
+        createAccountForUser: 'Нет аккаунта?',
+        toRegistrationNewUser: 'Регистрация',
+      },
       form: {
         registration: 'Регистрация',
         usernameLabel: 'Имя пользователя',
         passwordLabel: 'Пароль',
         confirmPasswordLabel: 'Подтвердите пароль',
+        fildThisField: 'Заполните это поле.',
       },
       validate: {
         errorNameMin: 'От 3 до 20 символов',
