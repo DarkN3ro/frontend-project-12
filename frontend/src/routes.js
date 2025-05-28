@@ -1,8 +1,8 @@
-const apiPath = '/api/v1';
-
-export default {
-    loginPath: () => [apiPath, 'login'].join('/'),
-    dataPath: () => [apiPath, 'data'].join('/'),
-    messagesPath: () => [apiPath, 'messages'].join('/'),
-    channelsPath: () => [apiPath, 'channels'].join('/'),
+export const apiPath = '/api/v1'
+export const apiRoutes = {
+  loginPath: () => 'login',
+  signupPath: () => 'signup',
+  channelsPath: () => 'channels',
+  channelPath: id => ['channels', id].join('/'),
+  messagesPath: () => 'messages',
 }
