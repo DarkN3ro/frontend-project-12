@@ -1,11 +1,11 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { clearToken, clearUsername } from '../store/authSlice';
-import MainChannels from '../pages/MainChannels.jsx';
 
-const ChatPage = () => {
+const Navigate = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -17,16 +17,13 @@ const ChatPage = () => {
   };
 
   return (
-    <div className="d-flex flex-column h-100">
       <nav className="shadow-sm navbar navbar-lg navbar-light bg-white">
         <div className="container">
-          <a className="navbar-brand" href="/"> Hexlet Chat </a>
+          <Link className="navbar-brand" to="/">Hexlet Chat</Link>
           <button onClick={handleLogout} className="btn btn-primary"> LogOut</button>
         </div>
       </nav>
-      <MainChannels/>
-    </div>
   )
 };
 
-export default ChatPage;
+export default Navigate;
