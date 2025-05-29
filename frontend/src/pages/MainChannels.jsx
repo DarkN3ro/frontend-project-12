@@ -2,12 +2,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Chat from './chat/Chat'; 
 import { addMessageToChannel, setMessagesForChannel } from '../store/messageSlice';
-import { addChannel, removeChannel, renameChannel} from '../store/channelsSlice';
+import { addChannel, removeChannel, renameChannel } from '../store/channelsSlice';
 import AddChannelModal from './CreateChannel';
 import RemoveChannelModal from './RemoveChannel';
 import RenameChannelModal from './RenameChannels';
 import i18next from '../i18n';
 import socket from '../socket';
+import { useSendMessageMutation } from '../services/messagesApi'; // Импорт мутации для отправки сообщений
 
 const Channels = () => {
   const dispatch = useDispatch();
@@ -21,6 +22,9 @@ const Channels = () => {
   const [renameModalOpen, setRenameModalOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null); 
   const [currentChannel, setCurrentChannel] = useState(null);
+
+  // RTK Mutation for sending new message
+  const [sendNewMessage] = useSendMessageMutation();
 
   useEffect(() => {
     socket.on('newChannel', (channelName) => {
@@ -46,7 +50,6 @@ const Channels = () => {
     });
 
     const handleClickOutside = (event) => {
-    
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setOpenDropdown(null);
       }
@@ -69,14 +72,22 @@ const Channels = () => {
   };
 
   const handleAddMessage = (channel, message) => {
-    dispatch(addMessageToChannel({ channel, message }));
+    // Use POST request to send message
+    sendNewMessage({ channel, message }).unwrap()
+      .then((response) => {
+        console.log('Message sent successfully:', response);
+        dispatch(addMessageToChannel({ channel, message }));
+      })
+      .catch((error) => {
+        console.error('Error sending message:', error);
+      });
   };
 
   const handleCreateChannel = () => {
     setModalOpen(true);
   };
 
-  const handleDeleteChannel= (channel) => {
+  const handleDeleteChannel = (channel) => {
     setCurrentChannel(channel);
     setRemoveModalOpen(true);
     setOpenDropdown(null);
@@ -122,7 +133,6 @@ const Channels = () => {
 
   const toggleDropdown = (channel) => {
     setOpenDropdown((prev) => (prev === channel ? null : channel));
-    
   };
 
   const classActive = (channel) => (
@@ -139,95 +149,88 @@ const Channels = () => {
 
   return (
     <>
-    <div className="container h-100 my-4 overflow-hidden rounded shadow">
-      <div className="row h-100 bg-white flex-md-row">
-        <div className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex">
-          <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
-            <b>Каналы</b>
-            <button 
-              type="button" 
-              className="p-0 text-primary btn btn-group-vertical"
-              title="Добавить канал"
-              onClick={handleCreateChannel}
+      <div className="container h-100 my-4 overflow-hidden rounded shadow">
+        <div className="row h-100 bg-white flex-md-row">
+          <div className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex">
+            <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
+              <b>Каналы</b>
+              <button 
+                type="button" 
+                className="p-0 text-primary btn btn-group-vertical"
+                title="Добавить канал"
+                onClick={handleCreateChannel}
               >
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="20" height="20" fill="currentColor" className="bi bi-plus-square">
-                <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
-                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
-              </svg>
-              <span className="visually-hidden">+</span>
-            </button>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="20" height="20" fill="currentColor" className="bi bi-plus-square">
+                  <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
+                  <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                </svg>
+                <span className="visually-hidden">+</span>
+              </button>
+            </div>
+            <ul id="channels-box" className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block">
+              {channels.map((channel, index) => (
+                <li className="nav-item w-100" key={channel}>
+                  {index < 2 ? (
+                    <button
+                      type="button"
+                      onClick={() => handleChannelClick(channel)}
+                      className={classActive(channel)}
+                    >
+                      <span className="me-1">#</span>{channel}
+                    </button>
+                  ) : (
+                    <div role="group" ref={openDropdown === channel ? dropdownRef : null} className={`d-flex dropdown btn-group ${openDropdown === channel ? 'show' : ''}`}>
+                      <button
+                        type="button"
+                        onClick={() => handleChannelClick(channel)}
+                        className={classActiveSecond(channel)}
+                      >
+                        <span className="me-1">#</span>{channel}
+                      </button>
+                      <button 
+                        type="button"
+                        aria-expanded="false"
+                        className={`${classActiveGroup(channel)} ${openDropdown === channel ? 'show' : ''}`}
+                        onClick={() => toggleDropdown(channel)}
+                      >
+                        <span className="visually-hidden">{i18next.t('channels.channelNavigate')}</span>
+                      </button>
+                      <div className={`dropdown-menu ${openDropdown === channel ? 'show' : ''}`}>
+                        <a 
+                          className="dropdown-item" 
+                          onClick={() => handleDeleteChannel(channel)}
+                        >
+                          {i18next.t('channels.removeChannel')}
+                        </a>
+                        <a 
+                          className="dropdown-item" 
+                          onClick={() => handleRenameChannel(channel)}
+                        >
+                          {i18next.t('channels.renameChannel')}
+                        </a>
+                      </div>
+                    </div>
+                  )}
+                </li>
+              ))}
+            </ul>
           </div>
-          <ul id="channels-box" className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block">
-            {channels.map((channel, index) => (
-              <li className="nav-item w-100" key={channel}>
-              {index < 2 ? (
-                <button
-                  type="button"
-                  onClick={() => handleChannelClick(channel)}
-                  className={classActive(channel)}
-                >
-                  <span className="me-1">#</span>{channel}
-                </button>
-              ) : (
-                <div role="group" ref={openDropdown === channel ? dropdownRef : null} className={`d-flex dropdown btn-group ${openDropdown === channel ? 'show' : ''}`}>
-                <button
-                  type="button"
-                  onClick={() => handleChannelClick(channel)}
-                  className={classActiveSecond(channel)}
-                >
-                  <span className="me-1">#</span>{channel}
-                </button>
-                <button 
-                  type="button"
-                  aria-expanded="false"
-                  className={`${classActiveGroup(channel)} ${openDropdown === channel ? 'show' : ''}`}
-                  onClick={() => toggleDropdown(channel)}
-                >
-                  <span className="visually-hidden">{i18next.t('channels.channelNavigate')}</span>
-                </button>
-                <div className={`dropdown-menu ${openDropdown === channel ? 'show' : ''}`} style={{ position: 'absolute', inset: '0px 0px auto auto', transform: 'translate3d(0.666667px, 39.3333px, 0px)' }}>
-                  <a 
-                      data-rr-ui-dropdown-item="" 
-                      className="dropdown-item" 
-                      role="button" 
-                      tabIndex="0" 
-                      href="#" 
-                      onClick={() => handleDeleteChannel(channel)}
-                    >
-                      {i18next.t('channels.removeChannel')}
-                    </a>
-                    <a 
-                      data-rr-ui-dropdown-item="" 
-                      className="dropdown-item" 
-                      role="button" 
-                      tabIndex="0" 
-                      href="#" 
-                      onClick={() => handleRenameChannel(channel)}
-                    >
-                      {i18next.t('channels.renameChannel')}
-                    </a>
-                </div>
-                </div>
-              )}
-              </li>
-            ))}
-          </ul>
-        </div>
 
-        <Chat
-          channel={activeChannel}
-          messages={messagesByChannel[activeChannel] || []}
-          addMessage={(msg) => handleAddMessage(activeChannel, msg)}
-        />
+          <Chat
+            channel={activeChannel}
+            messages={messagesByChannel[activeChannel] || []}
+            addMessage={(msg) => handleAddMessage(activeChannel, msg)}
+          />
         </div>
       </div>
+      
+      {/* Modals */}
       <AddChannelModal
         show={modalOpen}
         onClose={closeModal}
         onSubmit={handleSubmitChannel}
         existingChannels={channels}
       />
-
       {removeModalOpen && (
         <RemoveChannelModal
           show={true}
@@ -239,7 +242,6 @@ const Channels = () => {
           }}
         />
       )}
-
       {renameModalOpen && (
         <RenameChannelModal
           show={true}
@@ -247,14 +249,13 @@ const Channels = () => {
           channel={currentChannel}
           existingChannels={channels}
           onSubmit={(values) => {
-            console.log('Renaming channel from:', currentChannel, 'to:', values.name.trim().toLowerCase());
             socket.emit('renameChannel', { oldName: currentChannel, newName: values.name.trim().toLowerCase() });
             closeRenameModal();
           }}
         />
       )}
     </>
-    );
-  };
+  );
+};
 
 export default Channels;

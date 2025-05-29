@@ -1,17 +1,22 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import socket from '../../socket';
+import { useSendMessageMutation, useGetMessagesQuery } from '../../services/messagesApi';
 
-const Chat = ({ channel, messages, addMessage }) => {
+const Chat = ({ channel, addMessage }) => {
   const [messageInput, setMessageInput] = useState('');
   const username = useSelector((state) => state.auth.username);
   const messagesBoxRef = useRef(null);
 
+  const { data: fetchedMessages, isLoading } = useGetMessagesQuery(channel);
+
+  const [sendMessage] = useSendMessageMutation();
+
   useEffect(() => {
     const handleNewMessage = (message) => {
-       console.log('New message received:', message);
+      console.log('New message received:', message);
       if (message.channel === channel) {
-         addMessage(message);
+        addMessage(message);
       }
     };
 
@@ -27,20 +32,25 @@ const Chat = ({ channel, messages, addMessage }) => {
     setMessageInput(e.target.value);
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
     if (messageInput.trim() === '') return;
 
     const newMessage = {
-      id: Date.now(),
       text: messageInput,
       author: username,
       channel,
     };
 
     console.log('Message sent:', newMessage);
-    socket.emit('sendMessage', newMessage);
-    setMessageInput('');
+
+    try {
+      // Отправляем сообщение через POST запрос
+      await sendMessage(newMessage).unwrap(); // unwrap для получения значения из запроса
+      setMessageInput('');
+    } catch (error) {
+      console.error('Error sending message:', error);
+    }
   };
 
   return (
@@ -48,14 +58,18 @@ const Chat = ({ channel, messages, addMessage }) => {
       <div className="d-flex flex-column h-100">
         <div className="bg-light mb-4 p-3 shadow-sm small">
           <p className="m-0"><b># {channel}</b></p>
-          <span className="text-muted">{messages.length} messages</span>
+          <span className="text-muted">{fetchedMessages ? fetchedMessages.length : 0} messages</span>
         </div>
         <div id="messages-box" ref={messagesBoxRef} className="chat-messages overflow-auto px-5">
-          {messages.map((msg) => (
-            <div key={msg.id} className="text-break mb-2">
-              <b>{msg.author}</b>: {msg.text}
-            </div>
-          ))}
+        {isLoading ? (
+            <div>Loading...</div>
+          ) : (
+            fetchedMessages?.map((msg) => (
+              <div key={msg.id} className="text-break mb-2">
+                <b>{msg.author}</b>: {msg.text}
+              </div>
+            ))
+          )}
         </div>
         <div className="mt-auto px-5 py-3">
           <form onSubmit={handleFormSubmit} className="py-1 border rounded-2">
