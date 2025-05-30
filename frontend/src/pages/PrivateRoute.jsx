@@ -1,14 +1,15 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 
 const PrivateRoute = ({ children }) => {
-    const userId = JSON.parse(localStorage.getItem('userId'));
+  const token = useSelector((state) => state.auth.token);
 
-    if (userId && userId.token) {
-      return children;
-    }
-  
+  if (!token) {
     return <Navigate to="/login" replace />;
-  };
+  }
+
+  return children;
+};
 
 export default PrivateRoute;

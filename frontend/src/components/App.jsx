@@ -1,39 +1,37 @@
-import React, { useEffect } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Channels from '../pages/MainChannels';
-import Login from './LoginPage';
-import PrivateRoute from './PrivateChatRoute';
-import NotFound from './NotFound';
-import Signup from './Signup';
 import { useDispatch } from 'react-redux';
 import { setToken, setUsername } from '../store/authSlice';
-import Navigate from './Navigation';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import React, { useEffect }  from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Header from '../components/Header';
+import Chat from '../pages/ChatPage';
+import Login from '../pages/LoginPage';
+import Signup from '../pages/SignupPage';
+import NotFound from '../pages/NotFound404Page';
+import PrivateRoute from '../pages/PrivateRoute';
+
 
 const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const savedAuth = JSON.parse(localStorage.getItem('userId'));
-    if (savedAuth?.token && savedAuth?.username) {
-      dispatch(setToken(savedAuth.token));
-      dispatch(setUsername(savedAuth.username));
-    }
+    localStorage.removeItem('userId');
+    dispatch(setToken(null));
+    dispatch(setUsername(null));
   }, [dispatch]);
-  
+
   return (
     <BrowserRouter>
     <div className="d-flex flex-column h-100">
-    <Navigate />
+    <Header />
       <Routes>
         <Route 
-          path="/" 
-          element={
-            <PrivateRoute>
-              <Channels />
-            </PrivateRoute>
-          } 
-        />
+            path="/" 
+            element={
+              <PrivateRoute>
+                <Chat />
+              </PrivateRoute>
+            } 
+          />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="*" element={<NotFound />} />

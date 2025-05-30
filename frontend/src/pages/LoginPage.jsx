@@ -3,7 +3,7 @@ import { Formik } from 'formik';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setToken, setUsername } from '../store/authSlice.js';
-import i18next from '../i18n';
+import i18next from '../util/i18n.js';
 import { useLoginMutation } from '../services/authApi';
 import avatar from '../assets/avatar.jpg';
 
