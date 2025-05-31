@@ -1,5 +1,5 @@
 import { io } from 'socket.io-client';
 
-const socket = io('https://frontend-project-12-tqne.onrender.com/');
+const socket = io('ws://localhost:3000');
 
 export default socket;
