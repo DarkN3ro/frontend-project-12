@@ -75,7 +75,8 @@ const Signup = () => {
                       username: values.username,
                       password: values.password,
                     }).unwrap();
-                
+                    console.log('signup entry:', response)
+
                     const token = response.token;
                     const userId = { username: values.username, token };
                     localStorage.setItem('userId', JSON.stringify(userId));

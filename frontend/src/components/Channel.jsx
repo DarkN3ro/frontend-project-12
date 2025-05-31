@@ -1,26 +1,30 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
-import i18next from '../util/i18n';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useGetChannelsQuery } from '../services/channelsApi';
+import { setChannels, setCurrentChannelId } from '../store/channelsSlice';
 
 const Channel = () => {
-    const channels = useSelector((state) => state.channels.channels);
-    const [activeChannel, setActiveChannel] = useState('general');
+  const dispatch = useDispatch();
+  const { data: fetchedChannels = [], isSuccess } = useGetChannelsQuery();
+  const channels = useSelector(state => state.channels.channels);
+  const currentChannelId = useSelector(state => state.channels.currentChannelId);
 
-    const handleChannelClick = (channel) => {
-        setActiveChannel(channel);
-      };
+  useEffect(() => {
+    if (isSuccess && fetchedChannels.length > 0) {
+      dispatch(setChannels(fetchedChannels));
+      
+      const generalChannel = fetchedChannels.find(ch => ch.name === 'general');
+      dispatch(setCurrentChannelId(generalChannel.id));
+    }
+  }, [isSuccess, fetchedChannels, dispatch]);
 
-      const classActive = (channel) => (
-        `w-100 rounded-0 text-start btn ${activeChannel === channel ? 'btn-secondary' : ''}`
-      );
-    
-      const classActiveSecond = (channel) => (
-        `w-100 rounded-0 text-start text-truncate btn ${activeChannel === channel ? 'btn-secondary' : ''}`
-      );
-    
-      const classActiveGroup = (channel) => (
-        `flex-grow-0 dropdown-toggle dropdown-toggle-split btn ${activeChannel === channel ? 'btn-secondary' : ''}`
-      );
+  const handleChannelClick = (id) => {
+    dispatch(setCurrentChannelId(id));
+  };
+
+  const classActive = (id) => (
+    id === currentChannelId ? 'btn btn-secondary w-100 rounded-0 text-start' : 'btn btn-light w-100 rounded-0 text-start'
+  );
 
     return (
         <div className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex">
@@ -40,34 +44,34 @@ const Channel = () => {
               </button>
             </div>
             <ul id="channels-box" className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block">
-              {channels.map((channel, index) => (
-                <li className="nav-item w-100" key={channel}>
-                  {index < 2 ? (
+              {channels.map((channel) => (
+                <li className="nav-item w-100" key={channel.id}>
+                  {!channel.removable ? (
                     <button
                       type="button"
-                      onClick={() => handleChannelClick(channel)}
-                      className={classActive(channel)}
+                      onClick={() => handleChannelClick(channel.id)}
+                      className={classActive(channel.id)}
                     >
-                      <span className="me-1">#</span>{channel}
+                      <span className="me-1">#</span>{channel.name}
                     </button>
                   ) : (
-                    <div role="group" ref={openDropdown === channel ? dropdownRef : null} className={`d-flex dropdown btn-group ${openDropdown === channel ? 'show' : ''}`}>
+                    <div role="group" ref={openDropdown === channel.id ? dropdownRef : null} className={`d-flex dropdown btn-group ${openDropdown === channel.id ? 'show' : ''}`}>
                       <button
                         type="button"
                         //onClick={() => handleChannelClick(channel)}
-                        className={classActiveSecond(channel)}
+                        className={classActiveSecond(channel.id)}
                       >
-                        <span className="me-1">#</span>{channel}
+                        <span className="me-1">#</span>{channel.name}
                       </button>
                       <button 
                         type="button"
                         aria-expanded="false"
-                        className={`${classActiveGroup(channel)} ${openDropdown === channel ? 'show' : ''}`}
+                        className={`${classActiveGroup(channel.id)} ${openDropdown === channel.id ? 'show' : ''}`}
                         //onClick={() => toggleDropdown(channel)}
                       >
                         <span className="visually-hidden">{i18next.t('channels.channelNavigate')}</span>
                       </button>
-                      <div className={`dropdown-menu ${openDropdown === channel ? 'show' : ''}`}>
+                      <div className={`dropdown-menu ${openDropdown === channel.id ? 'show' : ''}`}>
                         <a 
                           className="dropdown-item" 
                           //onClick={() => handleDeleteChannel(channel)}

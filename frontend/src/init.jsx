@@ -5,6 +5,7 @@ import resources from './locales/index.js';
 import { Provider } from 'react-redux';
 import store from './store/index.js'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import socket from './util/socket.js';
 
 const init = async () => {
   const i18n = i18next.createInstance();
@@ -19,7 +20,7 @@ const init = async () => {
   return (
     <Provider store={ store }>
       <I18nextProvider i18n={i18n}>
-        <App />
+        <App socket={socket} />
       </I18nextProvider>
     </Provider>
   );

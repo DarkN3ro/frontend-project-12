@@ -10,13 +10,15 @@ import NotFound from '../pages/NotFound404Page';
 import PrivateRoute from '../pages/PrivateRoute';
 
 
-const App = () => {
+const App = ({socket}) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    localStorage.removeItem('userId');
-    dispatch(setToken(null));
-    dispatch(setUsername(null));
+    const savedAuth = JSON.parse(localStorage.getItem('userId'));
+    if (savedAuth?.token && savedAuth?.username) {
+      dispatch(setToken(savedAuth.token));
+      dispatch(setUsername(savedAuth.username));
+    }
   }, [dispatch]);
 
   return (
@@ -28,7 +30,7 @@ const App = () => {
             path="/" 
             element={
               <PrivateRoute>
-                <Chat />
+                <Chat socket={socket}/>
               </PrivateRoute>
             } 
           />
