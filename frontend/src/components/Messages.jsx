@@ -36,6 +36,8 @@ const Messages = () => {
     const sanitized = newMessage.trim();
     if (!sanitized) return;
 
+    console.log('Sending message:', sanitized);
+
     const messageToSend = {
       channel: currentChannelName,
       body: sanitized,
