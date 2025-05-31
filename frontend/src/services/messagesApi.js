@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { apiPath, apiRoutes } from '../routes/route'
+import { apiPath, apiRoutes } from '../routes/route.js'
 
 export const messagesApi = createApi({
     reducerPath: 'messagesApi',

@@ -2,10 +2,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import * as yup from 'yup';
 import { useDispatch } from 'react-redux';
-import i18next from '../util/i18n';
+import i18next from '../util/i18n.js';
 import { useNavigate } from 'react-router-dom';
-import { setToken, setUsername } from '../store/authSlice';
-import { useSignupMutation } from '../services/authApi';
+import { setToken, setUsername } from '../store/authSlice.js';
+import { useSignupMutation } from '../services/authApi.js';
 import avatar from '../assets/avatar-signup.jpg';
 
 const Signup = () => {

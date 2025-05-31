@@ -2,12 +2,12 @@ import { useDispatch } from 'react-redux';
 import { setToken, setUsername } from '../store/authSlice';
 import React, { useEffect }  from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Header from '../components/Header';
-import Chat from '../pages/ChatPage';
-import Login from '../pages/LoginPage';
-import Signup from '../pages/SignupPage';
-import NotFound from '../pages/NotFound404Page';
-import PrivateRoute from '../pages/PrivateRoute';
+import Header from '../components/Header.jsx';
+import Chat from '../pages/ChatPage.jsx';
+import Login from '../pages/LoginPage.jsx';
+import Signup from '../pages/SignupPage.jsx';
+import NotFound from '../pages/NotFound404Page.jsx';
+import PrivateRoute from '../pages/PrivateRoute.jsx';
 
 
 const App = ({socket}) => {

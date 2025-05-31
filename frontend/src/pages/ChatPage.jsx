@@ -1,9 +1,9 @@
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import Channels from '../components/Channel';
-import Messages from '../components/Messages';
-import { addMessage } from '../store/messagesSlice';
-import socket from '../util/socket';
+import Channels from '../components/Channel.jsx';
+import Messages from '../components/Messages.jsx';
+import { addMessage } from '../store/messagesSlice.js';
+import socket from '../util/socket.js';
 
 
 const ChatPage = () => {
