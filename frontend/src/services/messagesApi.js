@@ -18,6 +18,14 @@ export const messagesApi = createApi({
             endpoints: builder => ({
               getMessages: builder.query({
                 query: () => 'messages',
+                transformResponse: (response) => {
+                  console.log('Raw API response:', response);
+                  // Преобразуем channelId -> channelName, если каналы уже в Redux
+                  return response.map((msg) => ({
+                    ...msg,
+                    channel: msg.channelId, // <-- временно присваиваем для работы фильтрации
+                  }));
+                },
                 providesTags: ['Messages'],
               }),
               sendMessage: builder.mutation({
