@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import i18next from '../util/i18n.js';
 import { useNavigate } from 'react-router-dom';
 import { setToken, setUsername } from '../store/authSlice.js';
-import { useSignupMutation } from '../services/chatApi.js';
+import { useSignupMutation } from '../services/authApi.js';
 import avatar from '../assets/avatar-signup.jpg';
 
 const Signup = () => {

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useGetChannelsQuery } from '../services/chatApi.js';
+import { useGetChannelsQuery } from '../services/channelsApi.js';
 import { setChannels, setCurrentChannelId } from '../store/channelsSlice.js';
 
 const Channel = () => {

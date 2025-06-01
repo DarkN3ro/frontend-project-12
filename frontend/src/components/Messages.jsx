@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useAuth } from '../util/useAuth.js';
-import { useGetMessagesQuery, useSendMessageMutation } from '../services/chatApi.js';
+import { useGetMessagesQuery, useSendMessageMutation } from '../services/messagesApi.js';
 import { setMessages, combineMessages } from '../store/messagesSlice.js';
 
 const Messages = () => {
