@@ -48,6 +48,8 @@ const Messages = () => {
     if (!sanitized) return;
 
     console.log('Sending message:', sanitized);
+    console.log('currentChannelId:', currentChannelId);
+    console.log('username:', username);
 
     const messageToSend = {
       channelId: currentChannelId,
