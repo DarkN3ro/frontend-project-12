@@ -74,6 +74,7 @@ const Messages = () => {
     try {
       const response = await sendMessage(messageToSend).unwrap();
       console.log('Response from sendMessage:', response);
+      dispatch(addMessage(messageToSend));
       setNewMessage('');
     } catch (err) {
       console.error('Failed to send message:', err);
