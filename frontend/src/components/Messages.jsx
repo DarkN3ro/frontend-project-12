@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useAuth } from '../util/useAuth.js';
 import { useGetMessagesQuery, useSendMessageMutation } from '../services/messagesApi.js';
-import { setMessages, combineMessages } from '../store/messagesSlice.js';
+import { setMessages, addMessage, combineMessages } from '../store/messagesSlice.js';
 import { BsArrowRightSquare  } from "react-icons/bs";
 
 const Messages = () => {
@@ -74,7 +74,7 @@ const Messages = () => {
     try {
       const response = await sendMessage(messageToSend).unwrap();
       console.log('Response from sendMessage:', response);
-      dispatch(sendMessage(messageToSend));
+      dispatch(addMessage(messageToSend));
       setNewMessage('');
     } catch (err) {
       console.error('Failed to send message:', err);
