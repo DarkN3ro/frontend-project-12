@@ -9,10 +9,14 @@ const Messages = () => {
   const dispatch = useDispatch();
   const { username } = useAuth()
   const [newMessage, setNewMessage] = useState('');
-  const { data: initialMessages = [], isSuccess } = {
+  const { data: initialMessages  = [], isSuccess } = useGetMessagesQuery();
+
+  /* test
+   const { data: initialMessages = [], isSuccess } = {
     data: [{ id: 1, channel: 'general', body: 'Hello!', username: 'TestUser' }],
     isSuccess: true
   };
+  */
 
   const messages = useSelector(state => state.messages);
   const channels = useSelector(state => state.channels.channels);
@@ -20,7 +24,7 @@ const Messages = () => {
 
   const currentChannel = channels.find(ch => ch.id === currentChannelId);
   const currentChannelName = currentChannel ? currentChannel.name : '';
-
+  
 
   useEffect(() => {
     console.log('useEffect triggered:', { isSuccess, initialMessages });

@@ -1,10 +1,10 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { apiPath, apiRoutes } from '../routes/routes.js'
+//import { apiPath, apiRoutes } from '../routes/routes.js'
 
 export const channelsApi = createApi({
     reducerPath: 'channelsApi',
     baseQuery: fetchBaseQuery({ 
-        baseUrl: apiPath,
+        baseUrl: '/api/v1',
         prepareHeaders: (headers, { getState }) => {
             const token = getState().auth.token;
             console.log("Token from state:", token); 
@@ -17,7 +17,7 @@ export const channelsApi = createApi({
         tagTypes: ['Channels'],
         endpoints: builder => ({
           getChannels: builder.query({
-            query: () => apiRoutes.channelsPath(),
+            query: () => 'channels',
             providesTags: ['Channels'],
           }),
       })
