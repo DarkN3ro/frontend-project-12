@@ -32,21 +32,3 @@ const ChatPage = () => {
 }
 
 export default ChatPage
-
-/*import React from 'react';
-import { useAuth } from '../util/useAuth';
-
-
-const ChatPage = () => {
-    const { username } = useAuth();
-
-    return (
-        <div>
-          <b>Chat</b>
-          <h1>Привет, {username}!</h1>
-        </div>
-    )
-}
-
-export default ChatPage 
-*/

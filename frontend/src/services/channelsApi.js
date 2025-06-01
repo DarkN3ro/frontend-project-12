@@ -14,9 +14,11 @@ export const channelsApi = createApi({
             return headers;
           },
         }),
+        tagTypes: ['Channels'],
         endpoints: builder => ({
           getChannels: builder.query({
             query: () => apiRoutes.channelsPath(),
+            providesTags: ['Channels'],
           }),
       })
    })

@@ -14,9 +14,11 @@ export const messagesApi = createApi({
                 return headers;
               },
             }),
+            tagTypes: ['Messages'],
             endpoints: builder => ({
               getMessages: builder.query({
                 query: () => apiRoutes.messagesPath(),
+                providesTags: ['Messages'],
               }),
               sendMessage: builder.mutation({
                 query: (message) => ({
@@ -24,6 +26,7 @@ export const messagesApi = createApi({
                   method: 'POST',
                   body: message,
                 }),
+                invalidatesTags: ['Messages'],
               }),
             }),
           })

@@ -5,7 +5,7 @@ const initialState = {
     { id: 1, name: 'general', removable: false },
     { id: 2, name: 'random', removable: false },
   ],
-  currentChannelId: '',
+  currentChannelId: 1,
 };
 
 const channelsSlice = createSlice({
