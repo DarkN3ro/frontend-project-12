@@ -26,13 +26,6 @@ export const messagesApi = createApi({
                   method: 'POST',
                   body: message,
                 }),
-                transformResponse: (response) => {
-                  
-                  return {
-                    ...response,
-                    id: response.id || 'generated-id',
-                  };
-                },
                 invalidatesTags: ['Messages'],
               }),
             }),

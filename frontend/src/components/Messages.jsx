@@ -53,9 +53,10 @@ const Messages = () => {
     console.log('username:', username);
 
     const messageToSend = {
-      channelId: currentChannelId,
-      body: sanitized,
+      id: Date.now(),
       username,
+      body: sanitized,
+      channelId: currentChannelId,
     };
     console.log('messageToSend ==> ', messageToSend)
 
