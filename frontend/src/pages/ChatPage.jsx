@@ -11,6 +11,7 @@ const ChatPage = () => {
 
     useEffect(() => {
       const handleNewMessage = (message) => {
+        console.log('message socket:' , message)
         dispatch(addMessage(message));
       };
     
