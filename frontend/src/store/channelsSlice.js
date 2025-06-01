@@ -5,7 +5,7 @@ const initialState = {
     { id: 1, name: 'general', removable: false },
     { id: 2, name: 'random', removable: false },
   ],
-  currentChannel: '',
+  currentChannelId: 1,
 };
 
 const channelsSlice = createSlice({
@@ -15,11 +15,11 @@ const channelsSlice = createSlice({
     setChannels(state, { payload }) {
       state.channels = payload;
     },
-    setCurrentChannel(state, { payload }) {
-      state.currentChannel = payload;
+    setCurrentChannelId(state, { payload }) {
+      state.currentChannelId = payload;
     },
   },
 });
 
-export const { setChannels, setCurrentChannel } = channelsSlice.actions;
+export const { setChannels, setCurrentChannelId } = channelsSlice.actions;
 export default channelsSlice.reducer;

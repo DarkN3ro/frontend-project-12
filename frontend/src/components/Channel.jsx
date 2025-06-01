@@ -1,29 +1,29 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useGetChannelsQuery } from '../services/channelsApi.js';
-import { setChannels, setCurrentChannel } from '../store/channelsSlice.js';
+import { setChannels, setCurrentChannelId } from '../store/channelsSlice.js';
 
 const Channel = () => {
   const dispatch = useDispatch();
   const { data: fetchedChannels = [], isSuccess } = useGetChannelsQuery();
   const channels = useSelector(state => state.channels.channels);
-  const currentChannel = useSelector(state => state.channels.currentChannel);
+  const currentChannelId = useSelector(state => state.channels.currentChannelId);
 
   useEffect(() => {
     if (isSuccess && fetchedChannels.length > 0) {
       dispatch(setChannels(fetchedChannels));
       
       const generalChannel = fetchedChannels.find(ch => ch.name === 'general');
-      dispatch(setCurrentChannel(generalChannel.name));
+      dispatch(setCurrentChannelId(generalChannel.id));
     }
   }, [isSuccess, fetchedChannels, dispatch]);
 
-  const handleChannelClick = (name) => {
-    dispatch(setCurrentChannel(name));
+  const handleChannelClick = (id) => {
+    dispatch(setCurrentChannelId(id));
   };
 
-  const classActive = (name) => (
-    name === currentChannel ? 'btn btn-secondary w-100 rounded-0 text-start' : 'btn btn-light w-100 rounded-0 text-start'
+  const classActive = (id) => (
+    id === currentChannelId ? 'btn btn-secondary w-100 rounded-0 text-start' : 'btn btn-light w-100 rounded-0 text-start'
   );
 
     return (
