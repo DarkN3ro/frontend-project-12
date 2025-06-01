@@ -60,8 +60,8 @@ const Messages = () => {
     console.log('messageToSend ==> ', messageToSend)
 
     try {
-      await sendMessage(messageToSend).unwrap();
-      console.log('Message sent successfully');
+      const response = await sendMessage(messageToSend).unwrap();
+      console.log('Response from sendMessage:', response);
       setNewMessage('');
     } catch (err) {
       console.error('Failed to send message:', err);
