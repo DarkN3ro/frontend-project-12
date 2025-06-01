@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useAuth } from '../util/useAuth.js';
 import { useGetMessagesQuery, useSendMessageMutation } from '../services/messagesApi.js';
 import { setMessages, combineMessages } from '../store/messagesSlice.js';
-import { FaSquareCaretRight } from "react-icons/fa";
+import { BsArrowRightSquare  } from "react-icons/bs";
 
 const Messages = () => {
  
@@ -102,7 +102,7 @@ const Messages = () => {
                 disabled={isLoading}
               />
               <button type="submit" className="btn btn-group-vertical" disabled={isLoading}>
-                <FaSquareCaretRight size={20} color="currentColor" />
+                <BsArrowRightSquare size={20} color="currentColor" />
                 <span className="visually-hidden">Отправить</span>
               </button>
             </div>
