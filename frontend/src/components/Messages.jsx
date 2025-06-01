@@ -20,7 +20,7 @@ const Messages = () => {
 
   const messages = useSelector(state => state.messages);
   const channels = useSelector(state => state.channels.channels);
-  const currentChannelId = useSelector(state => state.channels.currentChannelId);
+  const currentChannelId = useSelector(state => state.channels.currentChannel);
 
   const currentChannel = channels.find(ch => ch.id === currentChannelId);
   const currentChannelName = currentChannel ? currentChannel.name : '';
@@ -67,7 +67,7 @@ const Messages = () => {
     }
   };
 
-  const filteredMessages = messages.filter(msg => msg.channel === currentChannelId);
+ const filteredMessages = messages.filter(msg => msg.channelId === currentChannelId);
 
   return (
     <div className="col p-0 h-100">
