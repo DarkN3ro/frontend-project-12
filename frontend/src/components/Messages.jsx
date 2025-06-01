@@ -10,7 +10,7 @@ const Messages = () => {
   const dispatch = useDispatch();
   const { username } = useAuth()
   const [newMessage, setNewMessage] = useState('');
-  const { data: initialMessages  = [], isSuccess } = useGetMessagesQuery();
+  const { data: initialMessages  = [], isLoading, isError, error } = useGetMessagesQuery();
 
   /* test
    const { data: initialMessages = [], isSuccess } = {
@@ -26,10 +26,21 @@ const Messages = () => {
   const currentChannel = channels.find(ch => ch.id === currentChannelId);
   const currentChannelName = currentChannel ? currentChannel.name : '';
   
-
+  
   useEffect(() => {
-    console.log('useEffect triggered:', { isSuccess, initialMessages });
-    if (isSuccess) {
+    console.log('useEffect triggered:', { isLoading, isError, initialMessages });
+  
+    if (isLoading) {
+      console.log('Loading messages...');
+      return;
+    }
+  
+    if (isError) {
+      console.error('Error fetching messages:', error);
+      return;
+    }
+  
+    if (initialMessages.length > 0) {
       if (messages.length === 0) {
         console.log('Setting initial messages');
         dispatch(setMessages(initialMessages));
@@ -38,9 +49,9 @@ const Messages = () => {
         dispatch(combineMessages(initialMessages));
       }
     }
-  }, [isSuccess, initialMessages, dispatch, messages.length]);
+  }, [isLoading, isError, error, initialMessages, dispatch, messages.length]);
 
-  const [sendMessage, { isLoading }] = useSendMessageMutation();
+  const [sendMessage] = useSendMessageMutation();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
