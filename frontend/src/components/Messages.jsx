@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useAuth } from '../util/useAuth.js';
 import { useGetMessagesQuery, useSendMessageMutation } from '../services/messagesApi.js';
-import { setMessages, combineMessages, addMessage } from '../store/messagesSlice.js';
+import { setMessages, combineMessages } from '../store/messagesSlice.js';
 
 const Messages = () => {
  
@@ -43,11 +43,11 @@ const Messages = () => {
       body: sanitized,
       username,
     };
+    console.log('messageToSend ==> ', messageToSend)
 
     try {
       await sendMessage(messageToSend).unwrap();
       setNewMessage('');
-      dispatch(addMessage(sentMessage));
     } catch (err) {
       console.error('Failed to send message:', err);
     }
