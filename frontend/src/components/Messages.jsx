@@ -50,7 +50,7 @@ const Messages = () => {
     console.log('Sending message:', sanitized);
 
     const messageToSend = {
-      channel: currentChannelName,
+      channel: currentChannelId,
       body: sanitized,
       username,
     };
