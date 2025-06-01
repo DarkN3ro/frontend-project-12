@@ -24,7 +24,7 @@ const Channel = () => {
   };
 
   const classActive = (id) => (
-    id === currentChannelId ? 'btn btn-secondary w-100 rounded-0 text-start' : 'btn btn-light w-100 rounded-0 text-start'
+    `w-100 rounded-0 text-start btn ${ id === currentChannelId ? 'btn-secondary' : '' }`
   );
 
     return (
