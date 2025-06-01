@@ -18,11 +18,21 @@ const Messages = () => {
   const currentChannel = channels.find(ch => ch.id === currentChannelId);
   const currentChannelName = currentChannel ? currentChannel.name : '';
 
+  console.log('Messages from store:', messages);
+  console.log('Fetched messages from API:', initialMessages);
+  console.log('Current channel ID:', currentChannelId);
+  console.log('Current channel name:', currentChannelName);
+  console.log('Channels:', channels);
+  console.log('Username:', username);
+
   useEffect(() => {
+    console.log('useEffect triggered:', { isSuccess, initialMessages });
     if (isSuccess) {
       if (messages.length === 0) {
+        console.log('Setting initial messages');
         dispatch(setMessages(initialMessages));
       } else {
+        console.log('Combining messages');
         dispatch(combineMessages(initialMessages));
       }
     }
@@ -47,6 +57,7 @@ const Messages = () => {
 
     try {
       await sendMessage(messageToSend).unwrap();
+      console.log('Message sent successfully');
       setNewMessage('');
     } catch (err) {
       console.error('Failed to send message:', err);
