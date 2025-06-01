@@ -30,3 +30,5 @@ export const authApi = createApi({
         }),
     }),
 });
+
+export const { useSignupMutation, useLoginMutation } = authApi;
