@@ -68,7 +68,7 @@ const Messages = () => {
     }
   };
 
-  const filteredMessages = messages.filter(msg => msg.channel === currentChannelId);
+  const filteredMessages = messages.filter(msg => msg.channelId === currentChannelId);
 
   return (
     <div className="col p-0 h-100">
