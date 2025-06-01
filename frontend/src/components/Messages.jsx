@@ -50,7 +50,7 @@ const Messages = () => {
     console.log('Sending message:', sanitized);
 
     const messageToSend = {
-      channel: currentChannelId,
+      channelId: currentChannelId,
       body: sanitized,
       username,
     };
@@ -65,7 +65,7 @@ const Messages = () => {
     }
   };
 
-  const filteredMessages = messages.filter(msg => msg.channel === currentChannelName);
+  const filteredMessages = messages.filter(msg => msg.channel === currentChannelId);
 
   return (
     <div className="col p-0 h-100">
