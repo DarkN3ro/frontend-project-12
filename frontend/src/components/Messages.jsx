@@ -64,7 +64,6 @@ const Messages = () => {
     console.log('username:', username);
 
     const messageToSend = {
-      id: Date.now(),
       body: sanitized,
       channelId: currentChannelId,
       username,
