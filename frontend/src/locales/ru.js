@@ -48,6 +48,11 @@ const ru = {
         manyMessages: 'сообщений',
         oneMessage: 'сообщение',
         fewMessages: 'сообщения',
+      },
+      alertMessage: {
+        channelCreated: 'Канал создан',
+        channelRemoved: 'Канал удален',
+        channelRenamed: 'Канал переименован',
       }
     },
   };
