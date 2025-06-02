@@ -66,7 +66,7 @@ const RenameChannelModal = ({show, onClose, existingChannels, onSubmit}) => {
                           placeholder="Имя канала"
                         />
                         <label className="visually-hidden" htmlFor="name">
-                          Имя канала
+                          {i18next.t('channels.nameChannel')}
                         </label>
                         <ErrorMessage name="name" component="div" className="invalid-feedback d-block" />
                         <div className="d-flex justify-content-end">
