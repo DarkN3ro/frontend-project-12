@@ -12,13 +12,6 @@ const Messages = () => {
   const [newMessage, setNewMessage] = useState('');
   const { data: initialMessages  = [], isLoading, isError, error } = useGetMessagesQuery();
 
-  /* test
-   const { data: initialMessages = [], isSuccess } = {
-    data: [{ id: 1, channel: 'general', body: 'Hello!', username: 'TestUser' }],
-    isSuccess: true
-  };
-  */
-
   const messages = useSelector(state => state.messages);
   const channels = useSelector(state => state.channels.channels);
   const currentChannelId = useSelector(state => state.channels.currentChannelId);
@@ -58,10 +51,6 @@ const Messages = () => {
 
     const sanitized = newMessage.trim();
     if (!sanitized) return;
-
-    console.log('Sending message:', sanitized);
-    console.log('currentChannelId:', currentChannelId);
-    console.log('username:', username);
 
     const messageToSend = {
       body: sanitized,

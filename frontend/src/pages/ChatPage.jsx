@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux'
 import Channels from '../components/Channel.jsx';
 import Messages from '../components/Messages.jsx';
 import { addMessage } from '../store/messagesSlice.js';
+import { addChannels, removeChannels } from '../store/channelsSlice.js';
 import socket from '../util/socket.js';
 
 
@@ -11,14 +12,30 @@ const ChatPage = () => {
 
     useEffect(() => {
       const handleNewMessage = (message) => {
-        console.log('message socket:' , message)
+        console.log('message add socket:' , message)
         dispatch(addMessage(message));
       };
     
       socket.on('newMessage', handleNewMessage);
+
+      const handleNewChannel = (channels) => {
+        console.log('channels add socket:' , channels)
+        dispatch(addChannels(channels));
+      };
+
+      socket.on('newChannel', handleNewChannel);
+
+      const handleRemoveChannel = (channel) => {
+        console.log('channels remove socket:' , channel)
+        dispatch(removeChannels(channel.id));
+      };
+
+      socket.on('removeChannel', handleRemoveChannel);
     
       return () => {
         socket.off('newMessage', handleNewMessage);
+        socket.off('newChannel', handleNewChannel);
+        socket.off('removeChannel', handleRemoveChannel);
       };
     }, [dispatch]);
 

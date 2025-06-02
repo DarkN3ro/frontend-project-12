@@ -34,7 +34,7 @@ const ru = {
         renameThisChannel: 'Переименовать канал',
         removeThisChannel: 'Удалить канал',
         removeConfirm: 'Уверены?',
-        errorChannelExists: 'Канал с таким именем уже существует',
+        errorChannelExists: 'Должно быть уникальным',
         channelNavigate: 'Управление каналом',
         removeChannel: 'Удалить',
         renameChannel: 'Переименовать',

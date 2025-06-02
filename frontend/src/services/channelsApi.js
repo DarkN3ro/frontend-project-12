@@ -20,8 +20,25 @@ export const channelsApi = createApi({
             query: () => apiRoutes.channelsPath(),
             providesTags: ['Channels'],
           }),
+          addChannels: builder.mutation({
+            query: (channels) => ({
+              url: apiRoutes.channelsPath(),
+              method: 'POST',
+              body: channels,
+            }),
+            invalidatesTags: ['Channels'],
+          }),
+          removeChannel: builder.mutation({
+            query: (channelId) => ({
+              url: apiRoutes.channelPath(channelId),
+              method: 'DELETE',
+            }),
+            invalidatesTags: ['Channels'],
+          })
       })
    })
       export const {
         useGetChannelsQuery,
+        useAddChannelsMutation,
+        useRemoveChannelMutation,
       } = channelsApi

@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { closeCreateModal } from '../store/modalsSlice.js';
 import * as Yup from 'yup';
 import i18next from '../util/i18n.js';
 
-const AddChannelModal = ({ show, onClose, onSubmit, existingChannels  }) => {
+const AddChannelModal = ({ onSubmit, existingChannels  }) => {
+  const dispatch = useDispatch();
+  const show = useSelector(state => state.modals.createModalOpen);
   const [validationSchema, setValidationSchema] = useState(null);
   
   useEffect(() => {
@@ -16,7 +20,13 @@ const AddChannelModal = ({ show, onClose, onSubmit, existingChannels  }) => {
     .test(
       'unique',
       i18next.t('channels.errorChannelExists'),
-      value => !existingChannels.map((name) => name.toLowerCase()).includes(value?.toLowerCase().trim())
+      value => {
+        if (!value) return true;
+        const existingNamesLower = existingChannels
+          .filter(channel => channel && typeof channel.name === 'string')
+          .map(channel => channel.name.toLowerCase());
+        return !existingNamesLower.includes(value.toLowerCase().trim());
+      }
     ),
   });
 
@@ -27,7 +37,7 @@ const AddChannelModal = ({ show, onClose, onSubmit, existingChannels  }) => {
 
   const handleBackdropClick = (e) => {
     if (e.target === e.currentTarget) {
-      onClose();
+      dispatch(closeCreateModal());
     }
   };
 
@@ -37,7 +47,7 @@ const AddChannelModal = ({ show, onClose, onSubmit, existingChannels  }) => {
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title">{i18next.t('channels.addChannel')}</h5>
-            <button type="button" className="btn btn-close" aria-label="Close" onClick={onClose}></button>
+            <button type="button" className="btn btn-close" aria-label="Close" onClick={() => dispatch(closeCreateModal())}></button>
           </div>
           <div className="modal-body">
             <Formik
@@ -47,6 +57,7 @@ const AddChannelModal = ({ show, onClose, onSubmit, existingChannels  }) => {
                 onSubmit(values);
                 setSubmitting(false);
                 resetForm();
+                dispatch(closeCreateModal());
               }}
             >
               {({ isSubmitting, errors, touched  }) => (
@@ -64,7 +75,7 @@ const AddChannelModal = ({ show, onClose, onSubmit, existingChannels  }) => {
                     </label>
                     <ErrorMessage name="name" component="div" className="invalid-feedback d-block" />
                     <div className="d-flex justify-content-end">
-                      <button type="button" className="me-2 btn btn-secondary" onClick={onClose}>
+                      <button type="button" className="me-2 btn btn-secondary" onClick={() => dispatch(closeCreateModal())}>
                       {i18next.t('channels.cancelOfChannel')}
                       </button>
                       <button type="submit" className="btn btn-primary" disabled={isSubmitting}>

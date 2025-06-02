@@ -4,4 +4,5 @@ export const apiRoutes = {
   signupPath: () => 'signup',
   messagesPath: () => 'messages',
   channelsPath: () => 'channels',
+  channelPath: id => `/channels/${id}`,
 }
