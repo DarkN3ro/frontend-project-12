@@ -25,6 +25,14 @@ const modalsSlice = createSlice({
             state.removeModalOpen = false;
             state.currentChannel = null;
         },
+        openRenameModal(state, action) {
+            state.renameModalOpen = true;
+            state.currentChannel = action.payload;
+        },
+        closeRenameModal(state) {
+            state.renameModalOpen = false;
+            state.currentChannel = null;
+        },
     }
 });
 
@@ -33,6 +41,8 @@ export const {
     closeCreateModal,
     openRemoveModal,
     closeRemoveModal,
+    openRenameModal,
+    closeRenameModal,
 } = modalsSlice.actions;
 
 export default modalsSlice.reducer;

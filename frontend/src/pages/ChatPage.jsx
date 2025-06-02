@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 import Channels from '../components/Channel.jsx';
 import Messages from '../components/Messages.jsx';
 import { addMessage } from '../store/messagesSlice.js';
-import { addChannels, removeChannels } from '../store/channelsSlice.js';
+import { addChannels, removeChannels, renameChannels } from '../store/channelsSlice.js';
 import socket from '../util/socket.js';
 
 
@@ -25,17 +25,25 @@ const ChatPage = () => {
 
       socket.on('newChannel', handleNewChannel);
 
-      const handleRemoveChannel = (channel) => {
-        console.log('channels remove socket:' , channel)
-        dispatch(removeChannels(channel.id));
+      const handleRemoveChannel = (channels) => {
+        console.log('channels remove socket:' , channels)
+        dispatch(removeChannels(channels.id));
       };
 
       socket.on('removeChannel', handleRemoveChannel);
+
+      const handleRenameChannel = (channels) => {
+        console.log('channels rename socket:' , channels)
+        dispatch(renameChannels(channels));
+      };
+
+      socket.on('renameChannel', handleRenameChannel);
     
       return () => {
         socket.off('newMessage', handleNewMessage);
         socket.off('newChannel', handleNewChannel);
         socket.off('removeChannel', handleRemoveChannel);
+        socket.off('renameChannel', handleRenameChannel);
       };
     }, [dispatch]);
 

@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useGetChannelsQuery, useAddChannelsMutation, useRemoveChannelMutation } from '../services/channelsApi.js';
-import { setChannels, setCurrentChannelId } from '../store/channelsSlice.js';
+import { useGetChannelsQuery, useAddChannelsMutation, useRemoveChannelMutation, useRenameChannelMutation } from '../services/channelsApi.js';
+import { setChannels, setCurrentChannelId, addChannels } from '../store/channelsSlice.js';
 import AddChannelModal from '../modals/AddChannels.jsx';
 import RemoveChannelModal from '../modals/RemoveChannels.jsx';
-import { openCreateModal, openRemoveModal, closeRemoveModal } from '../store/modalsSlice.js';
+import RenameChannelModal from '../modals/RenameChannels.jsx';
+import { openCreateModal, openRemoveModal, closeRemoveModal, openRenameModal, closeRenameModal} from '../store/modalsSlice.js';
 import { FaPlusSquare } from 'react-icons/fa';
 import i18next from '../util/i18n.js';
 
@@ -13,13 +14,14 @@ const Channel = () => {
   const { data: fetchedChannels = [], isSuccess } = useGetChannelsQuery();
   const [addChannel] = useAddChannelsMutation();
   const [removeChannel] = useRemoveChannelMutation();
+  const [renameChannel] = useRenameChannelMutation();
 
   const channels = useSelector(state => state.channels.channels);
   const currentChannelId = useSelector(state => state.channels.currentChannelId);
   const removeModalOpen = useSelector(state => state.modals.removeModalOpen);
-  const currentRemoveChannel = useSelector(state => state.modals.currentChannel);
+  const renameModalOpen = useSelector(state => state.modals.renameModalOpen);
+  const currentChannel = useSelector(state => state.modals.currentChannel);
 
-  const [newChannelName, setNewChannelName] = useState(null);
   const [openDropdown, setOpenDropdown] = useState(null);
   const dropdownRef = useRef(null);
 
@@ -35,23 +37,17 @@ const Channel = () => {
       console.log('fetchedChannels', fetchedChannels)
       dispatch(setChannels(fetchedChannels));
       
-      const generalChannel = fetchedChannels.find(ch => ch.name === 'general');
-      dispatch(setCurrentChannelId(generalChannel.id));
+      if (!currentChannelId) {
+        const generalChannel = fetchedChannels.find(ch => ch.name === 'general');
+        if (generalChannel) {
+          dispatch(setCurrentChannelId(generalChannel.id));
+        }
+      }
     }
     return () => {
       document.removeEventListener('click', handleClickOutside, true);
     };
   }, [isSuccess, fetchedChannels, dispatch]);
-
-  useEffect(() => {
-    if (newChannelName && fetchedChannels.length > 0) {
-      const newChannel = fetchedChannels.find(ch => ch.name === newChannelName);
-      if (newChannel) {
-        dispatch(setCurrentChannelId(newChannel.id));
-        setNewChannelName(null);
-      }
-    }
-  }, [fetchedChannels, newChannelName, dispatch]);
 
 
   const handleChannelClick = (id) => {
@@ -62,27 +58,33 @@ const Channel = () => {
     dispatch(openCreateModal());
   };
 
-  const handleDeleteChannel = (channel) => {
+  const handleRemoveChannel = (channel) => {
     console.log(channel)
     dispatch(openRemoveModal(channel)); 
   };
 
+  const handleRenameChannel = (channel) => {
+    console.log(channel)
+    dispatch(openRenameModal(channel)); 
+  };
+
   const handleAddChannelSubmit = async (values) => {
     try {
-      await addChannel({ name: values.name }).unwrap();
-      setNewChannelName(values.name);
+      const addedChannel = await addChannel({ name: values.name }).unwrap();
+      dispatch(addChannels(addedChannel));
+      dispatch(setCurrentChannelId(addedChannel.id));
     } catch (err) {
       console.error('Ошибка при добавлении канала:', err);
     }
   };
 
-  const handleDeleteChannelSubmit = async () => {
-    if (!currentRemoveChannel) return;
+  const handleRemoveChannelSubmit = async () => {
+    if (!currentChannel) return;
     try {
-      await removeChannel(currentRemoveChannel.id).unwrap();
+      await removeChannel(currentChannel.id).unwrap();
       dispatch(closeRemoveModal());
   
-      if (currentRemoveChannel.id === currentChannelId) {
+      if (currentChannel.id === currentChannelId) {
         const generalChannel = channels.find(ch => ch.name === 'general');
         if (generalChannel) {
           dispatch(setCurrentChannelId(generalChannel.id));
@@ -93,6 +95,15 @@ const Channel = () => {
     }
   };
 
+const handleRenameChannelSubmit = async ({ name }) => {
+  if (!currentChannel) return;
+  try {
+    await renameChannel({ id: currentChannel.id, name: name.trim() }).unwrap();
+    dispatch(closeRenameModal());
+  } catch (err) {
+    console.error('Ошибка при переименовании канала:', err);
+  }
+};
   const toggleDropdown = (channel) => {
     setOpenDropdown((prevId) => (prevId === channel.id ? null : channel.id));
   };
@@ -156,13 +167,13 @@ const Channel = () => {
                       <div className={`dropdown-menu ${openDropdown === channel.id ? 'show' : ''}`}>
                         <a 
                           className="dropdown-item" 
-                          onClick={() => handleDeleteChannel(channel)}
+                          onClick={() => handleRemoveChannel(channel)}
                         >
                           {i18next.t('channels.removeChannel')}
                         </a>
                         <a 
                           className="dropdown-item" 
-                          //onClick={() => handleRenameChannel(channel)}
+                          onClick={() => handleRenameChannel(channel)}
                         >
                           {i18next.t('channels.renameChannel')}
                         </a>
@@ -177,8 +188,15 @@ const Channel = () => {
           <RemoveChannelModal
             show={removeModalOpen}
             onClose={() => dispatch(closeRemoveModal())}
-            channel={currentRemoveChannel}
-            onRemove={handleDeleteChannelSubmit}
+            channel={currentChannel}
+            onRemove={handleRemoveChannelSubmit}
+          />
+          <RenameChannelModal
+            show={renameModalOpen}
+            onSubmit={handleRenameChannelSubmit}
+            onClose={() => dispatch(closeRenameModal())}
+            channel={currentChannel}
+            existingChannels={channels}
           />
       </>
     )

@@ -1,7 +1,7 @@
 import React from 'react';
 import i18next from '../util/i18n.js';
 
-const RemoveChannelModal = ({ show, onClose, channel, onRemove }) => {
+const RemoveChannelModal = ({ show, onClose, onRemove }) => {
   if (!show) return null;
 
   const handleBackdropClick = (e) => {
