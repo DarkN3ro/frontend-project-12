@@ -1,5 +1,9 @@
 const ru = {
     translation: {
+      navbar: {
+        chatName: 'Hexlet Chat',
+        logout: 'LogOut',
+      },
       login: {
         toEnterChat: 'Войти',
         userNameForChat: 'Ваш ник',
@@ -13,6 +17,7 @@ const ru = {
         passwordLabel: 'Пароль',
         confirmPasswordLabel: 'Подтвердите пароль',
         fildThisField: 'Заполните это поле.',
+        signup: 'Отправить',
       },
       validate: {
         errorNameMin: 'От 3 до 20 символов',
@@ -38,6 +43,11 @@ const ru = {
         channelNavigate: 'Управление каналом',
         removeChannel: 'Удалить',
         renameChannel: 'Переименовать',
+      },
+      count: {
+        manyMessages: 'сообщений',
+        oneMessage: 'сообщение',
+        fewMessages: 'сообщения',
       }
     },
   };

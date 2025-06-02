@@ -4,6 +4,8 @@ import { useAuth } from '../util/useAuth.js';
 import { useGetMessagesQuery, useSendMessageMutation } from '../services/messagesApi.js';
 import { setMessages, combineMessages } from '../store/messagesSlice.js';
 import { BsArrowRightSquare  } from "react-icons/bs";
+import countMessages from '../util/countMessages.jsx';
+import i18next from '../util/i18n.js';
 
 const Messages = () => {
  
@@ -76,7 +78,7 @@ const Messages = () => {
   
         <div className="bg-light mb-4 p-3 shadow-sm small">
           <p className="m-0"><b># {currentChannelName}</b></p>
-          <span className="text-muted">{filteredMessages.length} messages</span>
+          <span className="text-muted">{filteredMessages.length} {countMessages(filteredMessages.length)}</span>
         </div>
   
         <div className="flex-grow-1 overflow-auto px-3">
@@ -103,7 +105,7 @@ const Messages = () => {
               />
               <button type="submit" className="btn btn-group-vertical" disabled={isLoading}>
                 <BsArrowRightSquare size={20} color="currentColor" />
-                <span className="visually-hidden">Отправить</span>
+                <span className="visually-hidden">{i18next.t('form.signup')}</span>
               </button>
             </div>
           </form>
