@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useAuth } from '../util/useAuth.js';
 import { useGetMessagesQuery, useSendMessageMutation } from '../services/messagesApi.js';
@@ -10,8 +10,8 @@ import { toast } from 'react-toastify';
 import filter from '../util/profanity.js';
 
 const Messages = () => {
- 
   const dispatch = useDispatch();
+  const messagesBoxRef = useRef(null);
   const { t } = useTranslation();
   const { username } = useAuth()
   const [newMessage, setNewMessage] = useState('');
@@ -58,8 +58,15 @@ const Messages = () => {
       toast.error(t('alertErrors.messageSendError'));
     }
   };
+  
 
   const filteredMessages = messages.filter(msg => msg.channelId === currentChannelId);
+
+  useEffect(() => {
+    if (messagesBoxRef.current) {
+      messagesBoxRef.current.scrollTop = messagesBoxRef.current.scrollHeight;
+    }
+  }, [filteredMessages]);
 
   return (
     <div className="col p-0 h-100">
@@ -70,7 +77,7 @@ const Messages = () => {
           <span className="text-muted">{filteredMessages.length} {countMessages(filteredMessages.length, t)}</span>
         </div>
   
-        <div className="flex-grow-1 overflow-auto px-3">
+        <div ref={messagesBoxRef} className="flex-grow-1 overflow-auto px-3">
           {filteredMessages.map((msg) => (
             <div key={msg.id} className="text-break mb-2">
               <b>{msg.username || 'user'}</b>
