@@ -1,4 +1,6 @@
-import React from 'react';
+import { useDispatch } from 'react-redux';
+import { setToken, setUsername } from '../store/authSlice';
+import React, { useEffect }  from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Header from '../components/Header.jsx';
 import Chat from '../pages/ChatPage.jsx';
@@ -11,6 +13,15 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 const App = ({socket}) => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const savedAuth = JSON.parse(localStorage.getItem('userId'));
+    if (savedAuth?.token && savedAuth?.username) {
+      dispatch(setToken(savedAuth.token));
+      dispatch(setUsername(savedAuth.username));
+    }
+  }, [dispatch]);
 
   return (
     <BrowserRouter>
