@@ -1,15 +1,25 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import Channels from '../components/Channel.jsx';
 import Messages from '../components/Messages.jsx';
 import { addMessage } from '../store/messagesSlice.js';
 import { addChannels, removeChannels, renameChannels } from '../store/channelsSlice.js';
-
+import { useGetChannelsQuery } from '../services/channelsApi.js';
 import socket from '../util/socket.js';
 
 
 const ChatPage = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { error, isError } = useGetChannelsQuery();
+
+    useEffect(() => {
+      if (isError && error?.status === 401) {
+        navigate('/login');
+      }
+    }, [isError, error, navigate]); 
 
     useEffect(() => {
       const handleNewMessage = (message) => {
