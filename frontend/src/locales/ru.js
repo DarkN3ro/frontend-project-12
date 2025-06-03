@@ -10,6 +10,7 @@ const ru = {
         passwordUserForChat: 'Пароль',
         createAccountForUser: 'Нет аккаунта?',
         toRegistrationNewUser: 'Регистрация',
+        errorToLogin: 'Неверные имя пользователя или пароль!',
       },
       form: {
         registration: 'Регистрация',
@@ -31,6 +32,11 @@ const ru = {
       buttons: {
         submit: 'Зарегистрироваться',
       },
+      messages: {
+        newMessage: 'Новое сообщение',
+        sendNewMessage: 'Введите сообщение...',
+        signupMessages: 'Отправить',
+      },
       channels: {
         titleName: 'Каналы',
         nameChannel: 'Имя канала',
@@ -50,11 +56,21 @@ const ru = {
         oneMessage: 'сообщение',
         fewMessages: 'сообщения',
       },
-      alertMessage: {
+      alertSuccess: {
         channelCreated: 'Канал создан',
         channelRemoved: 'Канал удален',
         channelRenamed: 'Канал переименован',
-      }
+      },
+      alertErrors:{
+        loginEntryError: 'Ошибка соединения',
+        signupEntryError: 'Ошибка соединения',
+        messageSendError: 'Ошибка при отправке сообщения',
+        channelCreatedError: 'Ошибка при создании канала',
+        channelRemovedError: 'Ошибка при удалении канала',
+        channelRenamedError: 'Ошибка при переименовании канала',
+        serverError: 'Ошибка сервера',
+        networkError: 'Ошибка соединения',
+      },
     },
   };
 

@@ -6,13 +6,14 @@ import { setMessages, combineMessages } from '../store/messagesSlice.js';
 import { BsArrowRightSquare  } from "react-icons/bs";
 import countMessages from '../util/countMessages.jsx';
 import i18next from '../util/i18n.js';
+import { toast } from 'react-toastify';
 
 const Messages = () => {
  
   const dispatch = useDispatch();
   const { username } = useAuth()
   const [newMessage, setNewMessage] = useState('');
-  const { data: initialMessages  = [], isLoading, isError, error } = useGetMessagesQuery();
+  const { data: initialMessages  = []} = useGetMessagesQuery();
 
   const messages = useSelector(state => state.messages);
   const channels = useSelector(state => state.channels.channels);
@@ -23,28 +24,14 @@ const Messages = () => {
   
   
   useEffect(() => {
-    console.log('useEffect triggered:', { isLoading, isError, initialMessages });
-  
-    if (isLoading) {
-      console.log('Loading messages...');
-      return;
-    }
-  
-    if (isError) {
-      console.error('Error fetching messages:', error);
-      return;
-    }
-  
     if (initialMessages.length > 0) {
       if (messages.length === 0) {
-        console.log('Setting initial messages');
         dispatch(setMessages(initialMessages));
       } else {
-        console.log('Combining messages');
         dispatch(combineMessages(initialMessages));
       }
     }
-  }, [isLoading, isError, error, initialMessages, dispatch, messages.length]);
+  }, [ initialMessages, dispatch, messages.length]);
 
   const [sendMessage] = useSendMessageMutation();
 
@@ -59,14 +46,12 @@ const Messages = () => {
       channelId: currentChannelId,
       username,
     };
-    console.log('messageToSend ==> ', messageToSend)
 
     try {
-      const response = await sendMessage(messageToSend).unwrap();
-      console.log('Response from sendMessage:', response);
+      await sendMessage(messageToSend).unwrap();
       setNewMessage('');
-    } catch (err) {
-      console.error('Failed to send message:', err);
+    } catch (error) {
+      toast.error(i18next.t('alertErrors.messageSendError'));
     }
   };
 
@@ -96,16 +81,15 @@ const Messages = () => {
             <div className="input-group has-validation">
               <input
                 name="body"
-                aria-label="Новое сообщение"
-                placeholder="Введите сообщение..."
+                aria-label={i18next.t('messages.newMessage')}
+                placeholder={i18next.t('messages.sendNewMessage')}
                 className="border-0 p-0 ps-2 form-control"
                 value={newMessage}
                 onChange={(e) => setNewMessage(e.target.value)}
-                disabled={isLoading}
               />
-              <button type="submit" className="btn btn-group-vertical" disabled={isLoading}>
+              <button type="submit" className="btn btn-group-vertical">
                 <BsArrowRightSquare size={20} color="currentColor" />
-                <span className="visually-hidden">{i18next.t('form.signup')}</span>
+                <span className="visually-hidden">{i18next.t('messages.signupMessages')}</span>
               </button>
             </div>
           </form>

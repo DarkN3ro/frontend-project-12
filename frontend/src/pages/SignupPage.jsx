@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { setToken, setUsername } from '../store/authSlice.js';
 import { useSignupMutation } from '../services/authApi.js';
 import avatar from '../assets/avatar-signup.jpg';
+import { toast } from 'react-toastify';
 
 const Signup = () => {
   const usernameRef = useRef(null);
@@ -84,10 +85,12 @@ const Signup = () => {
                     dispatch(setToken(token));
                     navigate('/');
                   } catch (error) {
-                    if (error.status === 409) {
+                    if (error?.status === 409) {
                       setUserExistsError(true);
+                    } else if (error?.status) {
+                      toast.error(i18next.t('alertErrors.networkError'));
                     } else {
-                      console.error('Registration error:', error);
+                      toast.error(i18next.t('alertErrors.serverError'));
                     }
                   } finally {
                     setSubmitting(false);

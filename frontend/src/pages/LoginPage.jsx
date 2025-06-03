@@ -6,6 +6,7 @@ import { setToken, setUsername } from '../store/authSlice.js';
 import i18next from '../util/i18n.js';
 import { useLoginMutation } from '../services/authApi.js';
 import avatar from '../assets/avatar.jpg';
+import { toast } from 'react-toastify';
 
 const LoginPage = () => {
   const dispatch = useDispatch();
@@ -24,8 +25,12 @@ const LoginPage = () => {
       dispatch(setToken(token));
       dispatch(setUsername(username));
       navigate('/');
-    } catch (err) {
-      setAuthError('Неверные имя пользователя или пароль!');
+    } catch (error) {
+      if (error?.status === 401) {
+      setAuthError(i18next.t('login.errorToLogin'));
+      } else {
+        toast.error(i18next.t('alertErrors.networkError'))
+      }
     } finally {
       setSubmitting(false);
     }
