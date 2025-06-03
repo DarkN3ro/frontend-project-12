@@ -17,13 +17,15 @@ const init = async () => {
       fallbackLng: 'ru',
     });
 
-    const rollbarConfig = {
-      accessToken: 'eea9580c95cd4eb4a736241eb270f904',
-      environment: 'testenv',
-    };
+    const rollbarInstance = new Rollbar({
+      accessToken: 'e44e206c6ebe45b9ab678043a2f3fa9c',
+      captureUncaught: true,
+      captureUnhandledRejections: true,
+      environment: 'production'
+    });
 
   return (
-    <RollbarProvider instance={rollbarConfig}>
+    <RollbarProvider instance={rollbarInstance}>
       <ErrorBoundary>
         <Provider store={ store }>
           <I18nextProvider i18n={i18n}>
