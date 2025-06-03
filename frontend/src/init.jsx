@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import store from './store/index.js'
 import socket from './util/socket.js';
 import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react';
+import Rollbar from 'rollbar';
 
 const init = async () => {
   const i18n = i18next.createInstance();
