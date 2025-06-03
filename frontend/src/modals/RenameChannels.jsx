@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import React, { useEffect, useState, useRef} from 'react';
+import { Formik, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import i18next from '../util/i18n.js';
 
 const RenameChannelModal = ({show, onClose, existingChannels, onSubmit}) => {
+  const inputRef = useRef(null);
     const [validationSchema, setValidationSchema] = useState(null);
   
     useEffect(() => {
@@ -28,6 +29,12 @@ const RenameChannelModal = ({show, onClose, existingChannels, onSubmit}) => {
   
       setValidationSchema(schema);
     }, [existingChannels]);
+
+    useEffect(() => {
+      if (show && inputRef.current) {
+        inputRef.current.focus();
+      }
+    }, [show]);
   
     if (!show || !validationSchema) return null;
   
@@ -55,15 +62,18 @@ const RenameChannelModal = ({show, onClose, existingChannels, onSubmit}) => {
                     resetForm();
                   }}
                 >
-                  {({ isSubmitting, errors, touched  }) => (
+                  {(formik) => (
                     <Form noValidate>
                       <div>
-                        <Field
+                        <input
+                          ref={inputRef}
                           name="name"
                           id="name"
-                          className={`mb-2 form-control ${touched.name && errors.name ? 'is-invalid' : ''}`}
-                          autoFocus
-                          placeholder="Имя канала"
+                          className={`mb-2 form-control ${formik.touched.name && formik.errors.name ? 'is-invalid' : ''}`}
+                          placeholder={i18next.t('channels.nameChannel')}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          value={formik.values.name}
                         />
                         <label className="visually-hidden" htmlFor="name">
                           {i18next.t('channels.nameChannel')}
@@ -71,15 +81,15 @@ const RenameChannelModal = ({show, onClose, existingChannels, onSubmit}) => {
                         <ErrorMessage name="name" component="div" className="invalid-feedback d-block" />
                         <div className="d-flex justify-content-end">
                           <button type="button" className="me-2 btn btn-secondary" onClick={onClose}>
-                          {i18next.t('channels.cancelOfChannel')}
+                            {i18next.t('channels.cancelOfChannel')}
                           </button>
-                          <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
-                          {i18next.t('channels.sendOfChannel')}
+                          <button type="submit" className="btn btn-primary" disabled={formik.isSubmitting}>
+                            {i18next.t('channels.sendOfChannel')}
                           </button>
                         </div>
                       </div>
                     </Form>
-                  )}
+                 )}
                 </Formik>
               </div>
             </div>

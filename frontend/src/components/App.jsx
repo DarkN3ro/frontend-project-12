@@ -8,6 +8,7 @@ import Login from '../pages/LoginPage.jsx';
 import Signup from '../pages/SignupPage.jsx';
 import NotFound from '../pages/NotFound404Page.jsx';
 import PrivateRoute from '../pages/PrivateRoute.jsx';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 const App = ({socket}) => {

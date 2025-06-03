@@ -68,7 +68,7 @@ const AddChannelModal = ({ onSubmit, existingChannels  }) => {
                       id="name"
                       className={`mb-2 form-control ${touched.name && errors.name ? 'is-invalid' : ''}`}
                       autoFocus
-                      placeholder="Имя канала"
+                      placeholder={i18next.t('channels.nameChannel')}
                     />
                     <label className="visually-hidden" htmlFor="name">
                     {i18next.t('channels.nameChannel')}

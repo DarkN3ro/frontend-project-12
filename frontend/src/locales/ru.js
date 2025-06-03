@@ -32,6 +32,7 @@ const ru = {
         submit: 'Зарегистрироваться',
       },
       channels: {
+        titleName: 'Каналы',
         nameChannel: 'Имя канала',
         addChannel: 'Добавить канал',
         cancelOfChannel: 'Отменить',
