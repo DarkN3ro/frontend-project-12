@@ -19,7 +19,7 @@ const init = async () => {
     });
 
     const rollbarInstance = new Rollbar({
-      accessToken: 'e44e206c6ebe45b9ab678043a2f3fa9c',
+      accessToken: '80affbeb98da8dc87496b504c5083faf',
       captureUncaught: true,
       captureUnhandledRejections: true,
       environment: 'production'
