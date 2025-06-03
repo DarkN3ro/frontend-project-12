@@ -24,8 +24,8 @@ const init = async () => {
       captureUnhandledRejections: true,
       environment: 'production'
     });
-
-    rollbar.log ( 'Привет, мир ! ' ) ;
+    
+    rollbarInstance.log('Привет, мир!');
 
   return (
     <RollbarProvider instance={rollbarInstance}>
