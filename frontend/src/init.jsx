@@ -25,6 +25,8 @@ const init = async () => {
       environment: 'production'
     });
 
+    rollbar.log ( 'Привет, мир ! ' ) ;
+
   return (
     <RollbarProvider instance={rollbarInstance}>
       <ErrorBoundary>
