@@ -1,6 +1,6 @@
 import { useDispatch } from 'react-redux';
 import { setToken, setUsername } from '../store/authSlice';
-import React, { useEffect }  from 'react';
+import React, { useEffect, useState }  from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Header from '../components/Header.jsx';
 import Chat from '../pages/ChatPage.jsx';
@@ -14,6 +14,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App = ({socket}) => {
   const dispatch = useDispatch();
+  const [isAuthChecked, setIsAuthChecked] = useState(false);
 
   useEffect(() => {
     const savedAuth = JSON.parse(localStorage.getItem('userId'));
@@ -21,7 +22,12 @@ const App = ({socket}) => {
       dispatch(setToken(savedAuth.token));
       dispatch(setUsername(savedAuth.username));
     }
+    setIsAuthChecked(true);
   }, [dispatch]);
+
+  if (!isAuthChecked) {
+    return null;
+  }
 
   return (
     <BrowserRouter>
