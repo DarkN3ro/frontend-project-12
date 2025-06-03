@@ -26,6 +26,7 @@ const init = async () => {
     });
     
     rollbarInstance.log('Привет, мир!');
+    console.log('Rollbar access token:', import.meta.env.VITE_ROLLBAR_ACCESS_TOKEN);
 
   return (
     <RollbarProvider instance={rollbarInstance}>
