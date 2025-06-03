@@ -3,11 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { closeCreateModal } from '../store/modalsSlice.js';
 import * as Yup from 'yup';
-import i18next from '../util/i18n.js';
+import { useTranslation } from 'react-i18next';
 import filter from '../util/profanity.js';
 
 const AddChannelModal = ({ onSubmit, existingChannels  }) => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const show = useSelector(state => state.modals.createModalOpen);
   const [validationSchema, setValidationSchema] = useState(null);
   
@@ -15,12 +16,12 @@ const AddChannelModal = ({ onSubmit, existingChannels  }) => {
       const schema = Yup.object().shape({
         name: Yup.string()
     .trim()
-    .min(3, i18next.t('validate.errorNameMin'))
-    .max(20, i18next.t('validate.errorNameMax'))
-    .required(i18next.t('validate.errorRequired'))
+    .min(3, t('validate.errorNameMin'))
+    .max(20, t('validate.errorNameMax'))
+    .required(t('validate.errorRequired'))
     .test(
       'unique',
-      i18next.t('channels.errorChannelExists'),
+      t('channels.errorChannelExists'),
       value => {
         if (!value) return true;
         const existingNamesLower = existingChannels
@@ -31,7 +32,7 @@ const AddChannelModal = ({ onSubmit, existingChannels  }) => {
     )
     .test(
       'no-profanity',
-      i18next.t('validate.profanityNotAllowed'),
+      t('validate.profanityNotAllowed'),
       value => {
         if (!value) return true;
         return !filter.check(value);
@@ -55,7 +56,7 @@ const AddChannelModal = ({ onSubmit, existingChannels  }) => {
       <div className="modal-dialog modal-dialog-centered" role="document" onClick={(e) => e.stopPropagation()}>
         <div className="modal-content">
           <div className="modal-header">
-            <h5 className="modal-title">{i18next.t('channels.addChannel')}</h5>
+            <h5 className="modal-title">{t('channels.addChannel')}</h5>
             <button type="button" className="btn btn-close" aria-label="Close" onClick={() => dispatch(closeCreateModal())}></button>
           </div>
           <div className="modal-body">
@@ -77,18 +78,18 @@ const AddChannelModal = ({ onSubmit, existingChannels  }) => {
                       id="name"
                       className={`mb-2 form-control ${touched.name && errors.name ? 'is-invalid' : ''}`}
                       autoFocus
-                      placeholder={i18next.t('channels.nameChannel')}
+                      placeholder={t('channels.nameChannel')}
                     />
                     <label className="visually-hidden" htmlFor="name">
-                    {i18next.t('channels.nameChannel')}
+                    {t('channels.nameChannel')}
                     </label>
                     <ErrorMessage name="name" component="div" className="invalid-feedback d-block" />
                     <div className="d-flex justify-content-end">
                       <button type="button" className="me-2 btn btn-secondary" onClick={() => dispatch(closeCreateModal())}>
-                      {i18next.t('channels.cancelOfChannel')}
+                      {t('channels.cancelOfChannel')}
                       </button>
                       <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
-                      {i18next.t('channels.sendOfChannel')}
+                      {t('channels.sendOfChannel')}
                       </button>
                     </div>
                   </div>

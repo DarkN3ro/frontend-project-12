@@ -1,23 +1,24 @@
 import React, { useEffect, useState, useRef} from 'react';
 import { Formik, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import i18next from '../util/i18n.js';
+import { useTranslation } from 'react-i18next';
 import filter from '../util/profanity.js';
 
 const RenameChannelModal = ({show, onClose, existingChannels, onSubmit}) => {
   const inputRef = useRef(null);
+  const { t } = useTranslation();
     const [validationSchema, setValidationSchema] = useState(null);
   
     useEffect(() => {
         const schema = Yup.object().shape({
           name: Yup.string()
       .trim()
-      .min(3, i18next.t('validate.errorNameMin'))
-      .max(20, i18next.t('validate.errorNameMax'))
-      .required(i18next.t('validate.errorRequired'))
+      .min(3, t('validate.errorNameMin'))
+      .max(20, t('validate.errorNameMax'))
+      .required(t('validate.errorRequired'))
       .test(
         'unique',
-        i18next.t('channels.errorChannelExists'),
+        t('channels.errorChannelExists'),
         value => {
           if (!value) return true;
           const existingNamesLower = existingChannels
@@ -28,7 +29,7 @@ const RenameChannelModal = ({show, onClose, existingChannels, onSubmit}) => {
       )
       .test(
         'no-profanity',
-        i18next.t('validate.profanityNotAllowed'),
+        t('validate.profanityNotAllowed'),
         value => {
           if (!value) return true;
           return !filter.check(value);
@@ -58,7 +59,7 @@ const RenameChannelModal = ({show, onClose, existingChannels, onSubmit}) => {
           <div className="modal-dialog modal-dialog-centered" role="document" onClick={(e) => e.stopPropagation()}>
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title">{i18next.t('channels.renameThisChannel')}</h5>
+                <h5 className="modal-title">{t('channels.renameThisChannel')}</h5>
                 <button type="button" className="btn btn-close" aria-label="Close" onClick={onClose}></button>
               </div>
               <div className="modal-body">
@@ -79,21 +80,21 @@ const RenameChannelModal = ({show, onClose, existingChannels, onSubmit}) => {
                           name="name"
                           id="name"
                           className={`mb-2 form-control ${formik.touched.name && formik.errors.name ? 'is-invalid' : ''}`}
-                          placeholder={i18next.t('channels.nameChannel')}
+                          placeholder={t('channels.nameChannel')}
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
                           value={formik.values.name}
                         />
                         <label className="visually-hidden" htmlFor="name">
-                          {i18next.t('channels.nameChannel')}
+                          {t('channels.nameChannel')}
                         </label>
                         <ErrorMessage name="name" component="div" className="invalid-feedback d-block" />
                         <div className="d-flex justify-content-end">
                           <button type="button" className="me-2 btn btn-secondary" onClick={onClose}>
-                            {i18next.t('channels.cancelOfChannel')}
+                            {t('channels.cancelOfChannel')}
                           </button>
                           <button type="submit" className="btn btn-primary" disabled={formik.isSubmitting}>
-                            {i18next.t('channels.sendOfChannel')}
+                            {t('channels.sendOfChannel')}
                           </button>
                         </div>
                       </div>

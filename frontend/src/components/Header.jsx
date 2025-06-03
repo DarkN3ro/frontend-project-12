@@ -1,11 +1,12 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../util/useAuth.js';
-import i18next from '../util/i18n.js';
+import { useTranslation } from 'react-i18next';
 
 
 const Header = () => {
 const navigate = useNavigate()
+const { t } = useTranslation();
 const { isAuth, logout } = useAuth()
 
 const handleLogout = () => {
@@ -15,8 +16,8 @@ const handleLogout = () => {
   return (
       <nav className="shadow-sm navbar navbar-lg navbar-light bg-white">
         <div className="container">
-          <Link className="navbar-brand" to="/">{i18next.t('navbar.chatName')}</Link>
-          {isAuth && <button onClick={handleLogout} className="btn btn-primary">{i18next.t('navbar.logout')}</button>}
+          <Link className="navbar-brand" to="/">{t('navbar.chatName')}</Link>
+          {isAuth && <button onClick={handleLogout} className="btn btn-primary">{t('navbar.logout')}</button>}
         </div>
       </nav>
   )

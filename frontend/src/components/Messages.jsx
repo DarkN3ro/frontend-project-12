@@ -5,13 +5,14 @@ import { useGetMessagesQuery, useSendMessageMutation } from '../services/message
 import { setMessages, combineMessages } from '../store/messagesSlice.js';
 import { BsArrowRightSquare  } from "react-icons/bs";
 import countMessages from '../util/countMessages.jsx';
-import i18next from '../util/i18n.js';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import filter from '../util/profanity.js';
 
 const Messages = () => {
  
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const { username } = useAuth()
   const [newMessage, setNewMessage] = useState('');
   const { data: initialMessages  = []} = useGetMessagesQuery();
@@ -54,7 +55,7 @@ const Messages = () => {
       await sendMessage(messageToSend).unwrap();
       setNewMessage('');
     } catch (error) {
-      toast.error(i18next.t('alertErrors.messageSendError'));
+      toast.error(t('alertErrors.messageSendError'));
     }
   };
 
@@ -84,15 +85,15 @@ const Messages = () => {
             <div className="input-group has-validation">
               <input
                 name="body"
-                aria-label={i18next.t('messages.newMessage')}
-                placeholder={i18next.t('messages.sendNewMessage')}
+                aria-label={t('messages.newMessage')}
+                placeholder={t('messages.sendNewMessage')}
                 className="border-0 p-0 ps-2 form-control"
                 value={newMessage}
                 onChange={(e) => setNewMessage(e.target.value)}
               />
               <button type="submit" className="btn btn-group-vertical">
                 <BsArrowRightSquare size={20} color="currentColor" />
-                <span className="visually-hidden">{i18next.t('messages.signupMessages')}</span>
+                <span className="visually-hidden">{t('messages.signupMessages')}</span>
               </button>
             </div>
           </form>

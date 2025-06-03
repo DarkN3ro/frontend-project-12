@@ -8,11 +8,12 @@ import RenameChannelModal from '../modals/RenameChannels.jsx';
 import { openCreateModal, openRemoveModal, closeRemoveModal, openRenameModal, closeRenameModal} from '../store/modalsSlice.js';
 import { Dropdown, ButtonGroup } from 'react-bootstrap';
 import { FaPlusSquare } from 'react-icons/fa';
-import i18next from '../util/i18n.js';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
 const Channel = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const { data: fetchedChannels = [], isSuccess } = useGetChannelsQuery();
   const [addChannel] = useAddChannelsMutation();
   const [removeChannel] = useRemoveChannelMutation();
@@ -49,9 +50,9 @@ const Channel = () => {
       const addedChannel = await addChannel({ name: values.name }).unwrap();
       dispatch(addChannels(addedChannel));
       dispatch(setCurrentChannelId(addedChannel.id));
-      toast.success(i18next.t('alertSuccess.channelCreated'))
+      toast.success(t('alertSuccess.channelCreated'))
     } catch (error) {
-      toast.error(i18next.t('alertErrors.channelCreatedError'))
+      toast.error(t('alertErrors.channelCreatedError'))
     }
   };
 
@@ -60,7 +61,7 @@ const Channel = () => {
     try {
       await removeChannel(currentChannel.id).unwrap();
       dispatch(closeRemoveModal());
-      toast.success(i18next.t('alertSuccess.channelRemoved'))
+      toast.success(t('alertSuccess.channelRemoved'))
 
       if (currentChannel.id === currentChannelId) {
         const generalChannel = channels.find(ch => ch.name === 'general');
@@ -69,7 +70,7 @@ const Channel = () => {
         }
       }
     } catch (error) {
-      toast.error(i18next.t('alertErrors.channelRemovedError'))
+      toast.error(t('alertErrors.channelRemovedError'))
     }
   };
 
@@ -78,9 +79,9 @@ const handleRenameChannelSubmit = async ({ name }) => {
   try {
     await renameChannel({ id: currentChannel.id, name: name.trim() }).unwrap();
     dispatch(closeRenameModal());
-    toast.success(i18next.t('alertSuccess.channelRenamed'))
+    toast.success(t('alertSuccess.channelRenamed'))
   } catch (error) {
-    toast.error(i18next.t('alertErrors.channelRenamedError'))
+    toast.error(t('alertErrors.channelRenamedError'))
   }
 };
   
@@ -92,11 +93,11 @@ const handleRenameChannelSubmit = async ({ name }) => {
       <>
         <div className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex">
             <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
-              <b>{i18next.t('channels.titleName')}</b>
+              <b>{t('channels.titleName')}</b>
               <button 
                 type="button" 
                 className="p-0 text-primary btn btn-group-vertical"
-                title={i18next.t('channels.addChannel')}
+                title={t('channels.addChannel')}
                 onClick={handleCreateChannel}
               >
                 <FaPlusSquare  size={20} color="currentColor" />
@@ -126,15 +127,15 @@ const handleRenameChannelSubmit = async ({ name }) => {
                       id={`dropdown-split-${channel.id}`}
                     >
                     <span className="visually-hidden">
-                      {i18next.t('channels.channelNavigate')}
+                      {t('channels.channelNavigate')}
                     </span>
                       </Dropdown.Toggle>
                       <Dropdown.Menu>
                         <Dropdown.Item onClick={() => handleRemoveChannel(channel)}>
-                          {i18next.t('channels.removeChannel')}
+                          {t('channels.removeChannel')}
                         </Dropdown.Item>
                         <Dropdown.Item onClick={() => handleRenameChannel(channel)}>
-                          {i18next.t('channels.renameChannel')}
+                          {t('channels.renameChannel')}
                         </Dropdown.Item>
                       </Dropdown.Menu>
                     </Dropdown>

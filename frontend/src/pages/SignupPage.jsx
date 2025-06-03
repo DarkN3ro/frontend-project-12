@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import * as yup from 'yup';
 import { useDispatch } from 'react-redux';
-import i18next from '../util/i18n.js';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { setToken, setUsername } from '../store/authSlice.js';
 import { useSignupMutation } from '../services/authApi.js';
@@ -12,6 +12,7 @@ import { toast } from 'react-toastify';
 const Signup = () => {
   const usernameRef = useRef(null);
   const dispatch = useDispatch()
+  const { t } = useTranslation();
   const [ready, setReady] = useState(false);
   const [validationSchema, setValidationSchema] = useState(null);
   const [userExistsError, setUserExistsError] = useState(false);
@@ -23,19 +24,19 @@ const Signup = () => {
         username: yup
           .string()
           .trim()
-          .min(3, i18next.t('validate.errorNameMin'))
-          .max(20, i18next.t('validate.errorNameMax'))
-          .required(i18next.t('validate.errorRequired')),
+          .min(3, t('validate.errorNameMin'))
+          .max(20, t('validate.errorNameMax'))
+          .required(t('validate.errorRequired')),
         password: yup
           .string()
           .trim()
-          .min(6, i18next.t('validate.errorPasswordMin'))
-          .max(20, i18next.t('validate.errorPasswordMax'))
-          .required(i18next.t('validate.errorRequired')),
+          .min(6, t('validate.errorPasswordMin'))
+          .max(20, t('validate.errorPasswordMax'))
+          .required(t('validate.errorRequired')),
         confirmPassword: yup
           .string()
-          .oneOf([yup.ref('password'), null], i18next.t('validate.errorConfirmPassword'))
-          .required(i18next.t('validate.errorRequired')),
+          .oneOf([yup.ref('password'), null], t('validate.errorConfirmPassword'))
+          .required(t('validate.errorRequired')),
       });
       setValidationSchema(schema);
       setReady(true);
@@ -88,9 +89,9 @@ const Signup = () => {
                     if (error?.status === 409) {
                       setUserExistsError(true);
                     } else if (error?.status) {
-                      toast.error(i18next.t('alertErrors.networkError'));
+                      toast.error(t('alertErrors.networkError'));
                     } else {
-                      toast.error(i18next.t('alertErrors.serverError'));
+                      toast.error(t('alertErrors.serverError'));
                     }
                   } finally {
                     setSubmitting(false);
@@ -99,7 +100,7 @@ const Signup = () => {
               >
                 {({ isSubmitting, errors, touched }) => (
                   <Form className="w-50">
-                    <h1 className="text-center mb-4">{i18next.t('form.registration')}</h1>
+                    <h1 className="text-center mb-4">{t('form.registration')}</h1>
 
                     <div className="form-floating mb-3 position-relative">
                       <Field
@@ -109,10 +110,10 @@ const Signup = () => {
                         autoComplete="username"
                         required
                         id="username"
-                        title={i18next.t('form.fildThisField')}
+                        title={t('form.fildThisField')}
                         className={`form-control ${touched.username && errors.username ? 'is-invalid' : ''}`}
                       />
-                      <label htmlFor="username">{i18next.t('form.usernameLabel')}</label>
+                      <label htmlFor="username">{t('form.usernameLabel')}</label>
                       {touched.username && errors.username && (
                         <div placement="right" className="invalid-tooltip">{errors.username}</div>
                       )}
@@ -126,10 +127,10 @@ const Signup = () => {
                         autoComplete="new-password"
                         required
                         id="password"
-                        title={i18next.t('form.fildThisField')}
+                        title={t('form.fildThisField')}
                         className={`form-control ${touched.password && errors.password ? 'is-invalid' : ''}`}
                       />
-                      <label htmlFor="password">{i18next.t('form.passwordLabel')}</label>
+                      <label htmlFor="password">{t('form.passwordLabel')}</label>
                       {touched.password && errors.password && (
                         <div className="invalid-tooltip">{errors.password}</div>
                       )}
@@ -143,10 +144,10 @@ const Signup = () => {
                         autoComplete="new-password"
                         required
                         id="confirmPassword"
-                        title={i18next.t('form.fildThisField')}
+                        title={t('form.fildThisField')}
                         className={`form-control ${touched.confirmPassword && errors.confirmPassword ? 'is-invalid' : ''}`}
                       />
-                      <label htmlFor="confirmPassword">{i18next.t('form.confirmPasswordLabel')}</label>
+                      <label htmlFor="confirmPassword">{t('form.confirmPasswordLabel')}</label>
                       {touched.confirmPassword && errors.confirmPassword && (
                         <div className="invalid-tooltip">{errors.confirmPassword}</div>
                       )}
@@ -154,12 +155,12 @@ const Signup = () => {
 
                     {userExistsError && (
                       <div className="text-danger mb-3 text-center">
-                        {i18next.t('validate.errorUserExists')}
+                        {t('validate.errorUserExists')}
                       </div>
                     )}
 
                     <button type="submit" className="w-100 btn btn-outline-primary" disabled={isSubmitting}>
-                      {i18next.t('buttons.submit')}
+                      {t('buttons.submit')}
                     </button>
                   </Form>
                 )}

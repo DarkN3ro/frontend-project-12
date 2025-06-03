@@ -8,7 +8,7 @@ import Login from '../pages/LoginPage.jsx';
 import Signup from '../pages/SignupPage.jsx';
 import NotFound from '../pages/NotFound404Page.jsx';
 import PrivateRoute from '../pages/PrivateRoute.jsx';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 

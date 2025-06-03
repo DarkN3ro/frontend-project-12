@@ -3,7 +3,7 @@ import { Formik } from 'formik';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setToken, setUsername } from '../store/authSlice.js';
-import i18next from '../util/i18n.js';
+import { useTranslation } from 'react-i18next';
 import { useLoginMutation } from '../services/authApi.js';
 import avatar from '../assets/avatar.jpg';
 import { toast } from 'react-toastify';
@@ -11,6 +11,7 @@ import { toast } from 'react-toastify';
 const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [authError, setAuthError] = useState(null);
   const [login] = useLoginMutation();
 
@@ -27,9 +28,9 @@ const LoginPage = () => {
       navigate('/');
     } catch (error) {
       if (error?.status === 401) {
-      setAuthError(i18next.t('login.errorToLogin'));
+      setAuthError(t('login.errorToLogin'));
       } else {
-        toast.error(i18next.t('alertErrors.networkError'))
+        toast.error(t('alertErrors.networkError'))
       }
     } finally {
       setSubmitting(false);
@@ -54,7 +55,7 @@ const LoginPage = () => {
                     <img src={avatar} className="rounded-circle" alt="Enter" />
                   </div>
                   <form onSubmit={handleSubmit} className="col-12 col-md-6 mt-3 mt-md-0">
-                  <h1 className="text-center mb-4">{i18next.t('login.toEnterChat')}</h1>
+                  <h1 className="text-center mb-4">{t('login.toEnterChat')}</h1>
                   <div className="form-floating mb-3">
               <input
                 type="username"
@@ -67,7 +68,7 @@ const LoginPage = () => {
                 value={values.username}
                 required
               />
-              <label htmlFor="username">{i18next.t('login.userNameForChat')}</label>
+              <label htmlFor="username">{t('login.userNameForChat')}</label>
             </div>
             <div className="form-floating mb-4">
               <input
@@ -81,7 +82,7 @@ const LoginPage = () => {
                 value={values.password}
                 required
               />
-              <label htmlFor="password">{i18next.t('login.passwordUserForChat')}</label>
+              <label htmlFor="password">{t('login.passwordUserForChat')}</label>
               </div>
 
               {authError && (
@@ -91,14 +92,14 @@ const LoginPage = () => {
               )}
 
               <button type="submit" disabled={isSubmitting} className="w-100 mb-3 btn btn-outline-primary">
-              {i18next.t('login.toEnterChat')}
+              {t('login.toEnterChat')}
               </button>
                 </form>
               </div>
               <div className="card-footer p-4">
                 <div className="text-center">
-                  <span>{i18next.t('login.createAccountForUser')} </span>
-                  <a href="/signup">{i18next.t('login.toRegistrationNewUser')}</a>
+                  <span>{t('login.createAccountForUser')} </span>
+                  <a href="/signup">{t('login.toRegistrationNewUser')}</a>
                 </div>
               </div>
               </div>
