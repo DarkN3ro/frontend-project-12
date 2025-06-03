@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef} from 'react';
 import { Formik, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import i18next from '../util/i18n.js';
+import filter from '../util/profanity.js';
 
 const RenameChannelModal = ({show, onClose, existingChannels, onSubmit}) => {
   const inputRef = useRef(null);
@@ -23,6 +24,14 @@ const RenameChannelModal = ({show, onClose, existingChannels, onSubmit}) => {
             .filter(channel => channel && typeof channel.name === 'string')
             .map(channel => channel.name.toLowerCase());
           return !existingNamesLower.includes(value.toLowerCase().trim());
+        }
+      )
+      .test(
+        'no-profanity',
+        i18next.t('validate.profanityNotAllowed'),
+        value => {
+          if (!value) return true;
+          return !filter.check(value);
         }
       ),
     });

@@ -7,6 +7,7 @@ import { BsArrowRightSquare  } from "react-icons/bs";
 import countMessages from '../util/countMessages.jsx';
 import i18next from '../util/i18n.js';
 import { toast } from 'react-toastify';
+import filter from '../util/profanity.js';
 
 const Messages = () => {
  
@@ -38,8 +39,10 @@ const Messages = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const sanitized = newMessage.trim();
-    if (!sanitized) return;
+    const trimmed = newMessage.trim();
+    if (!trimmed) return;
+
+    const sanitized = filter.clean(trimmed)
 
     const messageToSend = {
       body: sanitized,

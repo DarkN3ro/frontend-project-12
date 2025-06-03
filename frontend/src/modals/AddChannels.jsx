@@ -4,6 +4,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { closeCreateModal } from '../store/modalsSlice.js';
 import * as Yup from 'yup';
 import i18next from '../util/i18n.js';
+import filter from '../util/profanity.js';
 
 const AddChannelModal = ({ onSubmit, existingChannels  }) => {
   const dispatch = useDispatch();
@@ -26,6 +27,14 @@ const AddChannelModal = ({ onSubmit, existingChannels  }) => {
           .filter(channel => channel && typeof channel.name === 'string')
           .map(channel => channel.name.toLowerCase());
         return !existingNamesLower.includes(value.toLowerCase().trim());
+      }
+    )
+    .test(
+      'no-profanity',
+      i18next.t('validate.profanityNotAllowed'),
+      value => {
+        if (!value) return true;
+        return !filter.check(value);
       }
     ),
   });
