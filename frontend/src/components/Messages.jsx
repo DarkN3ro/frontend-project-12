@@ -4,7 +4,7 @@ import { useAuth } from '../util/useAuth.js';
 import { useGetMessagesQuery, useSendMessageMutation } from '../services/messagesApi.js';
 import { setMessages, combineMessages } from '../store/messagesSlice.js';
 import { BsArrowRightSquare  } from "react-icons/bs";
-import countMessages from '../util/countMessages.jsx';
+import countMessages from '../util/countMessages.js';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import filter from '../util/profanity.js';
@@ -67,7 +67,7 @@ const Messages = () => {
   
         <div className="bg-light mb-4 p-3 shadow-sm small">
           <p className="m-0"><b># {currentChannelName}</b></p>
-          <span className="text-muted">{filteredMessages.length} {countMessages(filteredMessages.length)}</span>
+          <span className="text-muted">{filteredMessages.length} {countMessages(filteredMessages.length, t)}</span>
         </div>
   
         <div className="flex-grow-1 overflow-auto px-3">

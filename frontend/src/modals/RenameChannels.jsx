@@ -38,7 +38,7 @@ const RenameChannelModal = ({show, onClose, existingChannels, onSubmit}) => {
     });
   
       setValidationSchema(schema);
-    }, [existingChannels]);
+    }, [existingChannels, t]);
 
     useEffect(() => {
       if (show && inputRef.current) {

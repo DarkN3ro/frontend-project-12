@@ -8,11 +8,9 @@ import { setToken, setUsername } from '../store/authSlice.js';
 import { useSignupMutation } from '../services/authApi.js';
 import avatar from '../assets/avatar-signup.jpg';
 import { toast } from 'react-toastify';
-import { useRollbar } from '@rollbar/react';
 
 const Signup = () => {
   const usernameRef = useRef(null);
-  const rollbar = useRollbar();
   const dispatch = useDispatch()
   const { t } = useTranslation();
   const [ready, setReady] = useState(false);
@@ -20,10 +18,6 @@ const Signup = () => {
   const [userExistsError, setUserExistsError] = useState(false);
   const navigate = useNavigate();
   const [signup] = useSignupMutation();
-
-  useEffect(() => {
-    rollbar.error(new Error('Тестовая ошибка'));
-  }, [rollbar]);
 
   useEffect(() => {
       const schema = yup.object().shape({
@@ -46,7 +40,7 @@ const Signup = () => {
       });
       setValidationSchema(schema);
       setReady(true);
-  }, []);
+  }, [t]);
 
   useEffect(() => {
     if (ready && usernameRef.current) {

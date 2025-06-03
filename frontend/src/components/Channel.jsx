@@ -38,7 +38,7 @@ const Channel = () => {
       }
     }
   
-  }, [isSuccess, fetchedChannels, dispatch]);
+  }, [isSuccess, fetchedChannels, dispatch, currentChannelId]);
 
   const handleChannelClick = (id) => { dispatch(setCurrentChannelId(id)) };
   const handleCreateChannel = () => { dispatch(openCreateModal()) };

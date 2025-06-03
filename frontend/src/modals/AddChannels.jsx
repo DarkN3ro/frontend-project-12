@@ -41,7 +41,7 @@ const AddChannelModal = ({ onSubmit, existingChannels  }) => {
   });
 
     setValidationSchema(schema);
-  }, [existingChannels]);
+  }, [existingChannels, t]);
 
   if (!show || !validationSchema) return null;
 
