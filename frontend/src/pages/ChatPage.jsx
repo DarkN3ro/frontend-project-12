@@ -23,28 +23,24 @@ const ChatPage = () => {
 
     useEffect(() => {
       const handleNewMessage = (message) => {
-        console.log('message add socket:' , message)
         dispatch(addMessage(message));
       };
     
       socket.on('newMessage', handleNewMessage);
 
       const handleNewChannel = (channels) => {
-        console.log('channels add socket:' , channels)
         dispatch(addChannels(channels));
       };
 
       socket.on('newChannel', handleNewChannel);
 
       const handleRemoveChannel = (channels) => {
-        console.log('channels remove socket:' , channels)
         dispatch(removeChannels(channels.id));
       };
 
       socket.on('removeChannel', handleRemoveChannel);
 
       const handleRenameChannel = (channels) => {
-        console.log('channels rename socket:' , channels)
         dispatch(renameChannels(channels));
       };
 
