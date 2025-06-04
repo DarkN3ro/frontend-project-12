@@ -5,8 +5,11 @@
   "type": "module",
   "proxy": "http://localhost:5001",
   "scripts": {
+    "dev": "vite",
     "start": "vite",
     "build": "vite build",
+    "lint": "eslint . ",
+    "fix": "eslint . --fix",
     "preview": "vite preview"
   },
   "dependencies": {
