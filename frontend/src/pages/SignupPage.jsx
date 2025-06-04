@@ -104,7 +104,7 @@ const Signup = () => {
                     <div className="form-floating mb-3 position-relative">
                       <Field
                         innerRef={usernameRef}
-                        placeholder={t('validate.errorNameMin')}
+                        placeholder=" "
                         name="username"
                         autoComplete="username"
                         required
@@ -114,13 +114,13 @@ const Signup = () => {
                       />
                       <label htmlFor="username">{t('form.usernameLabel')}</label>
                       {touched.username && errors.username && (
-                        <div placement="right" className="invalid-tooltip">{errors.username}</div>
+                        <div className="invalid-tooltip">{errors.username}</div>
                       )}
                     </div>
 
                     <div className="form-floating mb-3 position-relative">
                       <Field
-                        placeholder={t('validate.errorPasswordMin')}
+                        placeholder=" "
                         name="password"
                         type="password"
                         autoComplete="new-password"
@@ -137,7 +137,7 @@ const Signup = () => {
 
                     <div className="form-floating mb-4 position-relative">
                       <Field
-                        placeholder={t('validate.errorConfirmPassword')}
+                        placeholder=" "
                         name="confirmPassword"
                         type="password"
                         autoComplete="new-password"
