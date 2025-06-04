@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useGetChannelsQuery, useAddChannelsMutation, useRemoveChannelMutation, useRenameChannelMutation } from '../services/channelsApi.js';
-import { setChannels, setCurrentChannelId } from '../store/channelsSlice.js';
+import { setChannels, setCurrentChannelId, addChannels } from '../store/channelsSlice.js';
 import AddChannelModal from '../modals/AddChannels.jsx';
 import RemoveChannelModal from '../modals/RemoveChannels.jsx';
 import RenameChannelModal from '../modals/RenameChannels.jsx';
@@ -14,7 +14,7 @@ import { toast } from 'react-toastify';
 const Channel = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const { data: fetchedChannels = [], isLoading } = useGetChannelsQuery();
+  const { data: fetchedChannels = [], isSuccess } = useGetChannelsQuery();
   const [addChannel] = useAddChannelsMutation();
   const [removeChannel] = useRemoveChannelMutation();
   const [renameChannel] = useRenameChannelMutation();
@@ -26,7 +26,7 @@ const Channel = () => {
   const currentChannel = useSelector(state => state.modals.currentChannel);
 
   useEffect(() => {
-    if (!isLoading && fetchedChannels.length > 0) {
+    if (isSuccess && fetchedChannels.length > 0) {
       console.log('Fetched from API:', fetchedChannels);
       dispatch(setChannels(fetchedChannels));
       
@@ -38,7 +38,7 @@ const Channel = () => {
       }
     }
   
-  }, [isLoading, fetchedChannels, dispatch, currentChannelId]);
+  }, [isSuccess, fetchedChannels, dispatch, currentChannelId]);
 
   const handleChannelClick = (id) => { dispatch(setCurrentChannelId(id)) };
   const handleCreateChannel = () => { dispatch(openCreateModal()) };
@@ -48,6 +48,7 @@ const Channel = () => {
   const handleAddChannelSubmit = async (values) => {
     try {
       const addedChannel = await addChannel({ name: values.name }).unwrap();
+      dispatch(addChannels(addedChannel));
       dispatch(setCurrentChannelId(addedChannel.id));
       toast.success(t('alertSuccess.channelCreated'))
     } catch (error) {
