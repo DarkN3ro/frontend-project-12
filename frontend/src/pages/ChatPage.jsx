@@ -38,9 +38,7 @@ const ChatPage = () => {
 
       const handleRemoveChannel = (channels) => {
         dispatch(removeChannels(channels.id));
-    
-          refetch();
-      
+        refetch();
       };
 
       socket.on('removeChannel', handleRemoveChannel);

@@ -110,7 +110,16 @@ const handleRenameChannelSubmit = async ({ name }) => {
                     </button>
                   ) : (
                     <Dropdown as={ButtonGroup} className="w-100 d-flex">
-                      <button type="button" onClick={() => handleChannelClick(channel.id)} className={classActive(channel.id)} style={{ flexGrow: 1 }}>
+                      <button type="button" 
+                        onClick={() => handleChannelClick(channel.id)} 
+                        className={classActive(channel.id)} 
+                        style={{
+                          flexGrow: 1,
+                          overflow: 'hidden',
+                          minWidth: 0,
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap',
+                        }}>
                         <span className="me-1">#</span>
                         {channel.name}
                       </button>
