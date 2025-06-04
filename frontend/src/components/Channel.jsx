@@ -14,7 +14,7 @@ import { toast } from 'react-toastify';
 const Channel = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const { data: fetchedChannels = [], isSuccess } = useGetChannelsQuery();
+  const { data: fetchedChannels = [], isLoading } = useGetChannelsQuery();
   const [addChannel] = useAddChannelsMutation();
   const [removeChannel] = useRemoveChannelMutation();
   const [renameChannel] = useRenameChannelMutation();
@@ -26,7 +26,7 @@ const Channel = () => {
   const currentChannel = useSelector(state => state.modals.currentChannel);
 
   useEffect(() => {
-    if (isSuccess && fetchedChannels.length > 0) {
+    if (!isLoading && fetchedChannels.length > 0) {
       console.log('Fetched from API:', fetchedChannels);
       dispatch(setChannels(fetchedChannels));
       
@@ -38,7 +38,7 @@ const Channel = () => {
       }
     }
   
-  }, [isSuccess, fetchedChannels, dispatch, currentChannelId]);
+  }, [isLoading, fetchedChannels, dispatch, currentChannelId]);
 
   const handleChannelClick = (id) => { dispatch(setCurrentChannelId(id)) };
   const handleCreateChannel = () => { dispatch(openCreateModal()) };

@@ -15,11 +15,9 @@ const useSocket = (refetch) => {
         }],
         ['removeChannel', (channel) => {
           dispatch(removeChannels(channel.id));
-          refetch();
         }],
         ['renameChannel', (channel) => {
           dispatch(renameChannels(channel));
-          refetch();
         }],
       ];
   
