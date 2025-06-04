@@ -38,6 +38,9 @@ const ChatPage = () => {
 
       const handleRemoveChannel = (channels) => {
         dispatch(removeChannels(channels.id));
+        setTimeout(() => {
+          refetch();
+        }, 0);
         refetch();
       };
 

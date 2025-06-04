@@ -16,7 +16,7 @@ const channelsSlice = createSlice({
       state.currentChannelId = payload;
     },
     addChannels(state, { payload }) {
-      const exists = state.channels.some(ch => ch.id === payload.id);
+      const exists = state.channels.some(channel => channel.id === payload.id);
       if (!exists) {
         state.channels.push(payload);
       }
@@ -24,7 +24,7 @@ const channelsSlice = createSlice({
     removeChannels(state, { payload }) {
       state.channels = state.channels.filter(channel => channel.id !== payload);
       if (state.currentChannelId === payload) {
-        const generalChannel = state.channels.find(ch => ch.name === 'general');
+        const generalChannel = state.channels.find(channel => channel.name === 'general');
         state.currentChannelId = generalChannel ? generalChannel.id : '';
       }
     },
