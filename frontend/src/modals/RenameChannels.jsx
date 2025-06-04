@@ -57,6 +57,8 @@ const RenameChannelModal = ({show, onClose, existingChannels, onSubmit, channel 
       <Modal.Body>
         <Formik
           initialValues={{ name: channel.name }}
+          validateOnBlur={false}
+          validateOnChange={true}
           validationSchema={validationSchema}
           onSubmit={(values, { setSubmitting, resetForm }) => {
             onSubmit(values);

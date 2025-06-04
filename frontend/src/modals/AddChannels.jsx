@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form, ErrorMessage } from 'formik';
+import { Modal, Button, Form as BootstrapForm } from 'react-bootstrap';
 import { closeCreateModal } from '../store/modalsSlice.js';
 import * as Yup from 'yup';
 import { useTranslation } from 'react-i18next';
@@ -10,6 +11,7 @@ const AddChannelModal = ({ onSubmit, existingChannels  }) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const show = useSelector(state => state.modals.createModalOpen);
+  const inputRef = useRef(null);
   const [validationSchema, setValidationSchema] = useState(null);
   
   useEffect(() => {
@@ -43,63 +45,68 @@ const AddChannelModal = ({ onSubmit, existingChannels  }) => {
     setValidationSchema(schema);
   }, [existingChannels, t]);
 
+  useEffect(() => {
+    if (show && inputRef.current) {
+      setTimeout(() => inputRef.current.focus(), 0);
+    }
+  }, [show]);
+
   if (!show || !validationSchema) return null;
 
-  const handleBackdropClick = (e) => {
-    if (e.target === e.currentTarget) {
-      dispatch(closeCreateModal());
-    }
+  const handleClose = () => {
+    dispatch(closeCreateModal());
   };
 
   return (
-    <div className="modal show d-block" tabIndex="-1" role="dialog" onClick={handleBackdropClick}>
-      <div className="modal-dialog modal-dialog-centered" role="document" onClick={(e) => e.stopPropagation()}>
-        <div className="modal-content">
-          <div className="modal-header">
-            <h5 className="modal-title">{t('channels.addChannel')}</h5>
-            <button type="button" className="btn btn-close" aria-label="Close" onClick={() => dispatch(closeCreateModal())}></button>
-          </div>
-          <div className="modal-body">
-            <Formik
-              initialValues={{ name: '' }}
-              validationSchema={validationSchema}
-              onSubmit={(values, { setSubmitting, resetForm }) => {
-                onSubmit(values);
-                setSubmitting(false);
-                resetForm();
-                dispatch(closeCreateModal());
-              }}
-            >
-              {({ isSubmitting, errors, touched  }) => (
-                <Form noValidate>
-                  <div>
-                    <Field
-                      name="name"
-                      id="name"
-                      className={`mb-2 form-control ${touched.name && errors.name ? 'is-invalid' : ''}`}
-                      autoFocus
-                      placeholder={t('channels.nameChannel')}
-                    />
-                    <label className="visually-hidden" htmlFor="name">
-                    {t('channels.nameChannel')}
-                    </label>
-                    <ErrorMessage name="name" component="div" className="invalid-feedback d-block" />
-                    <div className="d-flex justify-content-end">
-                      <button type="button" className="me-2 btn btn-secondary" onClick={() => dispatch(closeCreateModal())}>
-                      {t('channels.cancelOfChannel')}
-                      </button>
-                      <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
-                      {t('channels.sendOfChannel')}
-                      </button>
-                    </div>
-                  </div>
-                </Form>
-              )}
-            </Formik>
-          </div>
-        </div>
-      </div>
-    </div>
+    <Modal show={show} onHide={handleClose} centered>
+      <Modal.Header closeButton>
+        <Modal.Title>{t('channels.addChannel')}</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Formik
+          initialValues={{ name: '' }}
+          validateOnBlur={false}
+          validateOnChange={true}
+          validationSchema={validationSchema}
+          onSubmit={(values, { setSubmitting, resetForm }) => {
+            onSubmit(values);
+            setSubmitting(false);
+            resetForm();
+            handleClose();
+          }}
+        >
+          {(formik) => (
+            <Form noValidate>
+              <BootstrapForm.Group className="mb-2">
+                <BootstrapForm.Label visuallyHidden htmlFor="name">
+                  {t('channels.nameChannel')}
+                </BootstrapForm.Label>
+                <BootstrapForm.Control
+                  type="text"
+                  name="name"
+                  id="name"
+                  placeholder={t('channels.nameChannel')}
+                  value={formik.values.name}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  isInvalid={formik.touched.name && formik.errors.name}
+                  ref={inputRef}
+                />
+                <ErrorMessage name="name" component="div" className="invalid-feedback" />
+              </BootstrapForm.Group>
+              <div className="d-flex justify-content-end">
+                <Button variant="secondary" onClick={handleClose} className="me-2">
+                  {t('channels.cancelOfChannel')}
+                </Button>
+                <Button type="submit" variant="primary" disabled={formik.isSubmitting}>
+                  {t('channels.sendOfChannel')}
+                </Button>
+              </div>
+            </Form>
+          )}
+        </Formik>
+      </Modal.Body>
+    </Modal>
   );
 };
 
