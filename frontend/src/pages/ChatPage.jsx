@@ -13,7 +13,7 @@ const ChatPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { error, isError } = useGetChannelsQuery();
+  const { error, isError, refetch  } = useGetChannelsQuery();
 
     useEffect(() => {
       if (isError && error?.status === 401) {
@@ -23,25 +23,29 @@ const ChatPage = () => {
 
     useEffect(() => {
       const handleNewMessage = (message) => {
+        console.log('message add socket:' , message)
         dispatch(addMessage(message));
       };
     
       socket.on('newMessage', handleNewMessage);
 
-      const handleNewChannel = (channels) => {
-        dispatch(addChannels(channels));
+      const handleNewChannel = (channel) => {
+        dispatch(addChannels(channel));
+        refetch();
       };
 
       socket.on('newChannel', handleNewChannel);
 
       const handleRemoveChannel = (channels) => {
         dispatch(removeChannels(channels.id));
+        refetch();
       };
 
       socket.on('removeChannel', handleRemoveChannel);
 
       const handleRenameChannel = (channels) => {
         dispatch(renameChannels(channels));
+        refetch();
       };
 
       socket.on('renameChannel', handleRenameChannel);
@@ -52,7 +56,7 @@ const ChatPage = () => {
         socket.off('removeChannel', handleRemoveChannel);
         socket.off('renameChannel', handleRenameChannel);
       };
-    }, [dispatch]);
+    }, [dispatch, refetch]);
 
   return (
       <div className="container h-100 my-4 overflow-hidden rounded shadow">

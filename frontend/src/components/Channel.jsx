@@ -27,6 +27,7 @@ const Channel = () => {
 
   useEffect(() => {
     if (isSuccess && fetchedChannels.length > 0) {
+      console.log('Fetched from API:', fetchedChannels);
       dispatch(setChannels(fetchedChannels));
       
       if (!currentChannelId) {
