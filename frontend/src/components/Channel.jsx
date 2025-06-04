@@ -48,7 +48,6 @@ const Channel = () => {
   const handleAddChannelSubmit = async (values) => {
     try {
       const addedChannel = await addChannel({ name: values.name }).unwrap();
-      dispatch(addChannels(addedChannel));
       dispatch(setCurrentChannelId(addedChannel.id));
       toast.success(t('alertSuccess.channelCreated'))
     } catch (error) {
