@@ -104,7 +104,7 @@ const Signup = () => {
                     <div className="form-floating mb-3 position-relative">
                       <Field
                         innerRef={usernameRef}
-                        placeholder="От 3 до 20 символов"
+                        placeholder={t('validate.errorNameMin')}
                         name="username"
                         autoComplete="username"
                         required
@@ -120,7 +120,7 @@ const Signup = () => {
 
                     <div className="form-floating mb-3 position-relative">
                       <Field
-                        placeholder="Не менее 6 символов"
+                        placeholder={t('validate.errorPasswordMin')}
                         name="password"
                         type="password"
                         autoComplete="new-password"
@@ -137,7 +137,7 @@ const Signup = () => {
 
                     <div className="form-floating mb-4 position-relative">
                       <Field
-                        placeholder="Пароли должны совпадать"
+                        placeholder={t('validate.errorConfirmPassword')}
                         name="confirmPassword"
                         type="password"
                         autoComplete="new-password"
