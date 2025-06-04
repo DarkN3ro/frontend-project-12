@@ -62,13 +62,6 @@ const Channel = () => {
       await removeChannel(currentChannel.id).unwrap();
       dispatch(closeRemoveModal());
       toast.success(t('alertSuccess.channelRemoved'))
-
-      if (currentChannel.id === currentChannelId) {
-        const generalChannel = channels.find(ch => ch.name === 'general');
-        if (generalChannel) {
-          dispatch(setCurrentChannelId(generalChannel.id));
-        }
-      }
     } catch (error) {
       toast.error(t('alertErrors.channelRemovedError'))
     }
