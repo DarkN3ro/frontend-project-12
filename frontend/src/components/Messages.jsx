@@ -12,6 +12,7 @@ import filter from '../util/profanity.js';
 const Messages = () => {
   const dispatch = useDispatch();
   const messagesBoxRef = useRef(null);
+  const messageInputRef = useRef(null);
   const { t } = useTranslation();
   const { username } = useAuth()
   const [newMessage, setNewMessage] = useState('');
@@ -54,6 +55,7 @@ const Messages = () => {
     try {
       await sendMessage(messageToSend).unwrap();
       setNewMessage('');
+      messageInputRef.current.focus();
     } catch (error) {
       toast.error(t('alertErrors.messageSendError'));
     }
@@ -67,6 +69,12 @@ const Messages = () => {
       messagesBoxRef.current.scrollTop = messagesBoxRef.current.scrollHeight;
     }
   }, [filteredMessages]);
+
+  useEffect(() => {
+    if (messageInputRef.current) {
+      messageInputRef.current.focus();
+    }
+  }, []);
 
   return (
     <div className="col p-0 h-100">
@@ -97,6 +105,7 @@ const Messages = () => {
                 className="border-0 p-0 ps-2 form-control"
                 value={newMessage}
                 onChange={(e) => setNewMessage(e.target.value)}
+                ref={messageInputRef}
               />
               <button type="submit" className="btn btn-group-vertical">
                 <BsArrowRightSquare size={20} color="currentColor" />
