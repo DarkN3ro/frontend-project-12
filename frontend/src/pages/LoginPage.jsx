@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Formik } from 'formik';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -14,6 +14,7 @@ const LoginPage = () => {
   const { t } = useTranslation();
   const [authError, setAuthError] = useState(null);
   const [login] = useLoginMutation();
+  const usernameRef = useRef(null);
 
   const handleLogin = async (values, { setSubmitting }) => {
     setAuthError(null);
@@ -36,6 +37,12 @@ const LoginPage = () => {
       setSubmitting(false);
     }
   };
+  
+  useEffect(() => {
+    if (usernameRef.current) {
+      usernameRef.current.focus();
+    }
+  }, []);
 
   return (
     <Formik
@@ -58,6 +65,7 @@ const LoginPage = () => {
                   <h1 className="text-center mb-4">{t('login.toEnterChat')}</h1>
                   <div className="form-floating mb-3">
               <input
+                ref={usernameRef}
                 type="username"
                 name="username"
                 autoComplete="username"
