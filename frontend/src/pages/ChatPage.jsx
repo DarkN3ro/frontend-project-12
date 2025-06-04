@@ -37,17 +37,10 @@ const ChatPage = () => {
       socket.on('newChannel', handleNewChannel);
 
       const handleRemoveChannel = (channels) => {
-        if (id === currentChannelId) {
-          const generalChannel = channels.find((channel) => channel.name === 'general');
-          if (generalChannel) {
-            dispatch(setCurrentChannelId(generalChannel.id));
-          }
-        }
-  
-        dispatch(removeChannels(id));
-        setTimeout(() => {
+        dispatch(removeChannels(channels.id));
+    
           refetch();
-        }, 0);
+      
       };
 
       socket.on('removeChannel', handleRemoveChannel);
