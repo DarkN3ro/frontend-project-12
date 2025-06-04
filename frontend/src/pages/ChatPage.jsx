@@ -41,7 +41,6 @@ const ChatPage = () => {
         setTimeout(() => {
           refetch();
         }, 0);
-        refetch();
       };
 
       socket.on('removeChannel', handleRemoveChannel);
