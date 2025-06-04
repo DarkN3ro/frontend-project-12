@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useGetChannelsQuery, useAddChannelsMutation, useRemoveChannelMutation, useRenameChannelMutation } from '../services/channelsApi.js';
-import { setChannels, setCurrentChannelId, addChannels } from '../store/channelsSlice.js';
+import { setChannels, setCurrentChannelId } from '../store/channelsSlice.js';
 import AddChannelModal from '../modals/AddChannels.jsx';
 import RemoveChannelModal from '../modals/RemoveChannels.jsx';
 import RenameChannelModal from '../modals/RenameChannels.jsx';

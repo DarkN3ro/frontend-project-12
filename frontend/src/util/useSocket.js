@@ -12,7 +12,6 @@ const useSocket = (refetch) => {
         ['newMessage', (msg) => dispatch(addMessage(msg))],
         ['newChannel', (channel) => {
           dispatch(addChannels(channel));
-          refetch();
         }],
         ['removeChannel', (channel) => {
           dispatch(removeChannels(channel.id));
