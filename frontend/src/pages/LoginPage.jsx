@@ -67,7 +67,6 @@ const LoginPage = () => {
                           innerRef={usernameRef}
                           type="text"
                           name="username"
-                          autoComplete="username"
                           placeholder={t('login.userNameForChat')}
                           className="form-control"
                           required
@@ -81,7 +80,6 @@ const LoginPage = () => {
                         <Field
                           type="password"
                           name="password"
-                          autoComplete="password"
                           placeholder= {t('login.passwordUserForChat')}
                           className="form-control"
                           required
