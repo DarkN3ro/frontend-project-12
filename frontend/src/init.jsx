@@ -18,8 +18,9 @@ const init = async () => {
       fallbackLng: 'ru',
     });
 
+    const token = import.meta.env.VITE_ROLLBAR_ACCESS_TOKEN || '';
     const rollbarInstance = new Rollbar({
-      accessToken: import.meta.env.VITE_ROLLBAR_ACCESS_TOKEN,
+      accessToken: token,
       captureUncaught: true,
       captureUnhandledRejections: true,
       environment: 'production'
