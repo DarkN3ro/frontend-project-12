@@ -13,13 +13,13 @@ const messagesSlice = createSlice({
       state.push(action.payload);
     },
     combineMessages(state, action) {
-        const newMessages = action.payload;
-        newMessages.forEach(msg => {
-          if (!state.find(m => m.id === msg.id)) {
-            state.push(msg);
-          }
-        });
-      },
+      const newMessages = action.payload;
+      newMessages.forEach((msg) => {
+        if (!state.find((m) => m.id === msg.id)) {
+          state.push(msg);
+        }
+      });
+    },
   },
 });
 
