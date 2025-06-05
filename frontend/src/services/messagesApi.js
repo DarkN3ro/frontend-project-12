@@ -3,7 +3,7 @@ import { apiPath, apiRoutes } from '../routes/routes';
 
 export const messagesApi = createApi({
   reducerPath: 'messagesApi',
-  baseQuery: fetchBaseQuery({ 
+  baseQuery: fetchBaseQuery({
     baseUrl: apiPath,
     prepareHeaders: (headers, { getState }) => {
       const { token } = getState().auth;

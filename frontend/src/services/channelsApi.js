@@ -28,7 +28,7 @@ export const channelsApi = createApi({
       invalidatesTags: ['Channels'],
     }),
     renameChannel: builder.mutation({
-      query: (channel)=> ({
+      query: (channel) => ({
         url: apiRoutes.channelPath(channel.id),
         method: 'PATCH',
         body: { name: channel.name },
