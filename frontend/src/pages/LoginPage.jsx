@@ -15,6 +15,7 @@ const LoginPage = () => {
   const [authError, setAuthError] = useState(null);
   const [login] = useLoginMutation();
   const usernameRef = useRef(null);
+  const passwordRef = useRef(null);
 
   useEffect(() => {
     if (usernameRef.current) {
@@ -30,6 +31,13 @@ const LoginPage = () => {
 
   const handleLogin = async (values, { setSubmitting }) => {
     setAuthError(null);
+
+    if (values.username && !values.password) {
+      passwordRef.current?.focus();
+      setSubmitting(false);
+      return;
+    }
+
     try {
       const response = await login(values).unwrap();
       const { token, username } = response;
@@ -66,7 +74,7 @@ const LoginPage = () => {
                   initialValues={{ username: '', password: '' }}
                   onSubmit={handleLogin}
                 >
-                   {({ isSubmitting }) => (
+                   {({ isSubmitting, values }) => (
                     <Form noValidate>
                   
                       <div className="form-floating mb-3">
@@ -84,6 +92,7 @@ const LoginPage = () => {
 
                       <div className="form-floating mb-4 position-relative">
                         <Field
+                          innerRef={passwordRef}
                           type="password"
                           name="password"
                           autoComplete="current-password"
@@ -93,7 +102,7 @@ const LoginPage = () => {
                         />
                         <label htmlFor="password">{t('login.passwordUserForChat')}</label>
 
-                        {authError && (
+                        {authError && values.username && values.password && (
                           <div className="invalid-tooltip d-block">
                             {authError}
                           </div>
