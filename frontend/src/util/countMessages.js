@@ -13,6 +13,6 @@ const countMessages = (count, t) => {
     return t('count.fewMessages')
   }
   return t('count.manyMessages')
-};
+}
 
 export default countMessages

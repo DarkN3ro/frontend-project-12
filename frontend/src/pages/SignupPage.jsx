@@ -37,9 +37,9 @@ const Signup = () => {
         .string()
         .oneOf([yup.ref('password'), null], t('validate.errorConfirmPassword'))
         .required(t('validate.errorRequired')),
-    });
-    setValidationSchema(schema);
-    setReady(true);
+    })
+    setValidationSchema(schema)
+    setReady(true)
   }, [t])
 
   useEffect(() => {
@@ -66,7 +66,8 @@ const Signup = () => {
                   { username: '',
                     password: '',
                     confirmPassword: '',
-                  }}
+                  }
+                }
 
                 validationSchema={validationSchema}
                 validateOnBlur

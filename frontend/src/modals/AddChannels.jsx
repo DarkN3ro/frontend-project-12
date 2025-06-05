@@ -7,7 +7,7 @@ import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 import filter from '../util/profanity.js'
 
-const AddChannelModal = ({ onSubmit, existingChannels  }) => {
+const AddChannelModal = ({ onSubmit, existingChannels }) => {
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const show = useSelector(state => state.modals.createModalOpen)
@@ -22,16 +22,16 @@ const AddChannelModal = ({ onSubmit, existingChannels  }) => {
         .max(20, t('validate.errorNameMax'))
         .required(t('validate.errorRequired'))
         .test(
-        'unique',
-        t('channels.errorChannelExists'),
-        value => {
-        if (!value) return true
+          'unique',
+          t('channels.errorChannelExists'),
+          (value) => {
+            if (!value) return true
             const existingNamesLower = existingChannels
               .filter(channel => channel && typeof channel.name === 'string')
               .map(channel => channel.name.toLowerCase());
-          return !existingNamesLower.includes(value.toLowerCase().trim());
-        }
-      )
+            return !existingNamesLower.includes(value.toLowerCase().trim());
+          },
+        ),
     /*
     .test(
       'no-profanity',

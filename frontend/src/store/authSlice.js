@@ -5,7 +5,7 @@ const userData = JSON.parse(localStorage.getItem('userId')) || {}
 const initialState = {
   token: userData.token || null,
   username: userData.username || null,
-};
+}
 
 const authSlice = createSlice({
   name: 'auth',

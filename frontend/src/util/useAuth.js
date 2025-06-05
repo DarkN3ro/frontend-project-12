@@ -4,7 +4,7 @@ import {
 } from '../store/authSlice'
 
 export const useAuth = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
   const token = useSelector(state => state.auth.token)
   const username = useSelector(state => state.auth.username)
 
@@ -12,13 +12,13 @@ export const useAuth = () => {
     localStorage.setItem('userId', JSON.stringify({ token, username }))
     dispatch(setToken(token))
     dispatch(setUsername(username))
-  };
+  }
 
   const logout = () => {
     localStorage.removeItem('userId')
     dispatch(clearToken())
     dispatch(clearUsername())
-  };
+  }
 
   const isAuth = Boolean(token)
 

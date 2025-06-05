@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
   channels: [],
   currentChannelId: '',
-};
+}
 
 const channelsSlice = createSlice({
   name: 'channels',
@@ -36,7 +36,7 @@ const channelsSlice = createSlice({
       }
     },
   },
-});
+})
 
 export const {
   setChannels,

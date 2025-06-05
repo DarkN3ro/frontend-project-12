@@ -5,29 +5,29 @@ import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 import filter from '../util/profanity.js'
 
-const RenameChannelModal = ({show, onClose, existingChannels, onSubmit, channel }) => {
+const RenameChannelModal = ({ show, onClose, existingChannels, onSubmit, channel }) => {
   const inputRef = useRef(null)
   const { t } = useTranslation()
-    const [validationSchema, setValidationSchema] = useState(null)
+  const [validationSchema, setValidationSchema] = useState(null)
   
-    useEffect(() => {
-        const schema = Yup.object().shape({
-          name: Yup.string()
-      .trim()
-      .min(3, t('validate.errorNameMin'))
-      .max(20, t('validate.errorNameMax'))
-      .required(t('validate.errorRequired'))
-      .test(
-        'unique',
-        t('channels.errorChannelExists'),
-        value => {
-          if (!value) return true
-          const existingNamesLower = existingChannels
-            .filter(channel => channel && typeof channel.name === 'string')
-            .map(channel => channel.name.toLowerCase())
-          return !existingNamesLower.includes(value.toLowerCase().trim())
-        }
-      )
+   useEffect(() => {
+    const schema = Yup.object().shape({
+      name: Yup.string()
+        .trim()
+        .min(3, t('validate.errorNameMin'))
+        .max(20, t('validate.errorNameMax'))
+        .required(t('validate.errorRequired'))
+        .test(
+          'unique',
+          t('channels.errorChannelExists'),
+          (value) => {
+            if (!value) return true
+            const existingNamesLower = existingChannels
+              .filter(channel => channel && typeof channel.name === 'string')
+              .map(channel => channel.name.toLowerCase())
+            return !existingNamesLower.includes(value.toLowerCase().trim())
+          },
+        ),
       /*
       .test(
         'no-profanity',
@@ -38,22 +38,22 @@ const RenameChannelModal = ({show, onClose, existingChannels, onSubmit, channel 
         }
       ),
       */
-    });
-  
-      setValidationSchema(schema)
-    }, [existingChannels, t])
+    })
 
-    useEffect(() => {
-      if (show && inputRef.current) {
-        inputRef.current.focus()
-        inputRef.current.select()
-      }
-    }, [show]);
-  
-    if (!show || !validationSchema) return null;
+    setValidationSchema(schema)
+  }, [existingChannels, t])
 
-    return (
-      <Modal show={show} onHide={onClose} centered>
+  useEffect(() => {
+    if (show && inputRef.current) {
+      inputRef.current.focus()
+      inputRef.current.select()
+    }
+  }, [show])
+  
+  if (!show || !validationSchema) return null
+
+  return (
+    <Modal show={show} onHide={onClose} centered>
       <Modal.Header closeButton>
         <Modal.Title>{t('channels.renameThisChannel')}</Modal.Title>
       </Modal.Header>
@@ -109,8 +109,7 @@ const RenameChannelModal = ({show, onClose, existingChannels, onSubmit, channel 
         </Formik>
       </Modal.Body>
     </Modal>
-      )
-    }
+  )
+}
     
-    export default RenameChannelModal
-    
+export default RenameChannelModal

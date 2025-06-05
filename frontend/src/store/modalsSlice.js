@@ -5,7 +5,7 @@ const initialState = {
   renameModalOpen: false,
   removeModalOpen: false,
   currentChannel: null,
-};
+}
 
 const modalsSlice = createSlice({
   name: 'modals',

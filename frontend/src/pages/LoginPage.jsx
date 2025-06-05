@@ -21,21 +21,21 @@ const LoginPage = () => {
     if (usernameRef.current) {
       usernameRef.current.focus()
     }
-  }, []);
+  }, [])
 
   useEffect(() => {
     if (authError && usernameRef.current) {
       usernameRef.current.select()
     }
-  }, [authError]);
+  }, [authError])
 
   const handleLogin = async (values, { setSubmitting }) => {
-    setAuthError(null);
+    setAuthError(null)
 
     if (values.username && !values.password) {
       passwordRef.current?.focus()
       setSubmitting(false)
-      return;
+      return
     }
 
     try {
@@ -45,17 +45,20 @@ const LoginPage = () => {
       localStorage.setItem('userId', JSON.stringify(userId))
       dispatch(setToken(token))
       dispatch(setUsername(username))
-      navigate('/');
-    } catch (error) {
+      navigate('/')
+    } 
+    catch (error) {
       if (error?.status === 401) {
         setAuthError(t('login.errorToLogin'))
-      } else {
+      } 
+      else {
         toast.error(t('alertErrors.networkError'))
       }
-    } finally {
+    } 
+    finally {
       setSubmitting(false)
     }
-  };
+  }
 
   return (
     <div className="container-fluid h-100">
@@ -139,6 +142,5 @@ const LoginPage = () => {
     </div>
   )
 }
-
 
 export default LoginPage
