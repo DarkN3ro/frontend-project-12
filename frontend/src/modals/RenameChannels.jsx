@@ -45,7 +45,8 @@ const RenameChannelModal = ({show, onClose, existingChannels, onSubmit, channel 
 
     useEffect(() => {
       if (show && inputRef.current) {
-        setTimeout(() => inputRef.current.select(), 0);
+        inputRef.current.focus();
+        inputRef.current.select();
       }
     }, [show]);
   
@@ -71,6 +72,9 @@ const RenameChannelModal = ({show, onClose, existingChannels, onSubmit, channel 
             }
             setSubmitting(false);
             resetForm();
+            if (inputRef.current) {
+              inputRef.current.blur();
+            }
           }}
         >
           {(formik) => (
