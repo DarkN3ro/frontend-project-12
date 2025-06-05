@@ -22,6 +22,12 @@ const LoginPage = () => {
     }
   }, []);
 
+  useEffect(() => {
+    if (authError && usernameRef.current) {
+      usernameRef.current.select();
+    }
+  }, [authError]);
+
   const handleLogin = async (values, { setSubmitting }) => {
     setAuthError(null);
     try {
@@ -60,40 +66,39 @@ const LoginPage = () => {
                   initialValues={{ username: '', password: '' }}
                   onSubmit={handleLogin}
                 >
-                  {({ isSubmitting }) => (
-                    <Form>
+                   {({ isSubmitting }) => (
+                    <Form noValidate>
+                  
                       <div className="form-floating mb-3">
                         <Field
                           innerRef={usernameRef}
                           type="text"
                           name="username"
+                          autoComplete="username"
                           placeholder={t('login.userNameForChat')}
-                          className="form-control"
+                          className={`form-control ${authError ? 'is-invalid' : ''}`}
                           required
                         />
-                        <label htmlFor="username">
-                          {t('login.userNameForChat')}
-                        </label>
+                        <label htmlFor="username">{t('login.userNameForChat')}</label>
                       </div>
 
-                      <div className="form-floating mb-4">
+                      <div className="form-floating mb-4 position-relative">
                         <Field
                           type="password"
                           name="password"
-                          placeholder= {t('login.passwordUserForChat')}
-                          className="form-control"
+                          autoComplete="current-password"
+                          placeholder={t('login.passwordUserForChat')}
+                          className={`form-control ${authError ? 'is-invalid' : ''}`}
                           required
                         />
-                        <label htmlFor="password">
-                          {t('login.passwordUserForChat')}
-                        </label>
-                      </div>
+                        <label htmlFor="password">{t('login.passwordUserForChat')}</label>
 
-                      {authError && (
-                        <div className="text-danger mb-3 text-center">
-                          {authError}
-                        </div>
-                      )}
+                        {authError && (
+                          <div className="invalid-tooltip d-block">
+                            {authError}
+                          </div>
+                        )}
+                      </div>
 
                       <button
                         type="submit"
