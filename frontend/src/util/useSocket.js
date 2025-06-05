@@ -28,7 +28,7 @@ const useSocket = (refetch) => {
 
     return () => {
       socketEvents.forEach(([event, handler]) => socket.off(event, handler))
-    };
+    }
   }, [dispatch, refetch])
 }
 

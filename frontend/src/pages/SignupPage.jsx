@@ -80,21 +80,25 @@ const Signup = () => {
                       password: values.password,
                     }).unwrap()
 
-                    const token = response.token;
+                    const token = response.token
                     const userId = { username: values.username, token }
                     localStorage.setItem('userId', JSON.stringify(userId))
                     dispatch(setUsername(values.username))
                     dispatch(setToken(token))
                     navigate('/')
-                  } catch (error) {
+                  } 
+                  catch (error) {
                     if (error?.status === 409) {
-                      setUserExistsError(true);
-                    } else if (error?.status) {
+                      setUserExistsError(true)
+                    } 
+                    else if (error?.status) {
                       toast.error(t('alertErrors.networkError'))
-                    } else {
+                    } 
+                    else {
                       toast.error(t('alertErrors.serverError'))
                     }
-                  } finally {
+                  } 
+                  finally {
                     setSubmitting(false)
                   }
                 }}

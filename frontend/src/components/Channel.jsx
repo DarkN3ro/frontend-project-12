@@ -19,7 +19,7 @@ const Channel = () => {
   const [removeChannel] = useRemoveChannelMutation()
   const [renameChannel] = useRenameChannelMutation()
 
-  const channels = useSelector(state => state.channels.channels);
+  const channels = useSelector(state => state.channels.channels)
   const currentChannelId = useSelector(state => state.channels.currentChannelId)
   const removeModalOpen = useSelector(state => state.modals.removeModalOpen)
   const renameModalOpen = useSelector(state => state.modals.renameModalOpen)
@@ -29,7 +29,6 @@ const Channel = () => {
     if (isSuccess && fetchedChannels.length > 0) {
       console.log('Fetched from API:', fetchedChannels)
       dispatch(setChannels(fetchedChannels))
-      
       if (!currentChannelId) {
         const generalChannel = fetchedChannels.find(ch => ch.name === 'general')
         if (generalChannel) {
@@ -40,10 +39,18 @@ const Channel = () => {
   
   }, [isSuccess, fetchedChannels, dispatch, currentChannelId])
 
-  const handleChannelClick = (id) => { dispatch(setCurrentChannelId(id)) }
-  const handleCreateChannel = () => { dispatch(openCreateModal()) }
-  const handleRemoveChannel = (channel) => { dispatch(openRemoveModal(channel)) }
-  const handleRenameChannel = (channel) => { dispatch(openRenameModal(channel)) }
+  const handleChannelClick = (id) => { 
+    dispatch(setCurrentChannelId(id)) 
+  }
+  const handleCreateChannel = () => { 
+    dispatch(openCreateModal()) 
+  }
+  const handleRemoveChannel = (channel) => { 
+    dispatch(openRemoveModal(channel)) 
+  }
+  const handleRenameChannel = (channel) => { 
+    dispatch(openRenameModal(channel)) 
+  }
 
   const handleAddChannelSubmit = async (values) => {
     try {
@@ -76,27 +83,27 @@ const handleRenameChannelSubmit = async ({ name }) => {
   } catch (error) {
     toast.error(t('alertErrors.channelRenamedError'))
   }
-};
+}
   
-  const classActive = (id) => (
-    `w-100 rounded-0 text-start btn ${ id === currentChannelId ? 'btn-secondary' : '' }`
-  );
+const classActive = (id) => (
+  `w-100 rounded-0 text-start btn ${ id === currentChannelId ? 'btn-secondary' : '' }`
+)
 
-    return (
-      <>
-        <div className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex">
-            <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
-              <b>{t('channels.titleName')}</b>
-              <button 
-                type="button" 
-                className="p-0 text-primary btn btn-group-vertical"
-                title={t('channels.addChannel')}
-                onClick={handleCreateChannel}
-              >
-                <FaPlusSquare  size={20} color="currentColor" />
-                <span className="visually-hidden">+</span>
-              </button>
-            </div>
+return (
+  <>
+    <div className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex">
+      <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
+        <b>{t('channels.titleName')}</b>
+          <button 
+            type="button" 
+            className="p-0 text-primary btn btn-group-vertical"
+            title={t('channels.addChannel')}
+            onClick={handleCreateChannel}
+          >
+          <FaPlusSquare  size={20} color="currentColor" />
+            <span className="visually-hidden">+</span>
+          </button>
+          </div>
             <ul id="channels-box" className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block">
               {channels?.map((channel) => (
                 <li className="nav-item w-100" key={channel.id}>
@@ -145,23 +152,23 @@ const handleRenameChannelSubmit = async ({ name }) => {
                 </li>
               ))}
             </ul>
-          </div>
-          <AddChannelModal onSubmit={handleAddChannelSubmit} existingChannels={channels} />
-          <RemoveChannelModal
-            show={removeModalOpen}
-            onClose={() => dispatch(closeRemoveModal())}
-            channel={currentChannel}
-            onRemove={handleRemoveChannelSubmit}
-          />
-          <RenameChannelModal
-            show={renameModalOpen}
-            onSubmit={handleRenameChannelSubmit}
-            onClose={() => dispatch(closeRenameModal())}
-            channel={currentChannel}
-            existingChannels={channels}
-          />
-      </>
-    )
+      </div>
+      <AddChannelModal onSubmit={handleAddChannelSubmit} existingChannels={channels} />
+      <RemoveChannelModal
+        show={removeModalOpen}
+        onClose={() => dispatch(closeRemoveModal())}
+        channel={currentChannel}
+        onRemove={handleRemoveChannelSubmit}
+      />
+      <RenameChannelModal
+        show={renameModalOpen}
+        onSubmit={handleRenameChannelSubmit}
+        onClose={() => dispatch(closeRenameModal())}
+        channel={currentChannel}
+        existingChannels={channels}
+      />
+    </>
+  )
 }
 
 export default Channel

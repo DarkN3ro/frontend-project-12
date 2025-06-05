@@ -6,7 +6,7 @@ export const messagesApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: apiPath,
     prepareHeaders: (headers, { getState }) => {
-      const { token } = getState().auth;
+      const { token } = getState().auth
       if (token) {
         headers.set('Authorization', `Bearer ${token}`)
       }

@@ -9,8 +9,8 @@ const RenameChannelModal = ({ show, onClose, existingChannels, onSubmit, channel
   const inputRef = useRef(null)
   const { t } = useTranslation()
   const [validationSchema, setValidationSchema] = useState(null)
-  
-   useEffect(() => {
+
+  useEffect(() => {
     const schema = Yup.object().shape({
       name: Yup.string()
         .trim()
@@ -49,7 +49,7 @@ const RenameChannelModal = ({ show, onClose, existingChannels, onSubmit, channel
       inputRef.current.select()
     }
   }, [show])
-  
+
   if (!show || !validationSchema) return null
 
   return (
@@ -67,17 +67,18 @@ const RenameChannelModal = ({ show, onClose, existingChannels, onSubmit, channel
             const cleanName = filter.clean(values.name)
             if (cleanName !== values.name) {
               onSubmit({ name: cleanName })
-            } else {
+            }
+            else {
               onSubmit(values)
             }
             setSubmitting(false)
-            resetForm();
+            resetForm()
             if (inputRef.current) {
               inputRef.current.blur()
             }
           }}
         >
-          {(formik) => (
+          {formik => (
             <Form noValidate>
               <BootstrapForm.Group className="mb-2">
                 <BootstrapForm.Label visuallyHidden htmlFor="name">
@@ -111,5 +112,5 @@ const RenameChannelModal = ({ show, onClose, existingChannels, onSubmit, channel
     </Modal>
   )
 }
-    
+
 export default RenameChannelModal

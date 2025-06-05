@@ -1,6 +1,6 @@
 import { useDispatch } from 'react-redux'
 import { setToken, setUsername } from '../store/authSlice'
-import { useEffect }  from 'react'
+import { useEffect } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Header from '../components/Header.jsx'
 import Chat from '../pages/ChatPage.jsx'
@@ -12,7 +12,7 @@ import { ToastContainer } from 'react-toastify'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 
-const App = ({socket}) => {
+const App = ({ socket }) => {
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -25,21 +25,21 @@ const App = ({socket}) => {
 
   return (
     <BrowserRouter>
-    <div className="d-flex flex-column h-100">
-    <Header />
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route 
-            path="/" 
-            element={
-              <PrivateRoute>
-                <Chat socket={socket}/>
-              </PrivateRoute>
-            } 
+      <div className="d-flex flex-column h-100">
+        <Header />
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route
+          path="/"
+          element={
+            <PrivateRoute>
+              <Chat socket={ socket }/>
+            </PrivateRoute>
+          }
           />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+          <Route path="/signup" element={<Signup />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
       </div>
       <ToastContainer />
     </BrowserRouter>

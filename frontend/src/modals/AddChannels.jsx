@@ -28,8 +28,8 @@ const AddChannelModal = ({ onSubmit, existingChannels }) => {
             if (!value) return true
             const existingNamesLower = existingChannels
               .filter(channel => channel && typeof channel.name === 'string')
-              .map(channel => channel.name.toLowerCase());
-            return !existingNamesLower.includes(value.toLowerCase().trim());
+              .map(channel => channel.name.toLowerCase())
+            return !existingNamesLower.includes(value.toLowerCase().trim())
           },
         ),
     /*
@@ -74,7 +74,8 @@ const AddChannelModal = ({ onSubmit, existingChannels }) => {
             const cleanName = filter.clean(values.name)
             if (cleanName !== values.name) {
               onSubmit({ name: cleanName })
-            } else {
+            }
+            else {
               onSubmit(values)
             }
             setSubmitting(false)
@@ -82,7 +83,7 @@ const AddChannelModal = ({ onSubmit, existingChannels }) => {
             handleClose()
           }}
         >
-          {(formik) => (
+          {formik => (
             <Form noValidate>
               <BootstrapForm.Group className="mb-2">
                 <BootstrapForm.Label visuallyHidden htmlFor="name">

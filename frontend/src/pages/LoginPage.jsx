@@ -46,15 +46,15 @@ const LoginPage = () => {
       dispatch(setToken(token))
       dispatch(setUsername(username))
       navigate('/')
-    } 
+    }
     catch (error) {
       if (error?.status === 401) {
         setAuthError(t('login.errorToLogin'))
-      } 
+      }
       else {
         toast.error(t('alertErrors.networkError'))
       }
-    } 
+    }
     finally {
       setSubmitting(false)
     }
