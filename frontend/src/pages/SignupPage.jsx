@@ -1,55 +1,55 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Formik, Form, Field } from 'formik';
-import * as yup from 'yup';
-import { useDispatch } from 'react-redux';
-import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
-import { setToken, setUsername } from '../store/authSlice.js';
-import { useSignupMutation } from '../services/authApi.js';
-import avatar from '../assets/avatar-signup.jpg';
-import { toast } from 'react-toastify';
+import { useEffect, useRef, useState } from 'react'
+import { Formik, Form, Field } from 'formik'
+import * as yup from 'yup'
+import { useDispatch } from 'react-redux'
+import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
+import { setToken, setUsername } from '../store/authSlice.js'
+import { useSignupMutation } from '../services/authApi.js'
+import avatar from '../assets/avatar-signup.jpg'
+import { toast } from 'react-toastify'
 
 const Signup = () => {
-  const usernameRef = useRef(null);
+  const usernameRef = useRef(null)
   const dispatch = useDispatch()
-  const { t } = useTranslation();
-  const [ready, setReady] = useState(false);
-  const [validationSchema, setValidationSchema] = useState(null);
-  const [userExistsError, setUserExistsError] = useState(false);
-  const navigate = useNavigate();
-  const [signup] = useSignupMutation();
+  const { t } = useTranslation()
+  const [ready, setReady] = useState(false)
+  const [validationSchema, setValidationSchema] = useState(null)
+  const [userExistsError, setUserExistsError] = useState(false)
+  const navigate = useNavigate()
+  const [signup] = useSignupMutation()
 
   useEffect(() => {
-      const schema = yup.object().shape({
-        username: yup
-          .string()
-          .trim()
-          .min(3, t('validate.errorNameMin'))
-          .max(20, t('validate.errorNameMax'))
-          .required(t('validate.errorRequired')),
-        password: yup
-          .string()
-          .trim()
-          .min(6, t('validate.errorPasswordMin'))
-          .max(20, t('validate.errorPasswordMax'))
-          .required(t('validate.errorRequired')),
-        confirmPassword: yup
-          .string()
-          .oneOf([yup.ref('password'), null], t('validate.errorConfirmPassword'))
-          .required(t('validate.errorRequired')),
-      });
-      setValidationSchema(schema);
-      setReady(true);
-  }, [t]);
+    const schema = yup.object().shape({
+      username: yup
+        .string()
+        .trim()
+        .min(3, t('validate.errorNameMin'))
+        .max(20, t('validate.errorNameMax'))
+        .required(t('validate.errorRequired')),
+      password: yup
+        .string()
+        .trim()
+        .min(6, t('validate.errorPasswordMin'))
+        .max(20, t('validate.errorPasswordMax'))
+        .required(t('validate.errorRequired')),
+      confirmPassword: yup
+        .string()
+        .oneOf([yup.ref('password'), null], t('validate.errorConfirmPassword'))
+        .required(t('validate.errorRequired')),
+    });
+    setValidationSchema(schema);
+    setReady(true);
+  }, [t])
 
   useEffect(() => {
     if (ready && usernameRef.current) {
-      usernameRef.current.focus();
+      usernameRef.current.focus()
     }
-  }, [ready]);
+  }, [ready])
 
   if (!ready) {
-    return null;
+    return null
   }
 
   return (
@@ -63,37 +63,38 @@ const Signup = () => {
               </div>
               <Formik
                 initialValues={
-                  { username: '', 
-                    password: '', 
+                  { username: '',
+                    password: '',
                     confirmPassword: '',
                   }}
+
                 validationSchema={validationSchema}
                 validateOnBlur
                 validateOnChange={false}
                 onSubmit={async (values, { setSubmitting }) => {
-                  setUserExistsError(false);
+                  setUserExistsError(false)
                   try {
                     const response = await signup({
                       username: values.username,
                       password: values.password,
-                    }).unwrap();
+                    }).unwrap()
 
                     const token = response.token;
-                    const userId = { username: values.username, token };
-                    localStorage.setItem('userId', JSON.stringify(userId));
-                    dispatch(setUsername(values.username));
-                    dispatch(setToken(token));
-                    navigate('/');
+                    const userId = { username: values.username, token }
+                    localStorage.setItem('userId', JSON.stringify(userId))
+                    dispatch(setUsername(values.username))
+                    dispatch(setToken(token))
+                    navigate('/')
                   } catch (error) {
                     if (error?.status === 409) {
                       setUserExistsError(true);
                     } else if (error?.status) {
-                      toast.error(t('alertErrors.networkError'));
+                      toast.error(t('alertErrors.networkError'))
                     } else {
-                      toast.error(t('alertErrors.serverError'));
+                      toast.error(t('alertErrors.serverError'))
                     }
                   } finally {
-                    setSubmitting(false);
+                    setSubmitting(false)
                   }
                 }}
               >
@@ -169,7 +170,7 @@ const Signup = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Signup;
+export default Signup

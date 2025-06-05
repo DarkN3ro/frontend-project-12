@@ -9,27 +9,27 @@ const useSocket = (refetch) => {
 
   useEffect(() => {
     const socketEvents = [
-      ['newMessage', (msg) => dispatch(addMessage(msg))],
+      ['newMessage', msg => dispatch(addMessage(msg))],
       ['newChannel', (channel) => {
-        dispatch(addChannels(channel));
+        dispatch(addChannels(channel))
         refetch();
       }],
       ['removeChannel', (channel) => {
-        dispatch(removeChannels(channel.id));
+        dispatch(removeChannels(channel.id))
         refetch();
       }],
       ['renameChannel', (channel) => {
-        dispatch(renameChannels(channel));
+        dispatch(renameChannels(channel))
         refetch();
       }],
-    ];
+    ]
 
-    socketEvents.forEach(([event, handler]) => socket.on(event, handler));
+    socketEvents.forEach(([event, handler]) => socket.on(event, handler))
 
     return () => {
-      socketEvents.forEach(([event, handler]) => socket.off(event, handler));
+      socketEvents.forEach(([event, handler]) => socket.off(event, handler))
     };
-  }, [dispatch, refetch]);
+  }, [dispatch, refetch])
 };
 
-export default useSocket;
+export default useSocket

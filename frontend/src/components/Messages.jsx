@@ -1,29 +1,29 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { useAuth } from '../util/useAuth.js';
-import { useGetMessagesQuery, useSendMessageMutation } from '../services/messagesApi.js';
-import { setMessages, combineMessages } from '../store/messagesSlice.js';
-import { BsArrowRightSquare  } from "react-icons/bs";
-import countMessages from '../util/countMessages.js';
-import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
-import filter from '../util/profanity.js';
+import { useState, useEffect, useRef } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { useAuth } from '../util/useAuth.js'
+import { useGetMessagesQuery, useSendMessageMutation } from '../services/messagesApi.js'
+import { setMessages, combineMessages } from '../store/messagesSlice.js'
+import { BsArrowRightSquare  } from 'react-icons/bs'
+import countMessages from '../util/countMessages.js'
+import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
+import filter from '../util/profanity.js'
 
 const Messages = () => {
-  const dispatch = useDispatch();
-  const messagesBoxRef = useRef(null);
-  const messageInputRef = useRef(null);
-  const { t } = useTranslation();
+  const dispatch = useDispatch()
+  const messagesBoxRef = useRef(null)
+  const messageInputRef = useRef(null)
+  const { t } = useTranslation()
   const { username } = useAuth()
-  const [newMessage, setNewMessage] = useState('');
-  const { data: initialMessages  = []} = useGetMessagesQuery();
+  const [newMessage, setNewMessage] = useState('')
+  const { data: initialMessages  = []} = useGetMessagesQuery()
 
-  const messages = useSelector(state => state.messages);
-  const channels = useSelector(state => state.channels.channels);
-  const currentChannelId = useSelector(state => state.channels.currentChannelId);
+  const messages = useSelector(state => state.messages)
+  const channels = useSelector(state => state.channels.channels)
+  const currentChannelId = useSelector(state => state.channels.currentChannelId)
 
-  const currentChannel = channels.find(ch => ch.id === currentChannelId);
-  const currentChannelName = currentChannel ? currentChannel.name : '';
+  const currentChannel = channels.find(ch => ch.id === currentChannelId)
+  const currentChannelName = currentChannel ? currentChannel.name : ''
   
   
   useEffect(() => {
@@ -31,17 +31,17 @@ const Messages = () => {
       if (messages.length === 0) {
         dispatch(setMessages(initialMessages));
       } else {
-        dispatch(combineMessages(initialMessages));
+        dispatch(combineMessages(initialMessages))
       }
     }
-  }, [ initialMessages, dispatch, messages.length]);
+  }, [ initialMessages, dispatch, messages.length])
 
-  const [sendMessage] = useSendMessageMutation();
+  const [sendMessage] = useSendMessageMutation()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const trimmed = newMessage.trim();
+    const trimmed = newMessage.trim()
     if (!trimmed) return;
 
     const sanitized = filter.clean(trimmed)
@@ -53,11 +53,11 @@ const Messages = () => {
     };
 
     try {
-      await sendMessage(messageToSend).unwrap();
-      setNewMessage('');
-      messageInputRef.current.focus();
+      await sendMessage(messageToSend).unwrap()
+      setNewMessage('')
+      messageInputRef.current.focus()
     } catch (error) {
-      toast.error(t('alertErrors.messageSendError'));
+      toast.error(t('alertErrors.messageSendError'))
     }
   };
   

@@ -1,5 +1,5 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { apiPath, apiRoutes } from '../routes/routes';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { apiPath, apiRoutes } from '../routes/routes'
 
 export const messagesApi = createApi({
   reducerPath: 'messagesApi',
@@ -8,19 +8,19 @@ export const messagesApi = createApi({
     prepareHeaders: (headers, { getState }) => {
       const { token } = getState().auth;
       if (token) {
-        headers.set('Authorization', `Bearer ${token}`);
+        headers.set('Authorization', `Bearer ${token}`)
       }
-      return headers;
+      return headers
     },
   }),
   tagTypes: ['Messages'],
-  endpoints: (builder) => ({
+  endpoints: builder => ({
     getMessages: builder.query({
       query: () => apiRoutes.messagesPath(),
       providesTags: ['Messages'],
     }),
     sendMessage: builder.mutation({
-      query: (message) => ({
+      query: message => ({
         url: apiRoutes.messagesPath(),
         method: 'POST',
         body: message,
@@ -28,9 +28,9 @@ export const messagesApi = createApi({
       invalidatesTags: ['Messages'],
     }),
   }),
-});
+})
 
 export const {
   useGetMessagesQuery,
   useSendMessageMutation,
-} = messagesApi;
+} = messagesApi

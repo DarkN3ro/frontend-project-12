@@ -1,37 +1,37 @@
-import React, { useEffect, useState, useRef} from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Formik, Form, ErrorMessage } from 'formik';
-import { Modal, Button, Form as BootstrapForm } from 'react-bootstrap';
-import { closeCreateModal } from '../store/modalsSlice.js';
-import * as Yup from 'yup';
-import { useTranslation } from 'react-i18next';
-import filter from '../util/profanity.js';
+import { useEffect, useState, useRef } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Formik, Form, ErrorMessage } from 'formik'
+import { Modal, Button, Form as BootstrapForm } from 'react-bootstrap'
+import { closeCreateModal } from '../store/modalsSlice.js'
+import * as Yup from 'yup'
+import { useTranslation } from 'react-i18next'
+import filter from '../util/profanity.js'
 
 const AddChannelModal = ({ onSubmit, existingChannels  }) => {
-  const dispatch = useDispatch();
-  const { t } = useTranslation();
-  const show = useSelector(state => state.modals.createModalOpen);
-  const inputRef = useRef(null);
-  const [validationSchema, setValidationSchema] = useState(null);
-  
+  const dispatch = useDispatch()
+  const { t } = useTranslation()
+  const show = useSelector(state => state.modals.createModalOpen)
+  const inputRef = useRef(null)
+  const [validationSchema, setValidationSchema] = useState(null)
+
   useEffect(() => {
-      const schema = Yup.object().shape({
-        name: Yup.string()
-    .trim()
-    .min(3, t('validate.errorNameMin'))
-    .max(20, t('validate.errorNameMax'))
-    .required(t('validate.errorRequired'))
-    .test(
-      'unique',
-      t('channels.errorChannelExists'),
-      value => {
-        if (!value) return true;
-        const existingNamesLower = existingChannels
-          .filter(channel => channel && typeof channel.name === 'string')
-          .map(channel => channel.name.toLowerCase());
-        return !existingNamesLower.includes(value.toLowerCase().trim());
-      }
-    )
+    const schema = Yup.object().shape({
+      name: Yup.string()
+        .trim()
+        .min(3, t('validate.errorNameMin'))
+        .max(20, t('validate.errorNameMax'))
+        .required(t('validate.errorRequired'))
+        .test(
+        'unique',
+        t('channels.errorChannelExists'),
+        value => {
+        if (!value) return true
+            const existingNamesLower = existingChannels
+              .filter(channel => channel && typeof channel.name === 'string')
+              .map(channel => channel.name.toLowerCase());
+          return !existingNamesLower.includes(value.toLowerCase().trim());
+        }
+      )
     /*
     .test(
       'no-profanity',
@@ -42,22 +42,22 @@ const AddChannelModal = ({ onSubmit, existingChannels  }) => {
       }
     ),
     */
-  });
+    })
 
-    setValidationSchema(schema);
-  }, [existingChannels, t]);
+    setValidationSchema(schema)
+  }, [existingChannels, t])
 
   useEffect(() => {
     if (show && inputRef.current) {
-      setTimeout(() => inputRef.current.focus(), 0);
+      setTimeout(() => inputRef.current.focus(), 0)
     }
-  }, [show]);
+  }, [show])
 
-  if (!show || !validationSchema) return null;
+  if (!show || !validationSchema) return null
 
   const handleClose = () => {
-    dispatch(closeCreateModal());
-  };
+    dispatch(closeCreateModal())
+  }
 
   return (
     <Modal show={show} onHide={handleClose} centered>
@@ -71,15 +71,15 @@ const AddChannelModal = ({ onSubmit, existingChannels  }) => {
           validateOnChange={true}
           validationSchema={validationSchema}
           onSubmit={(values, { setSubmitting, resetForm }) => {
-            const cleanName = filter.clean(values.name);
+            const cleanName = filter.clean(values.name)
             if (cleanName !== values.name) {
-              onSubmit({ name: cleanName });
+              onSubmit({ name: cleanName })
             } else {
-              onSubmit(values);
+              onSubmit(values)
             }
-            setSubmitting(false);
-            resetForm();
-            handleClose();
+            setSubmitting(false)
+            resetForm()
+            handleClose()
           }}
         >
           {(formik) => (
@@ -114,7 +114,7 @@ const AddChannelModal = ({ onSubmit, existingChannels  }) => {
         </Formik>
       </Modal.Body>
     </Modal>
-  );
-};
+  )
+}
 
-export default AddChannelModal;
+export default AddChannelModal

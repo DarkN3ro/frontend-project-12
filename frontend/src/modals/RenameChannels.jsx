@@ -1,14 +1,14 @@
-import React, { useEffect, useState, useRef} from 'react';
-import { Formik, Form, ErrorMessage } from 'formik';
-import { Modal, Button, Form as BootstrapForm } from 'react-bootstrap';
-import * as Yup from 'yup';
-import { useTranslation } from 'react-i18next';
-import filter from '../util/profanity.js';
+import { useEffect, useState, useRef } from 'react'
+import { Formik, Form, ErrorMessage } from 'formik'
+import { Modal, Button, Form as BootstrapForm } from 'react-bootstrap'
+import * as Yup from 'yup'
+import { useTranslation } from 'react-i18next'
+import filter from '../util/profanity.js'
 
 const RenameChannelModal = ({show, onClose, existingChannels, onSubmit, channel }) => {
-  const inputRef = useRef(null);
-  const { t } = useTranslation();
-    const [validationSchema, setValidationSchema] = useState(null);
+  const inputRef = useRef(null)
+  const { t } = useTranslation()
+    const [validationSchema, setValidationSchema] = useState(null)
   
     useEffect(() => {
         const schema = Yup.object().shape({
@@ -21,11 +21,11 @@ const RenameChannelModal = ({show, onClose, existingChannels, onSubmit, channel 
         'unique',
         t('channels.errorChannelExists'),
         value => {
-          if (!value) return true;
+          if (!value) return true
           const existingNamesLower = existingChannels
             .filter(channel => channel && typeof channel.name === 'string')
-            .map(channel => channel.name.toLowerCase());
-          return !existingNamesLower.includes(value.toLowerCase().trim());
+            .map(channel => channel.name.toLowerCase())
+          return !existingNamesLower.includes(value.toLowerCase().trim())
         }
       )
       /*
@@ -40,13 +40,13 @@ const RenameChannelModal = ({show, onClose, existingChannels, onSubmit, channel 
       */
     });
   
-      setValidationSchema(schema);
-    }, [existingChannels, t]);
+      setValidationSchema(schema)
+    }, [existingChannels, t])
 
     useEffect(() => {
       if (show && inputRef.current) {
-        inputRef.current.focus();
-        inputRef.current.select();
+        inputRef.current.focus()
+        inputRef.current.select()
       }
     }, [show]);
   
@@ -64,16 +64,16 @@ const RenameChannelModal = ({show, onClose, existingChannels, onSubmit, channel 
           validateOnChange={true}
           validationSchema={validationSchema}
           onSubmit={(values, { setSubmitting, resetForm }) => {
-            const cleanName = filter.clean(values.name);
+            const cleanName = filter.clean(values.name)
             if (cleanName !== values.name) {
-              onSubmit({ name: cleanName });
+              onSubmit({ name: cleanName })
             } else {
-              onSubmit(values);
+              onSubmit(values)
             }
-            setSubmitting(false);
+            setSubmitting(false)
             resetForm();
             if (inputRef.current) {
-              inputRef.current.blur();
+              inputRef.current.blur()
             }
           }}
         >
@@ -109,7 +109,8 @@ const RenameChannelModal = ({show, onClose, existingChannels, onSubmit, channel 
         </Formik>
       </Modal.Body>
     </Modal>
-      );
-    };
+      )
+    }
     
-    export default RenameChannelModal;
+    export default RenameChannelModal
+    

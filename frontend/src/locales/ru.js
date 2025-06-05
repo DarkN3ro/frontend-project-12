@@ -73,6 +73,6 @@ const ru = {
       networkError: 'Ошибка соединения',
     },
   },
-};
+}
 
-export default ru;
+export default ru

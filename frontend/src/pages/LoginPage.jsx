@@ -1,31 +1,31 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Formik, Form, Field } from 'formik';
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { setToken, setUsername } from '../store/authSlice.js';
-import { useTranslation } from 'react-i18next';
-import { useLoginMutation } from '../services/authApi.js';
-import avatar from '../assets/avatar.jpg';
-import { toast } from 'react-toastify';
+import { useState, useEffect, useRef } from 'react'
+import { Formik, Form, Field } from 'formik'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { setToken, setUsername } from '../store/authSlice.js'
+import { useTranslation } from 'react-i18next'
+import { useLoginMutation } from '../services/authApi.js'
+import avatar from '../assets/avatar.jpg'
+import { toast } from 'react-toastify'
 
 const LoginPage = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { t } = useTranslation();
-  const [authError, setAuthError] = useState(null);
-  const [login] = useLoginMutation();
-  const usernameRef = useRef(null);
-  const passwordRef = useRef(null);
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const { t } = useTranslation()
+  const [authError, setAuthError] = useState(null)
+  const [login] = useLoginMutation()
+  const usernameRef = useRef(null)
+  const passwordRef = useRef(null)
 
   useEffect(() => {
     if (usernameRef.current) {
-      usernameRef.current.focus();
+      usernameRef.current.focus()
     }
   }, []);
 
   useEffect(() => {
     if (authError && usernameRef.current) {
-      usernameRef.current.select();
+      usernameRef.current.select()
     }
   }, [authError]);
 
@@ -33,27 +33,27 @@ const LoginPage = () => {
     setAuthError(null);
 
     if (values.username && !values.password) {
-      passwordRef.current?.focus();
-      setSubmitting(false);
+      passwordRef.current?.focus()
+      setSubmitting(false)
       return;
     }
 
     try {
-      const response = await login(values).unwrap();
-      const { token, username } = response;
-      const userId = { token, username };
-      localStorage.setItem('userId', JSON.stringify(userId));
-      dispatch(setToken(token));
-      dispatch(setUsername(username));
+      const response = await login(values).unwrap()
+      const { token, username } = response
+      const userId = { token, username }
+      localStorage.setItem('userId', JSON.stringify(userId))
+      dispatch(setToken(token))
+      dispatch(setUsername(username))
       navigate('/');
     } catch (error) {
       if (error?.status === 401) {
-        setAuthError(t('login.errorToLogin'));
+        setAuthError(t('login.errorToLogin'))
       } else {
-        toast.error(t('alertErrors.networkError'));
+        toast.error(t('alertErrors.networkError'))
       }
     } finally {
-      setSubmitting(false);
+      setSubmitting(false)
     }
   };
 
@@ -127,7 +127,9 @@ const LoginPage = () => {
 
             <div className="card-footer p-4">
               <div className="text-center">
-                <span>{t('login.createAccountForUser')} </span>
+                <span>
+                  {t('login.createAccountForUser')}
+                </span>
                 <a href="/signup">{t('login.toRegistrationNewUser')}</a>
               </div>
             </div>
@@ -135,8 +137,8 @@ const LoginPage = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
 
-export default LoginPage;
+export default LoginPage

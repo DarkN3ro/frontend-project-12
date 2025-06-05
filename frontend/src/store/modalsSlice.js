@@ -1,5 +1,4 @@
-/* eslint-disable no-param-reassign */
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
   createModalOpen: false,
@@ -13,29 +12,29 @@ const modalsSlice = createSlice({
   initialState,
   reducers: {
     openCreateModal(state) {
-      state.createModalOpen = true;
+      state.createModalOpen = true
     },
     closeCreateModal(state) {
-      state.createModalOpen = false;
+      state.createModalOpen = false
     },
     openRemoveModal(state, action) {
-      state.removeModalOpen = true;
-      state.currentChannel = action.payload;
+      state.removeModalOpen = true
+      state.currentChannel = action.payload
     },
     closeRemoveModal(state) {
-      state.removeModalOpen = false;
-      state.currentChannel = null;
+      state.removeModalOpen = false
+      state.currentChannel = null
     },
     openRenameModal(state, action) {
-      state.renameModalOpen = true;
-      state.currentChannel = action.payload;
+      state.renameModalOpen = true
+      state.currentChannel = action.payload
     },
     closeRenameModal(state) {
-      state.renameModalOpen = false;
-      state.currentChannel = null;
+      state.renameModalOpen = false
+      state.currentChannel = null
     },
   },
-});
+})
 
 export const {
   openCreateModal,
@@ -44,6 +43,6 @@ export const {
   closeRemoveModal,
   openRenameModal,
   closeRenameModal,
-} = modalsSlice.actions;
+} = modalsSlice.actions
 
-export default modalsSlice.reducer;
+export default modalsSlice.reducer
