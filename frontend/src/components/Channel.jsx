@@ -36,124 +36,132 @@ const Channel = () => {
         }
       }
     }
-  
   }, [isSuccess, fetchedChannels, dispatch, currentChannelId])
 
-  const handleChannelClick = (id) => { 
-    dispatch(setCurrentChannelId(id)) 
+  const handleChannelClick = (id) => {
+    dispatch(setCurrentChannelId(id))
   }
-  const handleCreateChannel = () => { 
-    dispatch(openCreateModal()) 
+  const handleCreateChannel = () => {
+    dispatch(openCreateModal())
   }
-  const handleRemoveChannel = (channel) => { 
-    dispatch(openRemoveModal(channel)) 
+  const handleRemoveChannel = (channel) => {
+    dispatch(openRemoveModal(channel))
   }
-  const handleRenameChannel = (channel) => { 
-    dispatch(openRenameModal(channel)) 
+  const handleRenameChannel = (channel) => {
+    dispatch(openRenameModal(channel))
   }
 
   const handleAddChannelSubmit = async (values) => {
     try {
       const addedChannel = await addChannel({ name: values.name }).unwrap()
-      dispatch(addChannels(addedChannel));
-      dispatch(setCurrentChannelId(addedChannel.id));
+      dispatch(addChannels(addedChannel))
+      dispatch(setCurrentChannelId(addedChannel.id))
       toast.success(t('alertSuccess.channelCreated'))
     } catch (error) {
       toast.error(t('alertErrors.channelCreatedError'))
     }
-  };
+  }
 
   const handleRemoveChannelSubmit = async () => {
-    if (!currentChannel) return;
+    if (!currentChannel) return
     try {
       await removeChannel(currentChannel.id).unwrap()
-      dispatch(closeRemoveModal());
+      dispatch(closeRemoveModal())
       toast.success(t('alertSuccess.channelRemoved'))
     } catch (error) {
       toast.error(t('alertErrors.channelRemovedError'))
     }
-  };
-
-const handleRenameChannelSubmit = async ({ name }) => {
-  if (!currentChannel) return;
-  try {
-    await renameChannel({ id: currentChannel.id, name: name.trim() }).unwrap()
-    dispatch(closeRenameModal())
-    toast.success(t('alertSuccess.channelRenamed'))
-  } catch (error) {
-    toast.error(t('alertErrors.channelRenamedError'))
   }
-}
-  
-const classActive = (id) => (
-  `w-100 rounded-0 text-start btn ${ id === currentChannelId ? 'btn-secondary' : '' }`
-)
 
-return (
-  <>
-    <div className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex">
-      <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
-        <b>{t('channels.titleName')}</b>
-          <button 
-            type="button" 
+  const handleRenameChannelSubmit = async ({ name }) => {
+    if (!currentChannel) return
+    try {
+      await renameChannel({ id: currentChannel.id, name: name.trim() }).unwrap()
+      dispatch(closeRenameModal())
+      toast.success(t('alertSuccess.channelRenamed'))
+    } catch (error) {
+      toast.error(t('alertErrors.channelRenamedError'))
+    }
+  }
+  
+  const classActive = (id) => (
+    `w-100 rounded-0 text-start btn ${ id === currentChannelId ? 'btn-secondary' : '' }`
+  )
+
+  return (
+    <>
+      <div className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex">
+        <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
+          <b>{t('channels.titleName')}</b>
+          <button
+            type="button"
             className="p-0 text-primary btn btn-group-vertical"
             title={t('channels.addChannel')}
             onClick={handleCreateChannel}
           >
-          <FaPlusSquare  size={20} color="currentColor" />
+            <FaPlusSquare size={20} color="currentColor" />
             <span className="visually-hidden">+</span>
           </button>
-          </div>
-            <ul id="channels-box" className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block">
-              {channels?.map((channel) => (
-                <li className="nav-item w-100" key={channel.id}>
-                  {!channel.removable ? (
-                    <button
-                      type="button"
-                      onClick={() => handleChannelClick(channel.id)}
-                      className={classActive(channel.id)}
-                    >
-                      <span className="me-1">#</span>{channel.name}
-                    </button>
-                  ) : (
-                    <Dropdown as={ButtonGroup} className="w-100 d-flex">
-                      <button type="button" 
-                        onClick={() => handleChannelClick(channel.id)} 
-                        className={classActive(channel.id)} 
-                        style={{
-                          flexGrow: 1,
-                          overflow: 'hidden',
-                          minWidth: 0,
-                          textOverflow: 'ellipsis',
-                          whiteSpace: 'nowrap',
-                        }}>
-                        <span className="me-1">#</span>
-                        {channel.name}
-                      </button>
-                    <Dropdown.Toggle
-                      split
-                      variant={channel.id === currentChannelId ? 'secondary' : 'light'}
-                      id={`dropdown-split-${channel.id}`}
-                    >
+        </div>
+        <ul
+          id="channels-box"
+          className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block"
+        >
+          {channels?.map((channel) => (
+            <li className="nav-item w-100" key={channel.id}>
+              {!channel.removable ? (
+                <button
+                  type="button"
+                  onClick={() => handleChannelClick(channel.id)}
+                  className={classActive(channel.id)}
+                >
+                  <span className="me-1">#</span>
+                  {channel.name}
+                </button>
+              ) : (
+                <Dropdown as={ButtonGroup} className="w-100 d-flex">
+                  <button
+                    type="button"
+                    onClick={() => handleChannelClick(channel.id)}
+                    className={classActive(channel.id)}
+                    style={{
+                      flexGrow: 1,
+                      overflow: 'hidden',
+                      minWidth: 0,
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    <span className="me-1">#</span>
+                    {channel.name}
+                  </button>
+                  <Dropdown.Toggle
+                    split
+                    variant={channel.id === currentChannelId ? 'secondary' : 'light'}
+                    id={`dropdown-split-${channel.id}`}
+                  >
                     <span className="visually-hidden">
                       {t('channels.channelNavigate')}
                     </span>
-                      </Dropdown.Toggle>
-                      <Dropdown.Menu>
-                        <Dropdown.Item onClick={() => handleRemoveChannel(channel)}>
-                          {t('channels.removeChannel')}
-                        </Dropdown.Item>
-                        <Dropdown.Item onClick={() => handleRenameChannel(channel)}>
-                          {t('channels.renameChannel')}
-                        </Dropdown.Item>
-                      </Dropdown.Menu>
-                    </Dropdown>
-                    )}
-                </li>
-              ))}
-            </ul>
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    <Dropdown.Item onClick={() => handleRemoveChannel(channel)}>
+                      {t('channels.removeChannel')}
+                    </Dropdown.Item>
+                    <Dropdown.Item onClick={() => handleRenameChannel(channel)}>
+                      {t('channels.renameChannel')}
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+              )}
+            </li>
+          ))}
+        </ul>
       </div>
-      <AddChannelModal onSubmit={handleAddChannelSubmit} existingChannels={channels} />
+      <AddChannelModal
+        onSubmit={handleAddChannelSubmit}
+        existingChannels={channels}
+      />
       <RemoveChannelModal
         show={removeModalOpen}
         onClose={() => dispatch(closeRemoveModal())}

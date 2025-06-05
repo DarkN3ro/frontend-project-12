@@ -86,18 +86,18 @@ const Signup = () => {
                     dispatch(setUsername(values.username))
                     dispatch(setToken(token))
                     navigate('/')
-                  } 
+                  }
                   catch (error) {
                     if (error?.status === 409) {
                       setUserExistsError(true)
-                    } 
+                    }
                     else if (error?.status) {
                       toast.error(t('alertErrors.networkError'))
-                    } 
+                    }
                     else {
                       toast.error(t('alertErrors.serverError'))
                     }
-                  } 
+                  }
                   finally {
                     setSubmitting(false)
                   }

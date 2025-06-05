@@ -11,7 +11,6 @@ import PrivateRoute from '../pages/PrivateRoute.jsx'
 import { ToastContainer } from 'react-toastify'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
-
 const App = ({ socket }) => {
   const dispatch = useDispatch()
 
@@ -30,12 +29,12 @@ const App = ({ socket }) => {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route
-          path="/"
-          element={
-            <PrivateRoute>
-              <Chat socket={ socket }/>
-            </PrivateRoute>
-          }
+            path="/"
+            element={(
+              <PrivateRoute>
+                <Chat socket={socket}/>
+              </PrivateRoute>
+            )}
           />
           <Route path="/signup" element={<Signup />} />
           <Route path="*" element={<NotFound />} />
