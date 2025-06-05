@@ -8,7 +8,7 @@
     "start": "vite",
     "build": "vite build",
     "lint": "eslint . ",
-    "fix": "eslint . --fix",
+    "fix": "eslint . --fix"
   },
   "dependencies": {
     "@hexlet/chat-server": "^2.0.4",
