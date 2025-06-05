@@ -67,59 +67,62 @@ const LoginPage = () => {
                 <img src={avatar} className="rounded-circle" alt="Enter" />
               </div>
 
-              <div className="col-12 col-md-6 mt-3 mt-md-0">
-                <h1 className="text-center mb-4">{t('login.toEnterChat')}</h1>
+              <Formik
+                initialValues={{ username: '', password: '' }}
+                onSubmit={handleLogin}
+              >
+                {({ isSubmitting, values }) => (
+                  <Form className="col-12 col-md-6 mt-3 mt-md-0" noValidate>
+                    <h1 className="text-center mb-4">{t('login.toEnterChat')}</h1>
 
-                <Formik
-                  initialValues={{ username: '', password: '' }}
-                  onSubmit={handleLogin}
-                >
-                   {({ isSubmitting, values }) => (
-                    <Form noValidate>
-                  
-                      <div className="form-floating mb-3">
-                        <Field
-                          innerRef={usernameRef}
-                          type="text"
-                          name="username"
-                          autoComplete="username"
-                          placeholder={t('login.userNameForChat')}
-                          className={`form-control ${authError ? 'is-invalid' : ''}`}
-                          required
-                        />
-                        <label htmlFor="username">{t('login.userNameForChat')}</label>
-                      </div>
+                    <div className="form-floating mb-3">
+                      <Field
+                        innerRef={usernameRef}
+                        type="text"
+                        name="username"
+                        autoComplete="username"
+                        id="username"
+                        title={t('login.userNameForChat')}
+                        placeholder={t('login.userNameForChat')}
+                        className={`form-control ${authError ? 'is-invalid' : ''}`}
+                        required
+                      />
+                      <label htmlFor="username">{t('login.userNameForChat')}</label>
+                    </div>
 
-                      <div className="form-floating mb-4 position-relative">
-                        <Field
-                          innerRef={passwordRef}
-                          type="password"
-                          name="password"
-                          autoComplete="current-password"
-                          placeholder={t('login.passwordUserForChat')}
-                          className={`form-control ${authError ? 'is-invalid' : ''}`}
-                          required
-                        />
-                        <label htmlFor="password">{t('login.passwordUserForChat')}</label>
+                    <div className="form-floating mb-4">
+                      <Field
+                        innerRef={passwordRef}
+                        type="password"
+                        name="password"
+                        autoComplete="current-password"
+                        id="password"
+                        title={t('login.passwordUserForChat')}
+                        placeholder={t('login.passwordUserForChat')}
+                        className={`form-control ${authError ? 'is-invalid' : ''}`}
+                        required
+                      />
+                      <label className="form-label" htmlFor="password">
+                        {t('login.passwordUserForChat')}
+                      </label>
 
-                        {authError && values.username && values.password && (
-                          <div className="invalid-tooltip d-block">
-                            {authError}
-                          </div>
-                        )}
-                      </div>
+                      {authError && values.username && values.password && (
+                        <div className="invalid-tooltip">
+                          {authError}
+                        </div>
+                      )}
+                    </div>
 
-                      <button
-                        type="submit"
-                        disabled={isSubmitting}
-                        className="w-100 mb-3 btn btn-outline-primary"
-                      >
-                        {t('login.toEnterChat')}
-                      </button>
-                    </Form>
-                  )}
-                </Formik>
-              </div>
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="w-100 mb-3 btn btn-outline-primary"
+                    >
+                      {t('login.toEnterChat')}
+                    </button>
+                  </Form>
+                )}
+              </Formik>
             </div>
 
             <div className="card-footer p-4">
@@ -134,5 +137,6 @@ const LoginPage = () => {
     </div>
   );
 };
+
 
 export default LoginPage;
