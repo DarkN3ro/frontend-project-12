@@ -28,6 +28,7 @@ const RenameChannelModal = ({show, onClose, existingChannels, onSubmit, channel 
           return !existingNamesLower.includes(value.toLowerCase().trim());
         }
       )
+      /*
       .test(
         'no-profanity',
         t('validate.profanityNotAllowed'),
@@ -36,6 +37,7 @@ const RenameChannelModal = ({show, onClose, existingChannels, onSubmit, channel 
           return !filter.check(value);
         }
       ),
+      */
     });
   
       setValidationSchema(schema);
@@ -61,7 +63,12 @@ const RenameChannelModal = ({show, onClose, existingChannels, onSubmit, channel 
           validateOnChange={true}
           validationSchema={validationSchema}
           onSubmit={(values, { setSubmitting, resetForm }) => {
-            onSubmit(values);
+            const cleanName = filter.clean(values.name);
+            if (cleanName !== values.name) {
+              onSubmit({ name: cleanName });
+            } else {
+              onSubmit(values);
+            }
             setSubmitting(false);
             resetForm();
           }}

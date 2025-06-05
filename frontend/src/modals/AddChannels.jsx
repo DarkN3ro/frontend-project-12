@@ -32,6 +32,7 @@ const AddChannelModal = ({ onSubmit, existingChannels  }) => {
         return !existingNamesLower.includes(value.toLowerCase().trim());
       }
     )
+    /*
     .test(
       'no-profanity',
       t('validate.profanityNotAllowed'),
@@ -40,6 +41,7 @@ const AddChannelModal = ({ onSubmit, existingChannels  }) => {
         return !filter.check(value);
       }
     ),
+    */
   });
 
     setValidationSchema(schema);
@@ -69,7 +71,12 @@ const AddChannelModal = ({ onSubmit, existingChannels  }) => {
           validateOnChange={true}
           validationSchema={validationSchema}
           onSubmit={(values, { setSubmitting, resetForm }) => {
-            onSubmit(values);
+            const cleanName = filter.clean(values.name);
+            if (cleanName !== values.name) {
+              onSubmit({ name: cleanName });
+            } else {
+              onSubmit(values);
+            }
             setSubmitting(false);
             resetForm();
             handleClose();
