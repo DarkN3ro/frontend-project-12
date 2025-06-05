@@ -59,7 +59,7 @@ const ru = {
       },
       alertSuccess: {
         channelCreated: 'Канал создан',
-        channelRemoved: 'Канал удален',
+        channelRemoved: 'Канал удалён',
         channelRenamed: 'Канал переименован',
       },
       alertErrors:{
