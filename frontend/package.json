@@ -4,12 +4,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "start": "vite",
+   "dev": "vite",
+    "start": "npx start-server -s ./dist",
     "build": "vite build",
-    "lint": "eslint . ",
-    "fix": "eslint . --fix",
-    "preview": "vite preview"
+    "serve": "vite preview"
   },
   "dependencies": {
     "@hexlet/chat-server": "^2.0.4",
