@@ -10,7 +10,7 @@ const ru = {
         passwordUserForChat: 'Пароль',
         createAccountForUser: 'Нет аккаунта?',
         toRegistrationNewUser: 'Регистрация',
-        errorToLogin: 'Неверные имя пользователя или пароль!',
+        errorToLogin: 'Неверные имя пользователя или пароль',
       },
       form: {
         registration: 'Регистрация',
