@@ -4,10 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-   "dev": "vite",
-    "start": "npx start-server -s ./dist",
+    "dev": "vite",
     "build": "vite build",
-    "serve": "vite preview"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@hexlet/chat-server": "^2.0.4",
