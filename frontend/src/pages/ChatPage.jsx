@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+
 import Channels from '../components/Channel.jsx'
 import Messages from '../components/Messages.jsx'
 import { useGetChannelsQuery } from '../services/channelsApi.js'

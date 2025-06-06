@@ -1,6 +1,7 @@
-import { Link } from 'react-router-dom'
-import notfound from '../assets/not-found.jpg'
 import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
+
+import notfound from '../assets/not-found.jpg'
 
 const NotFound = () => {
   const { t } = useTranslation()

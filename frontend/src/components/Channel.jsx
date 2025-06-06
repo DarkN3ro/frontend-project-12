@@ -1,15 +1,17 @@
 import { useEffect } from 'react'
+import { Dropdown, ButtonGroup } from 'react-bootstrap'
+import { useTranslation } from 'react-i18next'
+import { FaPlusSquare } from 'react-icons/fa'
 import { useSelector, useDispatch } from 'react-redux'
-import { useGetChannelsQuery, useAddChannelsMutation, useRemoveChannelMutation, useRenameChannelMutation } from '../services/channelsApi.js'
-import { setChannels, setCurrentChannelId, addChannels } from '../store/channelsSlice.js'
+import { toast } from 'react-toastify'
+
 import AddChannelModal from '../modals/AddChannels.jsx'
 import RemoveChannelModal from '../modals/RemoveChannels.jsx'
 import RenameChannelModal from '../modals/RenameChannels.jsx'
+import { useGetChannelsQuery, useAddChannelsMutation, useRemoveChannelMutation, useRenameChannelMutation } from '../services/channelsApi.js'
+import { setChannels, setCurrentChannelId, addChannels } from '../store/channelsSlice.js'
 import { openCreateModal, openRemoveModal, closeRemoveModal, openRenameModal, closeRenameModal } from '../store/modalsSlice.js'
-import { Dropdown, ButtonGroup } from 'react-bootstrap'
-import { FaPlusSquare } from 'react-icons/fa'
-import { useTranslation } from 'react-i18next'
-import { toast } from 'react-toastify'
+
 
 const Channel = () => {
   const dispatch = useDispatch()
@@ -27,7 +29,6 @@ const Channel = () => {
 
   useEffect(() => {
     if (isSuccess && fetchedChannels.length > 0) {
-      console.log('Fetched from API:', fetchedChannels)
       dispatch(setChannels(fetchedChannels))
       if (!currentChannelId) {
         const generalChannel = fetchedChannels.find(ch => ch.name === 'general')
@@ -57,7 +58,8 @@ const Channel = () => {
       dispatch(addChannels(addedChannel))
       dispatch(setCurrentChannelId(addedChannel.id))
       toast.success(t('alertSuccess.channelCreated'))
-    } catch (error) {
+    }
+    catch (error) {
       toast.error(t('alertErrors.channelCreatedError'))
     }
   }
@@ -68,7 +70,8 @@ const Channel = () => {
       await removeChannel(currentChannel.id).unwrap()
       dispatch(closeRemoveModal())
       toast.success(t('alertSuccess.channelRemoved'))
-    } catch (error) {
+    }
+    catch (error) {
       toast.error(t('alertErrors.channelRemovedError'))
     }
   }
@@ -79,12 +82,13 @@ const Channel = () => {
       await renameChannel({ id: currentChannel.id, name: name.trim() }).unwrap()
       dispatch(closeRenameModal())
       toast.success(t('alertSuccess.channelRenamed'))
-    } catch (error) {
+    }
+    catch (error) {
       toast.error(t('alertErrors.channelRenamedError'))
     }
   }
   
-  const classActive = (id) => (
+  const classActive = id => (
     `w-100 rounded-0 text-start btn ${id === currentChannelId ? 'btn-secondary' : ''}`
   )
 
@@ -107,7 +111,7 @@ const Channel = () => {
           id="channels-box"
           className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block"
         >
-          {channels?.map((channel) => (
+          {channels?.map(channel => (
             <li className="nav-item w-100" key={channel.id}>
               {!channel.removable ? (
                 <button

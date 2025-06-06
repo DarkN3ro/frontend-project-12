@@ -1,6 +1,7 @@
-import { Link, useNavigate } from 'react-router-dom'
-import { useAuth } from '../util/useAuth.js'
 import { useTranslation } from 'react-i18next'
+import { Link, useNavigate } from 'react-router-dom'
+
+import { useAuth } from '../util/useAuth.js'
 
 const Header = () => {
   const navigate = useNavigate()

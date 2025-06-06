@@ -1,12 +1,14 @@
-import { useState, useEffect, useRef } from 'react'
 import { Formik, Form, Field } from 'formik'
+import { useState, useEffect, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { useNavigate, Link } from 'react-router-dom'
-import { setToken, setUsername } from '../store/authSlice.js'
-import { useTranslation } from 'react-i18next'
-import { useLoginMutation } from '../services/authApi.js'
-import avatar from '../assets/avatar.jpg'
 import { toast } from 'react-toastify'
+
+import avatar from '../assets/avatar.jpg'
+import { useLoginMutation } from '../services/authApi.js'
+import { setToken, setUsername } from '../store/authSlice.js'
+
 
 const LoginPage = () => {
   const dispatch = useDispatch()

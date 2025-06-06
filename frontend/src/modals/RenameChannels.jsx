@@ -1,8 +1,9 @@
-import { useEffect, useState, useRef } from 'react'
 import { Formik, Form, ErrorMessage } from 'formik'
+import { useEffect, useState, useRef } from 'react'
 import { Modal, Button, Form as BootstrapForm } from 'react-bootstrap'
-import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
+import * as Yup from 'yup'
+
 import filter from '../util/profanity.js'
 
 const RenameChannelModal = ({ show, onClose, existingChannels, onSubmit, channel }) => {

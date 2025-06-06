@@ -1,7 +1,9 @@
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { addMessage } from '../store/messagesSlice'
+
 import { addChannels, removeChannels, renameChannels } from '../store/channelsSlice'
+import { addMessage } from '../store/messagesSlice'
+
 import socket from './socket'
 
 const useSocket = (refetch) => {

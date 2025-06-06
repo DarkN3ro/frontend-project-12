@@ -1,10 +1,11 @@
-import { useEffect, useState, useRef } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { Formik, Form, ErrorMessage } from 'formik'
+import { useEffect, useState, useRef } from 'react'
 import { Modal, Button, Form as BootstrapForm } from 'react-bootstrap'
-import { closeCreateModal } from '../store/modalsSlice.js'
-import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from 'react-redux'
+import * as Yup from 'yup'
+
+import { closeCreateModal } from '../store/modalsSlice.js'
 import filter from '../util/profanity.js'
 
 const AddChannelModal = ({ onSubmit, existingChannels }) => {

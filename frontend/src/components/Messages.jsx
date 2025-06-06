@@ -1,13 +1,14 @@
 import { useState, useEffect, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
+import { BsArrowRightSquare  } from 'react-icons/bs'
 import { useSelector, useDispatch } from 'react-redux'
-import { useAuth } from '../util/useAuth.js'
+import { toast } from 'react-toastify'
+
 import { useGetMessagesQuery, useSendMessageMutation } from '../services/messagesApi.js'
 import { setMessages, combineMessages } from '../store/messagesSlice.js'
-import { BsArrowRightSquare  } from 'react-icons/bs'
 import countMessages from '../util/countMessages.js'
-import { useTranslation } from 'react-i18next'
-import { toast } from 'react-toastify'
 import filter from '../util/profanity.js'
+import { useAuth } from '../util/useAuth.js'
 
 const Messages = () => {
   const dispatch = useDispatch()
@@ -29,8 +30,9 @@ const Messages = () => {
   useEffect(() => {
     if (initialMessages.length > 0) {
       if (messages.length === 0) {
-        dispatch(setMessages(initialMessages));
-      } else {
+        dispatch(setMessages(initialMessages))
+      }
+      else {
         dispatch(combineMessages(initialMessages))
       }
     }
@@ -39,10 +41,10 @@ const Messages = () => {
   const [sendMessage] = useSendMessageMutation()
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
     const trimmed = newMessage.trim()
-    if (!trimmed) return;
+    if (!trimmed) return
 
     const sanitized = filter.clean(trimmed)
 
@@ -50,31 +52,32 @@ const Messages = () => {
       body: sanitized,
       channelId: currentChannelId,
       username,
-    };
+    }
 
     try {
       await sendMessage(messageToSend).unwrap()
       setNewMessage('')
       messageInputRef.current.focus()
-    } catch (error) {
+    }
+    catch (error) {
       toast.error(t('alertErrors.messageSendError'))
     }
-  };
+  }
   
 
-  const filteredMessages = messages.filter(msg => msg.channelId === currentChannelId);
+  const filteredMessages = messages.filter(msg => msg.channelId === currentChannelId)
 
   useEffect(() => {
     if (messagesBoxRef.current) {
-      messagesBoxRef.current.scrollTop = messagesBoxRef.current.scrollHeight;
+      messagesBoxRef.current.scrollTop = messagesBoxRef.current.scrollHeight
     }
-  }, [filteredMessages]);
+  }, [filteredMessages])
 
   useEffect(() => {
     if (messageInputRef.current) {
-      messageInputRef.current.focus();
+      messageInputRef.current.focus()
     }
-  }, []);
+  }, [])
 
   return (
     <div className="col p-0 h-100">
@@ -86,7 +89,7 @@ const Messages = () => {
         </div>
   
         <div ref={messagesBoxRef} className="flex-grow-1 overflow-auto px-3">
-          {filteredMessages.map((msg) => (
+          {filteredMessages.map(msg => (
             <div key={msg.id} className="text-break mb-2">
               <b>{msg.username || 'user'}</b>
               {': '}
@@ -104,7 +107,7 @@ const Messages = () => {
                 placeholder={t('messages.sendNewMessage')}
                 className="border-0 p-0 ps-2 form-control"
                 value={newMessage}
-                onChange={(e) => setNewMessage(e.target.value)}
+                onChange={e => setNewMessage(e.target.value)}
                 ref={messageInputRef}
               />
               <button type="submit" className="btn btn-group-vertical">
@@ -117,7 +120,7 @@ const Messages = () => {
   
       </div>
     </div>
-  );
+  )
 }
 
 export default Messages

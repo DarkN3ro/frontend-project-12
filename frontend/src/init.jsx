@@ -1,8 +1,9 @@
 import i18next from 'i18next'
 import { I18nextProvider, initReactI18next } from 'react-i18next'
+import { Provider } from 'react-redux'
+
 import App from './components/App.jsx'
 import resources from './locales/index.js'
-import { Provider } from 'react-redux'
 import store from './store/index.js'
 import socket from './util/socket.js'
 // import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react';
