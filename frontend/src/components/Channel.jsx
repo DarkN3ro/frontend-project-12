@@ -112,51 +112,54 @@ const Channel = () => {
         >
           {channels?.map(channel => (
             <li className="nav-item w-100" key={channel.id}>
-              {!channel.removable ? (
-                <button
-                  type="button"
-                  onClick={() => handleChannelClick(channel.id)}
-                  className={classActive(channel.id)}
-                >
-                  <span className="me-1">#</span>
-                  {channel.name}
-                </button>
-              ) : (
-                <Dropdown as={ButtonGroup} className="w-100 d-flex">
+              {!channel.removable
+                ? (
                   <button
                     type="button"
                     onClick={() => handleChannelClick(channel.id)}
                     className={classActive(channel.id)}
-                    style={{
-                      flexGrow: 1,
-                      overflow: 'hidden',
-                      minWidth: 0,
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'nowrap',
-                    }}
                   >
                     <span className="me-1">#</span>
                     {channel.name}
                   </button>
-
-                  <Dropdown.Toggle
-                    split
-                    variant={channel.id === currentChannelId ? 'secondary' : 'light'}
-                    id={`dropdown-split-${channel.id}`}
-                  >
-                    <span className="visually-hidden">{t('channels.channelNavigate')}</span>
-                  </Dropdown.Toggle>
-
-                  <Dropdown.Menu>
-                    <Dropdown.Item onClick={() => handleRemoveChannel(channel)}>
-                      {t('channels.removeChannel')}
-                    </Dropdown.Item>
-                    <Dropdown.Item onClick={() => handleRenameChannel(channel)}>
-                      {t('channels.renameChannel')}
-                    </Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-              )}
+                )
+                : (
+                  <Dropdown as={ButtonGroup} className="w-100 d-flex">
+                    <button
+                      type="button"
+                      onClick={() => handleChannelClick(channel.id)}
+                      className={classActive(channel.id)}
+                      style={{
+                        flexGrow: 1,
+                        overflow: 'hidden',
+                        minWidth: 0,
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      <span className="me-1">#</span>
+                      {channel.name}
+                    </button>
+          
+                    <Dropdown.Toggle
+                      split
+                      variant={channel.id === currentChannelId ? 'secondary' : 'light'}
+                      id={`dropdown-split-${channel.id}`}
+                    >
+                      <span className="visually-hidden">{t('channels.channelNavigate')}</span>
+                    </Dropdown.Toggle>
+          
+                    <Dropdown.Menu>
+                      <Dropdown.Item onClick={() => handleRemoveChannel(channel)}>
+                        {t('channels.removeChannel')}
+                      </Dropdown.Item>
+                      <Dropdown.Item onClick={() => handleRenameChannel(channel)}>
+                        {t('channels.renameChannel')}
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                )
+              }
             </li>
           ))}
         </ul>
