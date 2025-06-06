@@ -75,8 +75,8 @@ const ru = {
     notFound: {
       notFoundTitle: 'Страница не найдена',
       notFoundText: 'Но вы можете перейти ',
-      notFoundLink:'на главную страницу',
-    }
+      notFoundLink: 'на главную страницу',
+    },
   },
 }
 

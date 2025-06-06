@@ -19,9 +19,9 @@ export default [
   {
     files: ['**/*.{js,jsx}'],
     plugins: {
-      react: reactPlugin,
+      'react': reactPlugin,
       'react-hooks': reactHooksPlugin,
-      import: importPlugin,
+      'import': importPlugin,
       'react-refresh': reactRefresh,
       '@stylistic': stylistic,
     },

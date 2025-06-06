@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { BsArrowRightSquare  } from 'react-icons/bs'
+import { BsArrowRightSquare } from 'react-icons/bs'
 import { useSelector, useDispatch } from 'react-redux'
 import { toast } from 'react-toastify'
 
@@ -17,7 +17,7 @@ const Messages = () => {
   const { t } = useTranslation()
   const { username } = useAuth()
   const [newMessage, setNewMessage] = useState('')
-  const { data: initialMessages  = []} = useGetMessagesQuery()
+  const { data: initialMessages = [] } = useGetMessagesQuery()
 
   const messages = useSelector(state => state.messages)
   const channels = useSelector(state => state.channels.channels)
@@ -25,8 +25,7 @@ const Messages = () => {
 
   const currentChannel = channels.find(ch => ch.id === currentChannelId)
   const currentChannelName = currentChannel ? currentChannel.name : ''
-  
-  
+
   useEffect(() => {
     if (initialMessages.length > 0) {
       if (messages.length === 0) {
@@ -36,7 +35,7 @@ const Messages = () => {
         dispatch(combineMessages(initialMessages))
       }
     }
-  }, [ initialMessages, dispatch, messages.length])
+  }, [initialMessages, dispatch, messages.length])
 
   const [sendMessage] = useSendMessageMutation()
 
@@ -59,11 +58,10 @@ const Messages = () => {
       setNewMessage('')
       messageInputRef.current.focus()
     }
-    catch (error) {
+    catch {
       toast.error(t('alertErrors.messageSendError'))
     }
   }
-  
 
   const filteredMessages = messages.filter(msg => msg.channelId === currentChannelId)
 
@@ -82,12 +80,22 @@ const Messages = () => {
   return (
     <div className="col p-0 h-100">
       <div className="d-flex flex-column h-100">
-  
+
         <div className="bg-light mb-4 p-3 shadow-sm small">
-          <p className="m-0"><b># {currentChannelName}</b></p>
-          <span className="text-muted">{filteredMessages.length} {countMessages(filteredMessages.length, t)}</span>
+          <p className="m-0">
+            <b>
+              #
+              {' '}
+              {currentChannelName}
+            </b>
+          </p>
+          <span className="text-muted">
+            {filteredMessages.length}
+            {' '}
+            {countMessages(filteredMessages.length, t)}
+          </span>
         </div>
-  
+
         <div ref={messagesBoxRef} className="flex-grow-1 overflow-auto px-3">
           {filteredMessages.map(msg => (
             <div key={msg.id} className="text-break mb-2">
@@ -97,7 +105,7 @@ const Messages = () => {
             </div>
           ))}
         </div>
-  
+
         <div className="mt-auto px-5 py-3">
           <form onSubmit={handleSubmit} className="py-1 border rounded-2">
             <div className="input-group has-validation">
@@ -117,7 +125,6 @@ const Messages = () => {
             </div>
           </form>
         </div>
-  
       </div>
     </div>
   )

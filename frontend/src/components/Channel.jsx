@@ -12,7 +12,6 @@ import { useGetChannelsQuery, useAddChannelsMutation, useRemoveChannelMutation, 
 import { setChannels, setCurrentChannelId, addChannels } from '../store/channelsSlice.js'
 import { openCreateModal, openRemoveModal, closeRemoveModal, openRenameModal, closeRenameModal } from '../store/modalsSlice.js'
 
-
 const Channel = () => {
   const dispatch = useDispatch()
   const { t } = useTranslation()
@@ -59,7 +58,7 @@ const Channel = () => {
       dispatch(setCurrentChannelId(addedChannel.id))
       toast.success(t('alertSuccess.channelCreated'))
     }
-    catch (error) {
+    catch {
       toast.error(t('alertErrors.channelCreatedError'))
     }
   }
@@ -71,7 +70,7 @@ const Channel = () => {
       dispatch(closeRemoveModal())
       toast.success(t('alertSuccess.channelRemoved'))
     }
-    catch (error) {
+    catch {
       toast.error(t('alertErrors.channelRemovedError'))
     }
   }
@@ -83,11 +82,11 @@ const Channel = () => {
       dispatch(closeRenameModal())
       toast.success(t('alertSuccess.channelRenamed'))
     }
-    catch (error) {
+    catch {
       toast.error(t('alertErrors.channelRenamedError'))
     }
   }
-  
+
   const classActive = id => (
     `w-100 rounded-0 text-start btn ${id === currentChannelId ? 'btn-secondary' : ''}`
   )
@@ -113,51 +112,52 @@ const Channel = () => {
         >
           {channels?.map(channel => (
             <li className="nav-item w-100" key={channel.id}>
-              {!channel.removable ? (
-                <button
-                  type="button"
-                  onClick={() => handleChannelClick(channel.id)}
-                  className={classActive(channel.id)}
-                >
-                  <span className="me-1">#</span>
-                  {channel.name}
-                </button>
-              ) : (
-                <Dropdown as={ButtonGroup} className="w-100 d-flex">
+              {!channel.removable 
+                ? (
                   <button
                     type="button"
                     onClick={() => handleChannelClick(channel.id)}
                     className={classActive(channel.id)}
-                    style={{
-                      flexGrow: 1,
-                      overflow: 'hidden',
-                      minWidth: 0,
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'nowrap',
-                    }}
                   >
                     <span className="me-1">#</span>
                     {channel.name}
                   </button>
-                  <Dropdown.Toggle
-                    split
-                    variant={channel.id === currentChannelId ? 'secondary' : 'light'}
-                    id={`dropdown-split-${channel.id}`}
-                  >
-                    <span className="visually-hidden">
-                      {t('channels.channelNavigate')}
-                    </span>
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu>
-                    <Dropdown.Item onClick={() => handleRemoveChannel(channel)}>
-                      {t('channels.removeChannel')}
-                    </Dropdown.Item>
-                    <Dropdown.Item onClick={() => handleRenameChannel(channel)}>
-                      {t('channels.renameChannel')}
-                    </Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-              )}
+                ) : (
+                  <Dropdown as={ButtonGroup} className="w-100 d-flex">
+                    <button
+                      type="button"
+                      onClick={() => handleChannelClick(channel.id)}
+                      className={classActive(channel.id)}
+                      style={{
+                        flexGrow: 1,
+                        overflow: 'hidden',
+                        minWidth: 0,
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      <span className="me-1">#</span>
+                      {channel.name}
+                    </button>
+                    <Dropdown.Toggle
+                      split
+                      variant={channel.id === currentChannelId ? 'secondary' : 'light'}
+                      id={`dropdown-split-${channel.id}`}
+                    >
+                      <span className="visually-hidden">
+                        {t('channels.channelNavigate')}
+                      </span>
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                      <Dropdown.Item onClick={() => handleRemoveChannel(channel)}>
+                        {t('channels.removeChannel')}
+                      </Dropdown.Item>
+                      <Dropdown.Item onClick={() => handleRenameChannel(channel)}>
+                        {t('channels.renameChannel')}
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                )}
             </li>
           ))}
         </ul>

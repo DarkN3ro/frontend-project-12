@@ -9,7 +9,6 @@ import avatar from '../assets/avatar.jpg'
 import { useLoginMutation } from '../services/authApi.js'
 import { setToken, setUsername } from '../store/authSlice.js'
 
-
 const LoginPage = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
