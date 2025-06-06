@@ -8,7 +8,7 @@ const ru = {
       toEnterChat: 'Войти',
       userNameForChat: 'Ваш ник',
       passwordUserForChat: 'Пароль',
-      createAccountForUser: 'Нет аккаунта?',
+      createAccountForUser: 'Нет аккаунта? ',
       toRegistrationNewUser: 'Регистрация',
       errorToLogin: 'Неверные имя пользователя или пароль',
     },
@@ -72,6 +72,11 @@ const ru = {
       serverError: 'Ошибка сервера',
       networkError: 'Ошибка соединения',
     },
+    notFound: {
+      notFoundTitle: 'Страница не найдена',
+      notFoundText: 'Но вы можете перейти ',
+      notFoundLink:'на главную страницу',
+    }
   },
 }
 

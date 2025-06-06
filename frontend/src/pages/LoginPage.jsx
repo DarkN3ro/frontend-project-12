@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { Formik, Form, Field } from 'formik'
 import { useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { setToken, setUsername } from '../store/authSlice.js'
 import { useTranslation } from 'react-i18next'
 import { useLoginMutation } from '../services/authApi.js'
@@ -67,7 +67,7 @@ const LoginPage = () => {
           <div className="card shadow-sm">
             <div className="card-body row p-5">
               <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
-                <img src={avatar} className="rounded-circle" alt="Enter" />
+                <img src={avatar} className="rounded-circle" alt={t('login.toEnterChat')} />
               </div>
 
               <Formik
@@ -133,7 +133,7 @@ const LoginPage = () => {
                 <span>
                   {t('login.createAccountForUser')}
                 </span>
-                <a href="/signup">{t('login.toRegistrationNewUser')}</a>
+                <Link to="/signup">{t('login.toRegistrationNewUser')}</Link>
               </div>
             </div>
           </div>

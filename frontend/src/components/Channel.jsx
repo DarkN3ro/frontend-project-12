@@ -85,7 +85,7 @@ const Channel = () => {
   }
   
   const classActive = (id) => (
-    `w-100 rounded-0 text-start btn ${ id === currentChannelId ? 'btn-secondary' : '' }`
+    `w-100 rounded-0 text-start btn ${id === currentChannelId ? 'btn-secondary' : ''}`
   )
 
   return (
