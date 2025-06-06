@@ -3,7 +3,6 @@ import stylistic from '@stylistic/eslint-plugin'
 import importPlugin from 'eslint-plugin-import'
 import reactPlugin from 'eslint-plugin-react'
 import reactHooksPlugin from 'eslint-plugin-react-hooks'
-import reactRefresh from 'eslint-plugin-react-refresh'
 import globals from 'globals'
 
 export default [
@@ -22,7 +21,6 @@ export default [
       'react': reactPlugin,
       'react-hooks': reactHooksPlugin,
       'import': importPlugin,
-      'react-refresh': reactRefresh,
       '@stylistic': stylistic,
     },
     languageOptions: {
@@ -56,27 +54,21 @@ export default [
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
 
-      'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
-
       'import/order': [
         'error',
         {
-          'groups': ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
+          groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
           'newlines-between': 'always',
-          'alphabetize': { order: 'asc', caseInsensitive: true },
+          alphabetize: { order: 'asc', caseInsensitive: true },
         },
       ],
 
-      '@stylistic/indent': ['error', 2],
-      '@stylistic/jsx-indent': ['error', 2],
+      'indent': 'off',
+      '@stylistic/indent': ['error', 2, { flatTernaryExpressions: true }],
       '@stylistic/semi': ['error', 'never'],
       '@stylistic/jsx-quotes': ['error', 'prefer-double'],
-      '@stylistic/arrow-parens': ['error', 'as-needed', {
-        requireForBlockBody: true,
-      }],
-      '@stylistic/brace-style': ['error', 'stroustrup', {
-        allowSingleLine: false,
-      }],
+      '@stylistic/arrow-parens': ['error', 'as-needed', { requireForBlockBody: true }],
+      '@stylistic/brace-style': ['error', 'stroustrup', { allowSingleLine: false }],
 
       'eol-last': ['error', 'always'],
       'no-unused-vars': ['warn', { varsIgnorePattern: '^[A-Z_]' }],

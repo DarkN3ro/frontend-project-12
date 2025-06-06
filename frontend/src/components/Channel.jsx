@@ -110,10 +110,10 @@ const Channel = () => {
           id="channels-box"
           className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block"
         >
-          {channels?.map(channel => (
-            <li className="nav-item w-100" key={channel.id}>
-              {!channel.removable
-                ? (
+          {channels?.map((channel) => {
+            if (!channel.removable) {
+              return (
+                <li className="nav-item w-100" key={channel.id}>
                   <button
                     type="button"
                     onClick={() => handleChannelClick(channel.id)}
@@ -122,8 +122,12 @@ const Channel = () => {
                     <span className="me-1">#</span>
                     {channel.name}
                   </button>
-                )
-                : (
+                </li>
+              )
+            }
+            else {
+              return (
+                <li className="nav-item w-100" key={channel.id}>
                   <Dropdown as={ButtonGroup} className="w-100 d-flex">
                     <button
                       type="button"
@@ -140,15 +144,15 @@ const Channel = () => {
                       <span className="me-1">#</span>
                       {channel.name}
                     </button>
-          
                     <Dropdown.Toggle
                       split
                       variant={channel.id === currentChannelId ? 'secondary' : 'light'}
                       id={`dropdown-split-${channel.id}`}
                     >
-                      <span className="visually-hidden">{t('channels.channelNavigate')}</span>
+                      <span className="visually-hidden">
+                        {t('channels.channelNavigate')}
+                      </span>
                     </Dropdown.Toggle>
-          
                     <Dropdown.Menu>
                       <Dropdown.Item onClick={() => handleRemoveChannel(channel)}>
                         {t('channels.removeChannel')}
@@ -158,10 +162,10 @@ const Channel = () => {
                       </Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>
-                )
-              }
-            </li>
-          ))}
+                </li>
+              )
+            }
+          })}
         </ul>
       </div>
       <AddChannelModal
