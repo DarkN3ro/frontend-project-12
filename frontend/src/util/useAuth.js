@@ -9,7 +9,7 @@ export const useAuth = () => {
   const token = useSelector(state => state.auth.token)
   const username = useSelector(state => state.auth.username)
 
-  const login = (token, username) => {
+  const loginAuth = (token, username) => {
     localStorage.setItem('userId', JSON.stringify({ token, username }))
     dispatch(setToken(token))
     dispatch(setUsername(username))
@@ -24,6 +24,6 @@ export const useAuth = () => {
   const isAuth = Boolean(token)
 
   return {
-    token, username, login, logout, isAuth,
+    token, username, loginAuth, logout, isAuth,
   }
 }

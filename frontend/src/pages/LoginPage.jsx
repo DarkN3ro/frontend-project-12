@@ -1,20 +1,19 @@
 import { Formik, Form, Field } from 'formik'
 import { useState, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
 import { useNavigate, Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
 import avatar from '../assets/avatar.jpg'
 import { useLoginMutation } from '../services/authApi.js'
-import { setToken, setUsername } from '../store/authSlice.js'
+import { useAuth } from '../util/useAuth.js'
 
 const LoginPage = () => {
-  const dispatch = useDispatch()
   const navigate = useNavigate()
   const { t } = useTranslation()
   const [authError, setAuthError] = useState(null)
   const [login] = useLoginMutation()
+  const { loginAuth } = useAuth()
   const usernameRef = useRef(null)
   const passwordRef = useRef(null)
 
@@ -41,11 +40,7 @@ const LoginPage = () => {
 
     try {
       const response = await login(values).unwrap()
-      const { token, username } = response
-      const userId = { token, username }
-      localStorage.setItem('userId', JSON.stringify(userId))
-      dispatch(setToken(token))
-      dispatch(setUsername(username))
+      loginAuth(response.token, response.username)
       navigate('/')
     }
     catch (error) {
@@ -84,7 +79,7 @@ const LoginPage = () => {
                         innerRef={usernameRef}
                         type="text"
                         name="username"
-                        autoComplete="username"
+                        autoComplete="off"
                         id="username"
                         title={t('login.userNameForChat')}
                         placeholder={t('login.userNameForChat')}
@@ -99,7 +94,7 @@ const LoginPage = () => {
                         innerRef={passwordRef}
                         type="password"
                         name="password"
-                        autoComplete="current-password"
+                        autoComplete="off"
                         id="password"
                         title={t('login.passwordUserForChat')}
                         placeholder={t('login.passwordUserForChat')}

@@ -1,24 +1,23 @@
 import { Formik, Form, Field } from 'formik'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import * as yup from 'yup'
 
 import avatar from '../assets/avatar-signup.jpg'
 import { useSignupMutation } from '../services/authApi.js'
-import { setToken, setUsername } from '../store/authSlice.js'
+import { useAuth } from '../util/useAuth.js'
 
 const Signup = () => {
   const usernameRef = useRef(null)
-  const dispatch = useDispatch()
   const { t } = useTranslation()
   const [ready, setReady] = useState(false)
   const [validationSchema, setValidationSchema] = useState(null)
   const [userExistsError, setUserExistsError] = useState(false)
   const navigate = useNavigate()
   const [signup] = useSignupMutation()
+  const { loginAuth } = useAuth()
 
   useEffect(() => {
     const schema = yup.object().shape({
@@ -81,11 +80,7 @@ const Signup = () => {
                       password: values.password,
                     }).unwrap()
 
-                    const token = response.token
-                    const userId = { username: values.username, token }
-                    localStorage.setItem('userId', JSON.stringify(userId))
-                    dispatch(setUsername(values.username))
-                    dispatch(setToken(token))
+                    loginAuth(response.token, response.username)
                     navigate('/')
                   }
                   catch (error) {
@@ -113,7 +108,7 @@ const Signup = () => {
                         innerRef={usernameRef}
                         placeholder=" "
                         name="username"
-                        autoComplete="username"
+                        autoComplete="off"
                         required
                         id="username"
                         title={t('form.fildThisField')}
@@ -130,7 +125,7 @@ const Signup = () => {
                         placeholder=" "
                         name="password"
                         type="password"
-                        autoComplete="new-password"
+                        autoComplete="off"
                         required
                         id="password"
                         title={t('form.fildThisField')}
@@ -147,7 +142,7 @@ const Signup = () => {
                         placeholder=" "
                         name="confirmPassword"
                         type="password"
-                        autoComplete="new-password"
+                        autoComplete="off"
                         required
                         id="confirmPassword"
                         title={t('form.fildThisField')}

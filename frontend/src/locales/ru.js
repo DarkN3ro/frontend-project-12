@@ -28,7 +28,6 @@ const ru = {
       errorConfirmPassword: 'Пароли должны совпадать',
       errorRequired: 'Обязательное поле',
       errorUserExists: 'Такой пользователь уже существует',
-      // profanityNotAllowed: 'Нельзя использовать ненормативную лексику',
     },
     buttons: {
       submit: 'Зарегистрироваться',

@@ -33,16 +33,6 @@ const AddChannelModal = ({ onSubmit, existingChannels }) => {
             return !existingNamesLower.includes(value.toLowerCase().trim())
           },
         ),
-    /*
-    .test(
-      'no-profanity',
-      t('validate.profanityNotAllowed'),
-      value => {
-        if (!value) return true;
-        return !filter.check(value);
-      }
-    ),
-    */
     })
 
     setValidationSchema(schema)

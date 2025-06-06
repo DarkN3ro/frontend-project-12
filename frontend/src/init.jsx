@@ -6,8 +6,6 @@ import App from './components/App.jsx'
 import resources from './locales/index.js'
 import store from './store/index.js'
 import socket from './util/socket.js'
-// import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react';
-// import Rollbar from 'rollbar';
 
 const init = async () => {
   const i18n = i18next.createInstance()
@@ -19,25 +17,12 @@ const init = async () => {
       fallbackLng: 'ru',
     })
 
-  /*  const token = import.meta.env.VITE_ROLLBAR_ACCESS_TOKEN;
-    const rollbarInstance = new Rollbar({
-      accessToken: token,
-      captureUncaught: true,
-      captureUnhandledRejections: true,
-      environment: 'production'
-    });
-    */
-
   return (
-  //  <RollbarProvider instance={rollbarInstance}>
-  //   <ErrorBoundary>
     <Provider store={store}>
       <I18nextProvider i18n={i18n}>
         <App socket={socket} />
       </I18nextProvider>
     </Provider>
-  //    </ErrorBoundary>
-  //  </RollbarProvider>
   )
 }
 
